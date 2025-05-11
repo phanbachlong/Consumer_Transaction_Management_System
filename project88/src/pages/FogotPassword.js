@@ -1,12 +1,15 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 const FogotPassword = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate();
 
   const onSubmit = (data) => {
     console.log('Email Submitted:', data.email);
     alert('Email đã được gửi đến địa chỉ của bạn!');
+    navigate('/login')
     // sau khi gửi email thành công => popup thông báo => chuyển hướng đến trang login
   };
 
