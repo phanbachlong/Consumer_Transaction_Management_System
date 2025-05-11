@@ -1,11 +1,14 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate();
 
   const onSubmit = (data) => {
     console.log('Form Data:', data);
+    alert('Đăng nhập thành công!');
     // sau khi đăng nhập thành công => chuyển hướng đến homepage
 
   };
@@ -16,9 +19,6 @@ const LoginPage = () => {
         <h1 className="text-2xl font-bold text-center mb-6">Đăng Nhập</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-              Username
-            </label>
             <input
               {...register('username', { required: 'Username is required' })}
               type="text"
@@ -29,9 +29,6 @@ const LoginPage = () => {
             {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>}
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
             <input
               {...register('password', { required: 'Password is required' })}
               type="password"
@@ -60,9 +57,12 @@ const LoginPage = () => {
           </button>
         </form>
         <div className="mt-4 text-center">
-          <a href="#" className="text-sm text-gray-500 hover:underline">
+          <button
+            onClick={() => navigate('/fogot-password')}
+            className="text-sm text-gray-500 hover:underline"
+          >
             Quên Mật Khẩu?
-          </a>{' '}
+          </button>
           <a href="#" className="text-sm text-red-600 font-medium hover:underline">
             Tạo Tài Khoản
           </a>
