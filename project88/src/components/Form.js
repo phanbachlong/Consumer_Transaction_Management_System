@@ -41,6 +41,18 @@ const Form = ({ initialValues, onSubmit, btn }) => {
                                 /> Khác
                             </label>
                         </div>
+                    ) : field === "remember" ? (
+                        <div className="flex items-center">
+                            <input
+                                type="checkbox"
+                                {...register(field)}
+                                id={field}
+                                className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                            />
+                            <label htmlFor={field} className="ml-2 block text-sm text-gray-900">
+                                Remember me
+                            </label>
+                        </div>
                     ) : (
                         <input
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
