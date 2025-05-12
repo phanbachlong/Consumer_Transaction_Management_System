@@ -22,7 +22,7 @@ const Register = () => {
                     <pp
                         className="text-sm text-gray-500 hover:underline"
                     >
-                        Đã có tài khoản?
+                        Đã có tài khoản?sdghakghfkdhfdahfkadhfkdjahfa
                     </pp>
                     <button
                         onClick={() => navigate('/login')}
