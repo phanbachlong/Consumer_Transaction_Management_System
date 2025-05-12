@@ -1,12 +1,12 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Validation } from "../validation/Validation";
+// import { Validation } from "../validation/Validation";
 
-const Form = ({ initialValues, onSubmit, btn }) => {
+const Form = ({ initialValues, onSubmit, btn, validation }) => {
 
     const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: zodResolver(Validation),
+        resolver: zodResolver(validation),
         defaultValues: initialValues
     });
 
@@ -39,6 +39,18 @@ const Form = ({ initialValues, onSubmit, btn }) => {
                                     {...register(field)}
                                     id={`${field}-Other`}
                                 /> Khác
+                            </label>
+                        </div>
+                    ) : field === "remember" ? (
+                        <div className="flex items-center">
+                            <input
+                                type="checkbox"
+                                {...register(field)}
+                                id={field}
+                                className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                            />
+                            <label htmlFor={field} className="ml-2 block text-sm text-gray-900">
+                                Remember me
                             </label>
                         </div>
                     ) : (
