@@ -9,8 +9,8 @@ const Register = () => {
 
     const initialValues = { username: '', firstName: '', lastName: '', email: '', gender: '', password: '', confirmPassword: '' };
 
-    const onSubmit = () => {
-        alert('success')
+    const onSubmit = (dataForm) => {
+        console.log(dataForm)
     }
 
 
@@ -23,7 +23,7 @@ const Register = () => {
                     <pp
                         className="text-sm text-gray-500 hover:underline"
                     >
-                        Đã có tài khoản?
+                        Đã có tài khoản?sdghakghfkdhfdahfkadhfkdjahfa
                     </pp>
                     <button
                         onClick={() => navigate('/login')}
