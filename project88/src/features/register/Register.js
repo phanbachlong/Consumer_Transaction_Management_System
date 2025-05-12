@@ -6,7 +6,7 @@ import Form from "../../components/Form";
 const Register = () => {
     const navigate = useNavigate();
 
-    const initialValues = { username: '', firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
+    const initialValues = { username: '', firstName: '', lastName: '', email: '', gender: '', password: '', confirmPassword: '' };
 
     const onSubmit = () => {
         alert('success')

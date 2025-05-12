@@ -11,6 +11,7 @@ CREATE TABLE `user`(
     lastName 		VARCHAR(50) NOT NULL,
     username 		VARCHAR(50) NOT NULL UNIQUE CHECK(length(username) >=6), 
     email 			VARCHAR(50) NOT NULL UNIQUE,
+    gender 			ENUM('Male','Female','Other'),
     `password` 		VARCHAR(50) NOT NULL,
     `role` 			ENUM('Admin','Employee','Manager') DEFAULT 'Employee',
 	`status`		TINYINT DEFAULT 0, -- 0: Not Active, 1: Active
