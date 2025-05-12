@@ -8,8 +8,8 @@ const Register = () => {
 
     const initialValues = { username: '', firstName: '', lastName: '', email: '', gender: '', password: '', confirmPassword: '' };
 
-    const onSubmit = () => {
-        alert('success')
+    const onSubmit = (dataForm) => {
+        console.log(dataForm)
     }
 
 
