@@ -1,12 +1,12 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Validation } from "../validation/Validation";
+// import { Validation } from "../validation/Validation";
 
-const Form = ({ initialValues, onSubmit, btn }) => {
+const Form = ({ initialValues, onSubmit, btn, validation }) => {
 
     const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: zodResolver(Validation),
+        resolver: zodResolver(validation),
         defaultValues: initialValues
     });
 
