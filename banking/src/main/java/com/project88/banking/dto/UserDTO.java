@@ -1,64 +1,64 @@
-package com.project88.banking.dto;
+// package com.project88.banking.dto;
 
-import com.project88.banking.entity.Gender;
-import com.project88.banking.entity.User;
+// import com.project88.banking.entity.Gender;
+// import com.project88.banking.entity.User;
 
-public class UserDTO {
+// public class UserDTO {
 
-    private String username;
+// private String username;
 
-    private String email;
+// private String email;
 
-    private String firstName;
+// private String firstName;
 
-    private String lastName;
+// private String lastName;
 
-    private Gender gender;
+// private Gender gender;
 
-    public UserDTO() {
-    }
+// public UserDTO() {
+// }
 
-    public String getUsername() {
-        return username;
-    }
+// public String getUsername() {
+// return username;
+// }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+// public void setUsername(String username) {
+// this.username = username;
+// }
 
-    public String getEmail() {
-        return email;
-    }
+// public String getEmail() {
+// return email;
+// }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+// public void setEmail(String email) {
+// this.email = email;
+// }
 
-    public String getFirstName() {
-        return firstName;
-    }
+// public String getFirstName() {
+// return firstName;
+// }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+// public void setFirstName(String firstName) {
+// this.firstName = firstName;
+// }
 
-    public String getLastName() {
-        return lastName;
-    }
+// public String getLastName() {
+// return lastName;
+// }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+// public void setLastName(String lastName) {
+// this.lastName = lastName;
+// }
 
-    public Gender getGender() {
-        return gender;
-    }
+// public Gender getGender() {
+// return gender;
+// }
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
+// public void setGender(Gender gender) {
+// this.gender = gender;
+// }
 
-    public User toEntity() {
-        return new User(firstName, lastName, username, email, gender, email);
-    }
-}
+// public User toEntity() {
+// return new User(firstName, lastName, username, email, gender, email);
+// }
+// }
