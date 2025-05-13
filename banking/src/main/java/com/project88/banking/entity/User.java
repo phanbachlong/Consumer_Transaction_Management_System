@@ -4,12 +4,14 @@ import java.io.Serializable;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "`User`")
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private short userID;
 
     private String firstName;
@@ -23,9 +25,9 @@ public class User implements Serializable {
     private Gender gender;
 
     private String password;
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
     private Role role;
-
     private short status = 0;
 
     private String avatarUrl;
