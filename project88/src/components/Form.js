@@ -5,13 +5,18 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 const Form = ({ initialValues, onSubmit, btn, validation }) => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: zodResolver(validation),
         defaultValues: initialValues
     });
 
+    const handleFormSubmit = (data) => {
+        onSubmit(data);
+        reset();
+    }
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} initialValues={initialValues}>
+        <form onSubmit={handleSubmit(handleFormSubmit)} initialValues={initialValues}>
             {Object.keys(initialValues).map((field, index) => (
                 <div className="mb-4" key={index}>
                     {field === "gender" ? (

@@ -14,7 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "`User`")
+@Table(name = "`user`")
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -23,10 +23,10 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private short userID;
 
-    @Column(name = "firstName", length = 50, nullable = false)
+    @Column(name = "`firstName`", length = 50, nullable = false)
     private String firstName;
 
-    @Column(name = "lastName", length = 50, nullable = false)
+    @Column(name = "`lastName`", length = 50, nullable = false)
     private String lastName;
 
     @Formula("concat(firstName, ' ', lastName)")
@@ -52,7 +52,7 @@ public class User implements Serializable {
     private Status status = Status.NOT_ACTIVE;
 
     @Column(name = "avatarUrl")
-    private String avatarUrl;
+    private String avatarUrl = "";
 
     public User() {
     }

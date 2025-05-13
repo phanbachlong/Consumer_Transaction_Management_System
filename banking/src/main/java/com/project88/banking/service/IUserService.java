@@ -1,5 +1,9 @@
 package com.project88.banking.service;
 
-public interface IUserService {
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+import com.project88.banking.entity.User;
+
+public interface IUserService extends UserDetailsService {
     void registerUser(User user);
 }
