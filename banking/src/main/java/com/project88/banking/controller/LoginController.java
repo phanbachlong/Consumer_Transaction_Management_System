@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*") // Nếu bạn gọi từ FE, có thể cần dòng này
+@CrossOrigin(origins = "*")
 public class LoginController {
 
     @Autowired
@@ -32,7 +32,6 @@ public class LoginController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // ✅ API Đăng ký
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
@@ -45,26 +44,26 @@ public class LoginController {
         user.setEmail(request.getEmail());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
+        user.setAvatarUrl(request.getAvatarUrl());
 
-        try {
-            user.setRole(Role.valueOf(request.getRole()));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Role không hợp lệ"));
+        if (request.getRole() != null) {
+            user.setRole(request.getRole());
+        } else {
+            user.setRole(Role.USER);
         }
 
-        try {
-            user.setGender(Gender.valueOf(request.getGender().toUpperCase()));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Giới tính không hợp lệ (MALE/FEMALE)"));
+        if (request.getGender() != null) {
+            user.setGender(request.getGender());
+        } else {
+            user.setGender(Gender.MALE);
         }
 
-        user.setStatus((short) 1); // hoạt động
+        user.setStatus((short) 1);
         userRepository.save(user);
 
         return ResponseEntity.ok(Map.of("message", "Đăng ký thành công"));
     }
 
-    // ✅ API Đăng nhập
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         Optional<User> userOpt = userRepository.findByUsername(request.getUsername());
@@ -84,7 +83,6 @@ public class LoginController {
         return ResponseEntity.status(401).body(Map.of("message", "Sai username hoặc password"));
     }
 
-    // ✅ API cấp lại access token
     @PostMapping("/refresh-token")
     public ResponseEntity<?> refreshAccessToken(@RequestBody Map<String, String> body) {
         String refreshToken = body.get("refreshToken");
@@ -96,7 +94,6 @@ public class LoginController {
         return ResponseEntity.status(401).body(Map.of("error", "Refresh token không hợp lệ hoặc đã hết hạn"));
     }
 
-    // ✅ API Lấy info user hiện tại
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
@@ -123,7 +120,6 @@ public class LoginController {
         return ResponseEntity.status(401).body(Map.of("error", "Không xác thực được người dùng"));
     }
 
-    // ✅ API Đổi mật khẩu
     @PostMapping("/secure/change-password")
     public ResponseEntity<?> changePassword(
             @RequestBody ChangePasswordRequest request,
@@ -150,7 +146,6 @@ public class LoginController {
         return ResponseEntity.status(401).body(Map.of("error", "Không xác thực được người dùng"));
     }
 
-    // ✅ Test bảo vệ JWT
     @GetMapping("/secure/info")
     public ResponseEntity<?> secureInfo() {
         return ResponseEntity.ok("Chào mừng! Bạn đã xác thực thành công bằng JWT.");
