@@ -1,13 +1,13 @@
 package com.project88.banking.controller;
 
-import com.project88.banking.entity.User;
+import com.project88.banking.entity.Gender;
 import com.project88.banking.entity.Role;
+import com.project88.banking.entity.User;
+import com.project88.banking.model.ChangePasswordRequest;
 import com.project88.banking.model.LoginRequest;
 import com.project88.banking.model.RegisterRequest;
-import com.project88.banking.model.ChangePasswordRequest;
 import com.project88.banking.repository.UserRepository;
 import com.project88.banking.security.JwtTokenUtil;
-
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*") // Nếu bạn gọi từ FE, có thể cần dòng này
 public class LoginController {
 
     @Autowired
@@ -42,7 +42,23 @@ public class LoginController {
         User user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(Role.USER); // dùng enum
+        user.setEmail(request.getEmail());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+
+        try {
+            user.setRole(Role.valueOf(request.getRole()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Role không hợp lệ"));
+        }
+
+        try {
+            user.setGender(Gender.valueOf(request.getGender().toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Giới tính không hợp lệ (MALE/FEMALE)"));
+        }
+
+        user.setStatus((short) 1); // hoạt động
         userRepository.save(user);
 
         return ResponseEntity.ok(Map.of("message", "Đăng ký thành công"));
@@ -68,7 +84,7 @@ public class LoginController {
         return ResponseEntity.status(401).body(Map.of("message", "Sai username hoặc password"));
     }
 
-    // ✅ API Cấp lại access token
+    // ✅ API cấp lại access token
     @PostMapping("/refresh-token")
     public ResponseEntity<?> refreshAccessToken(@RequestBody Map<String, String> body) {
         String refreshToken = body.get("refreshToken");
@@ -80,13 +96,7 @@ public class LoginController {
         return ResponseEntity.status(401).body(Map.of("error", "Refresh token không hợp lệ hoặc đã hết hạn"));
     }
 
-    // ✅ API Test
-    @GetMapping("/secure/info")
-    public ResponseEntity<?> secureInfo() {
-        return ResponseEntity.ok("Chào mừng! Bạn đã xác thực thành công bằng JWT.");
-    }
-
-    // ✅ API Lấy thông tin user hiện tại
+    // ✅ API Lấy info user hiện tại
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
@@ -97,9 +107,14 @@ public class LoginController {
             return userRepository.findByUsername(username)
                     .map(user -> {
                         Map<String, Object> data = new HashMap<>();
-                        data.put("id", user.getUserID()); // short
+                        data.put("id", user.getUserID());
                         data.put("username", user.getUsername());
                         data.put("role", user.getRole().name());
+                        data.put("email", user.getEmail());
+                        data.put("avatarUrl", user.getAvatarUrl());
+                        data.put("firstName", user.getFirstName());
+                        data.put("lastName", user.getLastName());
+                        data.put("gender", user.getGender().name());
                         return ResponseEntity.ok(data);
                     })
                     .orElseGet(() -> ResponseEntity.status(404).body(Map.of("error", "Không tìm thấy người dùng")));
@@ -133,5 +148,11 @@ public class LoginController {
         }
 
         return ResponseEntity.status(401).body(Map.of("error", "Không xác thực được người dùng"));
+    }
+
+    // ✅ Test bảo vệ JWT
+    @GetMapping("/secure/info")
+    public ResponseEntity<?> secureInfo() {
+        return ResponseEntity.ok("Chào mừng! Bạn đã xác thực thành công bằng JWT.");
     }
 }

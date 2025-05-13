@@ -1,37 +1,36 @@
 package com.project88.banking.entity;
 
+import jakarta.persistence.*;
 import java.io.Serializable;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.*;
-
 @Entity
-@Table(name = "`User`")
+@Table(name = "user") // nên viết thường để tránh lỗi SQL case-sensitive
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private short userID;
 
-    private String firstName;
-
-    private String lastName;
-
     private String username;
+    private String password;
 
     private String email;
+    private String firstName;
+    private String lastName;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private String password;
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
+
     private short status = 0;
 
     private String avatarUrl;
 
+    // Constructors
     public User() {
     }
 
@@ -44,8 +43,33 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    // Getters and setters
     public short getUserID() {
         return userID;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getFirstName() {
@@ -64,36 +88,12 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public Gender getGender() {
         return gender;
     }
 
     public void setGender(Gender gender) {
         this.gender = gender;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Role getRole() {
@@ -119,5 +119,4 @@ public class User implements Serializable {
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
-
 }
