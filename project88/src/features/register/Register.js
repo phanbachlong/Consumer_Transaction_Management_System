@@ -1,16 +1,23 @@
 import React from "react";
-import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
 import Form from "../../components/Form";
 import { Validation } from "../../validation/Validation";
+import { register } from "../../redux/slices/registerSlice"
 
 const Register = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const initialValues = { username: '', firstName: '', lastName: '', email: '', gender: '', password: '', confirmPassword: '' };
 
+
     const onSubmit = (dataForm) => {
-        console.log(dataForm)
+        dispatch(register(dataForm)).then((rs) => {
+            if (rs.payload) {
+                alert("dk thanh cong")
+            }
+        })
     }
 
 
@@ -23,7 +30,7 @@ const Register = () => {
                     <pp
                         className="text-sm text-gray-500 hover:underline"
                     >
-                        Đã có tài khoản?sdghakghfkdhfdahfkadhfkdjahfa
+                        Đã có tài khoản?
                     </pp>
                     <button
                         onClick={() => navigate('/login')}
