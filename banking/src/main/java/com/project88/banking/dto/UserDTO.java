@@ -1,6 +1,5 @@
 package com.project88.banking.dto;
 
-import com.project88.banking.entity.Gender;
 import com.project88.banking.entity.User;
 
 public class UserDTO {
@@ -13,7 +12,9 @@ public class UserDTO {
 
     private String lastName;
 
-    private Gender gender;
+    private String gender;
+
+    private String password;
 
     public UserDTO() {
     }
@@ -50,15 +51,24 @@ public class UserDTO {
         this.lastName = lastName;
     }
 
-    public Gender getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public User toEntity() {
         return new User(firstName, lastName, username, email, gender, email);
     }
+
 }
