@@ -9,7 +9,7 @@ const HomeContent = () => (
             AVA
           </div>
           <div>
-            <h2 className="text-xl font-bold">Phan Trọng Vinh</h2>
+            <h2 className="text-xl font-bold">Tên Người Dùng !</h2>
           </div>
         </div>
         <div className="flex space-x-8">
