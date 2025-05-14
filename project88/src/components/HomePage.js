@@ -23,7 +23,7 @@ const Content = () => (
       <div className={styles["user-info"]}>
         <div className={styles.avatar}>Image</div>
         <div>
-          <h2>Bùi Quang Huy</h2>
+          <h2><b>Bùi Quang Huy</b></h2>
           <button className={styles["pay-btn"]}>Lịch sử giao dịch</button>
         </div>
       </div>
