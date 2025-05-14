@@ -2,8 +2,6 @@ package com.project88.banking.entity;
 
 import java.io.Serializable;
 
-import org.hibernate.annotations.Formula;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,50 +10,21 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "`user`")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements Serializable {
-    private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private short userID;
-
-    @Column(name = "`firstName`", length = 50, nullable = false)
-    private String firstName;
-
-    @Column(name = "`lastName`", length = 50, nullable = false)
-    private String lastName;
-
-    @Formula("concat(firstName, ' ', lastName)")
-    private String fullName;
-
-    @Column(name = "username", length = 50, unique = true, nullable = false)
-    private String username;
-
-    @Column(name = "email", length = 50, unique = true, nullable = false)
-    private String email;
-
-    @Column(name = "gender", nullable = false)
-    private String gender;
-
-    @Column(name = "password", nullable = false)
-    private String password;
-
-    @Column(name = "role", nullable = false)
-    private String role = "User";
-
-    @Column(name = "status", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
-    private Status status = Status.NOT_ACTIVE;
-
-    @Column(name = "avatarUrl")
-    private String avatarUrl = "";
-
-    public User() {
-    }
 
     public User(String firstName, String lastName, String username, String email, String gender, String password) {
         this.firstName = firstName;
@@ -66,80 +35,32 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public short getUserID() {
-        return userID;
-    }
+    @Column(name = "`firstName`", nullable = false, length = 50)
+    private String firstName;
 
-    public String getFirstName() {
-        return firstName;
-    }
+    @Column(name = "`lastName`", nullable = false, length = 50)
+    private String lastName;
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+    @Column(name = "`username`", nullable = false, length = 50, unique = true)
+    private String username;
 
-    public String getLastName() {
-        return lastName;
-    }
+    @Column(name = "`email`", nullable = false, length = 50, unique = true)
+    private String email;
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    @Column(name = "gender", nullable = false)
+    private String gender;
 
-    public String getUsername() {
-        return username;
-    }
+    @Column(name = "password", nullable = false, length = 800)
+    private String password;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    @Column(name = "role", nullable = false)
+    private String role = "User";
 
-    public String getEmail() {
-        return email;
-    }
+    @Column(name = "status")
+    @Enumerated(value = EnumType.ORDINAL)
+    private Status status = Status.NOT_ACTIVE;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public String getAvatarUrl() {
-        return avatarUrl;
-    }
-
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
-    }
+    @Column(name = "`avatarUrl`")
+    private String avatarUrl;
 
 }
