@@ -3,37 +3,42 @@ const HomeContent = () => (
     {/* Left Section */}
     <div className="flex-1 space-y-8">
       {/* User Info */}
-      <div className="flex items-center justify-between bg-white p-6 rounded shadow">
-        <div className="flex items-center space-x-4">
+      <div className="bg-white p-6 rounded shadow">
+        <div className="flex items-center space-x-4 ">
           <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center text-xl font-bold text-red-600">
             AVA
           </div>
           <div>
-            <h2 className="text-xl font-bold">Tên Người Dùng !</h2>
+            <h2 className="text-xl font-bold">Nguyễn Văn A</h2>
           </div>
         </div>
-        <div className="flex space-x-8">
-          <div className="text-center">
-            <div className="text-gray-500">Số dư</div>
-            <div className="text-2xl font-bold">1.000.000 VND</div>
-            <button className="mt-2 w-full h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200">
-              Chuyển khoản
-            </button>
-          </div>
-          <div className="text-center">
-            <div className="text-gray-500">Tiết kiệm</div>
-            <div className="text-2xl font-bold">1.000.000 VND</div>
-            <div className="flex justify-between space-x-4 mt-2">
-              <button className="w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis">
-                Gửi
+        <div className="flex items-center justify-between">
+
+          <div className="flex w-full mt-5 justify-between space-x-4">
+            <div className="flex-1 text-center bg-white p-6 rounded shadow">
+              <div className="text-gray-500 ">Số dư</div>
+              <div className="text-2xl font-bold">1.000.000.000 VND</div>
+              <button className="mt-2 w-full h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200">
+                Chuyển khoản
               </button>
-              <button className="w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis">
-                Rút
-              </button>
+            </div>
+            <div className="flex-1 text-center bg-white p-6 rounded shadow">
+              <div className="text-gray-500 ">Tiết kiệm</div>
+              <div className="text-2xl font-bold">1.000.000.000 VND</div>
+              <div className="flex justify-between space-x-4 mt-2">
+                <button className="w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis">
+                  Gửi
+                </button>
+                <button className=" w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis">
+                  Rút
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+
 
       {/* Transaction History */}
       <div className="bg-white p-6 rounded shadow">
