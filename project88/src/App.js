@@ -4,8 +4,8 @@ import './App.css';
 import LoginPage from './features/auth/LoginPage';
 import FogotPassword from './features/auth/FogotPassword';
 import Register from './features/register/Register';
-import HomePage from './components/HomePage';
-
+import HomePage from './features/home/HomePage';
+import ChangePassword from './features/auth/ChangePassword';
 
 
 
@@ -17,10 +17,11 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        {/* <Route path="/login" element={<LoginPage />} />
-        <Route path="/fogot-password" element={<FogotPassword />} />
-        <Route path='/register' element={<Register />} /> */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/fogotPassword" element={<FogotPassword />} />
+        <Route path='/register' element={<Register />} />
         <Route path='/homepage' element={<HomePage/>} />
+        <Route path='/changePassword' element={<ChangePassword/>} />
       </Routes>
     </Router>
   );
