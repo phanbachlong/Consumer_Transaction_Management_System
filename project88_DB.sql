@@ -11,9 +11,9 @@ CREATE TABLE `user`(
     lastName 		VARCHAR(50) NOT NULL,
     username 		VARCHAR(50) NOT NULL UNIQUE CHECK(length(username) >=6), 
     email 			VARCHAR(50) NOT NULL UNIQUE,
-    gender 			ENUM('Male','Female','Other'),
-    `password` 		VARCHAR(50) NOT NULL,
-    `role` 			ENUM('Admin','Employee','Manager') DEFAULT 'Employee',
+    gender 			ENUM('Male','Female','Other') not null,
+    `password` 		VARCHAR(800) NOT NULL,
+    `role` 			ENUM('Admin','Employee','User') DEFAULT 'User',
 	`status`		TINYINT DEFAULT 0, -- 0: Not Active, 1: Active
     `avatarUrl`		VARCHAR(500)
 );
@@ -28,4 +28,4 @@ CREATE TABLE IF NOT EXISTS `Registration_User_Token` (
 );
 
 -- insert value to user 
-INSERT INTO `user`(firstName, lastName, userName, email, `password`) VALUE ('Phan Trong', 'Vinh', 'phtrvinh', '1phantrongvinh98@gmail.com', '123456')
+-- INSERT INTO `user`(firstName, lastName, userName, email, `password`) VALUE ('Phan Trong', 'Vinh', 'phtrvinh', '1phantrongvinh98@gmail.com', '123456')
