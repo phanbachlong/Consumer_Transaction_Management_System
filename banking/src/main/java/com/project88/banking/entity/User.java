@@ -1,40 +1,63 @@
 package com.project88.banking.entity;
 
-import jakarta.persistence.*;
 import java.io.Serializable;
 
+import org.hibernate.annotations.Formula;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 @Entity
-@Table(name = "user") // nên viết thường để tránh lỗi SQL case-sensitive
+@Table(name = "`user`")
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private short userID;
 
-    private String username;
-    private String password;
-
-    private String email;
+    @Column(name = "`firstName`", length = 50, nullable = false)
     private String firstName;
+
+    @Column(name = "`lastName`", length = 50, nullable = false)
     private String lastName;
 
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+    @Formula("concat(firstName, ' ', lastName)")
+    private String fullName;
 
-    @Enumerated(EnumType.STRING)
+    @Column(name = "username", length = 50, unique = true, nullable = false)
+    private String username;
+
+    @Column(name = "email", length = 50, unique = true, nullable = false)
+    private String email;
+
+    @Column(name = "gender", nullable = false)
+    private String gender;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @Column(name = "role", nullable = false)
-    private Role role;
+    private String role = "User";
 
-    private short status = 0;
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private Status status = Status.NOT_ACTIVE;
 
-    private String avatarUrl;
+    @Column(name = "avatarUrl")
+    private String avatarUrl = "";
 
-    // Constructors
     public User() {
     }
 
-    public User(String firstName, String lastName, String username, String email, Gender gender, String password) {
+    public User(String firstName, String lastName, String username, String email, String gender, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -43,33 +66,8 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    // Getters and setters
     public short getUserID() {
         return userID;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getFirstName() {
@@ -88,27 +86,51 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public Gender getGender() {
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
-    public Role getRole() {
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
-    public short getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(short status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -119,4 +141,5 @@ public class User implements Serializable {
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
+
 }
