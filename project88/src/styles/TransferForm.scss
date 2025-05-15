@@ -1,0 +1,96 @@
+.transfer-form {
+  max-width: 400px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  color: #333;
+
+  .logo {
+    text-align: center;
+    font-size: 24px;
+    color: #e74c3c;
+    margin-bottom: 10px;
+  }
+
+  hr {
+    margin: 10px 0 20px;
+  }
+
+  .user-info {
+    display: flex;
+    background-color: #d9d9d9;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      background-color: #eee;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #e74c3c;
+      margin-right: 16px;
+    }
+
+    .info {
+      .name {
+        font-weight: bold;
+      }
+
+      .balance-label {
+        font-size: 12px;
+        color: #555;
+      }
+
+      .balance {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 12px;
+      font-size: 14px;
+
+      input {
+        padding: 8px;
+        margin-top: 4px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+
+      button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .cancel {
+        background-color: #fce3df;
+        color: #e74c3c;
+      }
+
+      .submit {
+        background-color: #fde3d9;
+        color: #e74c3c;
+      }
+    }
+  }
+}
