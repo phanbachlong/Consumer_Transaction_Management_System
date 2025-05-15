@@ -7,6 +7,7 @@ import Register from './features/register/Register';
 import HomePage from './features/home/HomePage';
 import ChangePassword from './features/auth/ChangePassword';
 import Profile from './features/user/Profile';
+import TransferForm from './features/home/Tranfer';
 
 
 
@@ -21,9 +22,10 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/fogotPassword" element={<FogotPassword />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/homepage' element={<HomePage />} />
-        <Route path='/changePassword' element={<ChangePassword />} />
         <Route path='/profile' element={<Profile />} />
+        <Route path='/homepage' element={<HomePage/>} />
+        <Route path='/changePassword' element={<ChangePassword/>} />
+        <Route path='/tranfer' element={<TransferForm/>} />
       </Routes>
     </Router>
   );
