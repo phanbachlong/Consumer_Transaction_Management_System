@@ -22,7 +22,7 @@ const LoginPage = () => {
         <Form onSubmit={onSubmit} initialValues={initialValues} btn="Đăng Nhập" validation={ValidationLogin} />
         <div className="mt-4 text-center">
           <button
-            onClick={() => navigate('/fogot-password')}
+            onClick={() => navigate('/fogotPassword')}
             className="text-sm text-gray-500 hover:underline"
           >
             Quên Mật Khẩu?
