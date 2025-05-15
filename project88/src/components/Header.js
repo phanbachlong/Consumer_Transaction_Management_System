@@ -1,6 +1,13 @@
-const Header = ({ toggleTheme, currentTheme }) => (
+import { useNavigate } from "react-router-dom";
+const Header = ({ toggleTheme, currentTheme }) => {
+ const navigate = useNavigate();
+  const onClick = () => {
+    navigate("/");
+  };
+
+  return (
   <header className="flex justify-between items-center p-4 bg-white shadow">
-    <div className="text-2xl font-bold text-red-600">LOGO</div>
+    <div className="text-2xl font-bold text-red-600 cursor-pointer"  onClick={onClick}>LOGO</div>
     <div className="flex space-x-4">
       <button
         onClick={toggleTheme}
@@ -15,6 +22,6 @@ const Header = ({ toggleTheme, currentTheme }) => (
       </button>
     </div>
   </header>
-);
+);}
 
 export default Header;
