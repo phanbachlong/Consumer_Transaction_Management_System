@@ -1,46 +1,41 @@
 import React from "react";
-import "./TransferForm.scss";
+import "./TransferForm.scss"; // Ensure this file exists in the same directory
 
 const TransferForm = () => {
   return (
     <div className="transfer-form">
-      <div className="logo">LOGO</div>
-      <hr />
-
-      <div className="user-info">
-        <div className="avatar">AVA</div>
-        <div className="info">
-          <div className="name"><strong>Bùi Quang Huy</strong></div>
-          <div className="balance-label">Số dư khả dụng</div>
-          <div className="balance">1.000.000.000 VND</div>
+      <h1 className="text-2xl font-bold mb-4">Chuyển khoản</h1>
+      <form>
+        <div className="mb-4">
+          <label htmlFor="recipient" className="block text-sm font-medium text-gray-700">
+            Người nhận
+          </label>
+          <input
+            type="text"
+            id="recipient"
+            name="recipient"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            placeholder="Nhập tên người nhận"
+          />
         </div>
-      </div>
-
-      <form className="form">
-        <label>
-          Ngân hàng / icon
-          <input type="text" value="Techcombank" />
-        </label>
-        <label>
-          STK chuyển
-          <input type="text" value="123323391232" />
-        </label>
-        <label>
-          Tên người nhận
-          <input type="text" value="Phan Trọng Vinh" />
-        </label>
-        <label>
-          Số tiền chuyển
-          <input type="text" value="1.000.000 VND" />
-        </label>
-        <label>
-          Nội dung chuyển khoản
-          <input type="text" value="tiền nhiều vô cùng" />
-        </label>
-        <div className="buttons">
-          <button className="cancel" type="button">Hủy giao dịch</button>
-          <button className="submit" type="submit">Chuyển Khoản</button>
+        <div className="mb-4">
+          <label htmlFor="amount" className="block text-sm font-medium text-gray-700">
+            Số tiền
+          </label>
+          <input
+            type="number"
+            id="amount"
+            name="amount"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+            placeholder="Nhập số tiền"
+          />
         </div>
+        <button
+          type="submit"
+          className="w-full bg-red-100 text-red-600 py-2 px-4 rounded-md hover:bg-red-200 transition"
+        >
+          Xác nhận
+        </button>
       </form>
     </div>
   );
