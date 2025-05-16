@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 // import { Validation } from "../validation/Validation";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Form = ({ initialValues, onSubmit, btn, validation }) => {
+
+    const [selectedDate, setSelectedDate] = useState(null);
+
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: zodResolver(validation),
@@ -47,7 +52,7 @@ const Form = ({ initialValues, onSubmit, btn, validation }) => {
                             </label>
                         </div>
                     ) : field === "remember" ? (
-                        <div className="flex items-center">
+                        <div className="flex items-center" key={index}>
                             <input
                                 type="checkbox"
                                 {...register(field)}
@@ -58,11 +63,24 @@ const Form = ({ initialValues, onSubmit, btn, validation }) => {
                                 Remember me
                             </label>
                         </div>
+                    ) : field === "birth" ? (
+                        <DatePicker
+                            selected={selectedDate}
+                            onChange={(date) => setSelectedDate(date)}
+                            dateFormat="dd/MM/yyyy"
+                            placeholderText="Chọn ngày"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            calendarClassName="!p-2 bg-white border border-gray-200 rounded-lg shadow-md"
+                            dayClassName={(date) =>
+                                "text-gray-700 hover:bg-blue-100 rounded-full w-10 h-10 flex items-center justify-center"
+                            }
+                        />
                     ) : (
                         <input
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             {...register(field)}
-                            type={field.includes("password") || field.includes("confirmPassword") ? "password" : "text"}
+                            key={index}
+                            type={field.includes("password") || field.includes("confirmPassword") ? "password" : field.includes("birth") ? "date" : "text"}
                             id={field}
                             name={field}
                             placeholder={field.includes("password") || field.includes("confirmPass") ? "********" : `Nhập ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}`}

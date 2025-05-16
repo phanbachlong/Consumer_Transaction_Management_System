@@ -9,7 +9,7 @@ const Register = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const initialValues = { username: '', firstName: '', lastName: '', email: '', gender: '', password: '', confirmPassword: '' };
+    const initialValues = { username: '', firstName: '', lastName: '', email: '', birth: '', gender: '', password: '', confirmPassword: '' };
 
 
     const onSubmit = (dataForm) => {
