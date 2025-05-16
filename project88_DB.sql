@@ -13,7 +13,7 @@ CREATE TABLE `user`(
     email 			VARCHAR(50) NOT NULL UNIQUE,
     gender 			ENUM('Male','Female','Other') NOT NULL,
     cccd			CHAR(12) NOT NULL, 
-    bankAccount		INT NOT NULL DEFAULT 0,
+    balance			INT NOT NULL DEFAULT 0,
     birth			DATE NOT NULL,
     `password` 		VARCHAR(50) NOT NULL,
     `role` 			ENUM('Admin','Employee','User') DEFAULT 'User',

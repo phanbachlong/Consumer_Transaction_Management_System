@@ -16,7 +16,37 @@ code {
     monospace;
 }
 
+.react-datepicker__header {
+  background-color: #FED8CD !important;
+}
 
+.react-datepicker__current-month,
+.react-datepicker__day-name,
+.react-datepicker__day{
+  color: #D23E07 !important;
+}
+
+.react-datepicker__month-select {
+  padding: 5px 10px;
+  background-color: #FED8CD;
+  border: 1px solid #D23E07;
+  border-radius: 5px;
+  font-weight: bold;
+  color: #D23E07;
+  margin-left: 12px !important;
+  margin: 12px 0;
+}
+
+.react-datepicker__year-select {
+  padding: 5px 10px;
+  background-color: #FED8CD;
+  border: 1px solid #D23E07;
+  border-radius: 5px;
+  font-weight: bold;
+  color: #D23E07;
+  margin-right: 12px !important;
+  margin: 12px 0;
+}
 
 .react-datepicker-wrapper {
   width: 100% !important;

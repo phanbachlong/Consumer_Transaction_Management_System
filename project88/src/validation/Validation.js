@@ -1,10 +1,18 @@
+import { parse } from 'date-fns';
 import { z } from 'zod';
 
 export const Validation = z.object({
-    username: z.string().min(6, "Tên tài khoản phải có ít nhất 6 ký tự"),
-    firstName: z.string().min(1, "Họ phải bắt buộc"),
-    lastName: z.string().min(1, "Tên phải bắt buộc"),
-    email: z.string().min(1, "Email phải bắt buộc").email("Email không hợp lệ"),
+    username: z.string().nonempty("Tên tài khoản phải có ít nhất 6 ký tự"),
+    firstName: z.string().nonempty("Họ phải bắt buộc"),
+    lastName: z.string().nonempty("Tên phải bắt buộc"),
+    email: z.string().nonempty("Email phải bắt buộc").email("Email không hợp lệ"),
+    birth: z.string().refine(val => !isNaN(Date.parse(val)), {
+        message: "Ngày không hợp lệ"
+    }),
+    cccd: z
+        .string()
+        .nonempty({ message: "CCCD không được để trống" })
+        .regex(/^\d{12}$/, { message: "CCCD phải gồm đúng 12 chữ số" }),
     gender: z.enum(['Male', 'Female', 'Other'], {
         errorMap: () => ({ message: 'Vui lòng chọn giới tính' })
     }),
