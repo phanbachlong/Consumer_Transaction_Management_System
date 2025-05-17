@@ -120,9 +120,9 @@ const HomeContent = () => {
       {/* Modal for TransferForm */}
       {showTransfer && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="relative">
+          <div className="relative w-full max-w-md">
             <button
-              className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 text-2xl font-bold"
+              className="absolute top-2 right-10 text-gray-400 hover:text-gray-600 text-2xl font-bold"
               onClick={() => setShowTransfer(false)}
               aria-label="Close"
             >
