@@ -1,41 +1,48 @@
 import React from "react";
-import "./TransferForm.scss"; // Ensure this file exists in the same directory
+import "../../styles/TransferForm.scss";
 
-const TransferForm = () => {
+const TransferForm = ({setShowTransfer}) => {
   return (
     <div className="transfer-form">
-      <h1 className="text-2xl font-bold mb-4">Chuyển khoản</h1>
+      <div className="transfer-logo">LOGO</div>
+      <hr className="transfer-divider" />
+      <div className="transfer-user">
+        <div className="transfer-avatar">AVA</div>
+        <div>
+          <div className="transfer-username">Bùi Quang Huy</div>
+          <div className="transfer-balance-label">Số dư khả dụng</div>
+          <div className="transfer-balance">1.000.000.000 VND</div>
+        </div>
+      </div>
       <form>
-        <div className="mb-4">
-          <label htmlFor="recipient" className="block text-sm font-medium text-gray-700">
-            Người nhận
-          </label>
-          <input
-            type="text"
-            id="recipient"
-            name="recipient"
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="Nhập tên người nhận"
-          />
+        <div className="transfer-group">
+          <label>Ngân hàng</label>
+          <input type="text" defaultValue="Techcombank" />
         </div>
-        <div className="mb-4">
-          <label htmlFor="amount" className="block text-sm font-medium text-gray-700">
-            Số tiền
-          </label>
-          <input
-            type="number"
-            id="amount"
-            name="amount"
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="Nhập số tiền"
-          />
+        <div className="transfer-group">
+          <label>STK chuyển</label>
+          <input type="text" defaultValue="123323391232" />
         </div>
-        <button
-          type="submit"
-          className="w-full bg-red-100 text-red-600 py-2 px-4 rounded-md hover:bg-red-200 transition"
-        >
-          Xác nhận
-        </button>
+        <div className="transfer-group">
+          <label>Tên người nhận</label>
+          <input type="text" defaultValue="Phan Trọng Vinh" />
+        </div>
+        <div className="transfer-group">
+          <label>Số tiền chuyển</label>
+          <input type="text" defaultValue="1.000.000 VND" />
+        </div>
+        <div className="transfer-group">
+          <label>Nội dung chuyển khoản</label>
+          <input type="text" defaultValue="tiền nhiều vô cùng" />
+        </div>
+        <div className="transfer-actions">
+          <button type="button" className="transfer-cancel" onClick={() => setShowTransfer(false)}>
+            Hủy giao dịch
+          </button>
+          <button type="submit" className="transfer-submit">
+            Chuyển Khoản
+          </button>
+        </div>
       </form>
     </div>
   );
