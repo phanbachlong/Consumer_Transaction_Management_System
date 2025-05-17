@@ -20,7 +20,7 @@ const TransferForm = () => {
         <label>
           Ngân hàng / icon
           <input type="text" value="Techcombank" />
-        </label>
+          </label>
         <label>
           STK chuyển
           <input type="text" value="123323391232" />
@@ -41,6 +41,12 @@ const TransferForm = () => {
           <button className="cancel" type="button">Hủy giao dịch</button>
           <button className="submit" type="submit">Chuyển Khoản</button>
         </div>
+        <button
+          type="submit"
+          className="w-full bg-red-100 text-red-600 py-2 px-4 rounded-md hover:bg-red-200 transition"
+        >
+          Xác nhận
+        </button>
       </form>
     </div>
   );
