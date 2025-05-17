@@ -1,6 +1,7 @@
 package com.project88.banking.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +22,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "user_id", nullable = false)
@@ -62,5 +66,8 @@ public class User implements Serializable {
 
     @Column(name = "`avatarUrl`")
     private String avatarUrl;
+
+    @OneToMany(mappedBy = "user")
+    private List<TransactionHistory> transactionHistories;
 
 }
