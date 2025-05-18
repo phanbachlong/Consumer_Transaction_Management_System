@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../styles/TransferForm.scss";
 
-const TransferForm = ({setShowTransfer}) => {
+const TransferForm = ({ setShowTransfer }) => {
+  // State cho các trường input
+  const [bank, setBank] = useState("Techcombank");
+  const [accountNumber, setAccountNumber] = useState("123323391232");
+  const [receiverName, setReceiverName] = useState("Phan Trọng Vinh");
+  const [amount, setAmount] = useState("1.000.000 VND");
+  const [content, setContent] = useState("tiền nhiều vô cùng");
+
+  const handleTransfer = (e) => {
+    e.preventDefault();
+    alert("Chuyển khoản thành công");
+    console.log("Transfer confirmed");
+    console.log({
+      bank,
+      accountNumber,
+      receiverName,
+      amount,
+      content
+    });
+    setShowTransfer(false);
+  }
+
   return (
     <div className="transfer-form">
       <div className="transfer-logo">LOGO</div>
@@ -14,32 +35,58 @@ const TransferForm = ({setShowTransfer}) => {
           <div className="transfer-balance">1.000.000.000 VND</div>
         </div>
       </div>
+
       <form>
         <div className="transfer-group">
           <label>Ngân hàng</label>
-          <input type="text" defaultValue="Techcombank" />
+          <input
+            type="text"
+            value={bank}
+            onChange={(e) => setBank(e.target.value)}
+          />
         </div>
         <div className="transfer-group">
           <label>STK chuyển</label>
-          <input type="text" defaultValue="123323391232" />
+          <input
+            type="text"
+            value={accountNumber}
+            onChange={(e) => setAccountNumber(e.target.value)}
+          />
         </div>
         <div className="transfer-group">
           <label>Tên người nhận</label>
-          <input type="text" defaultValue="Phan Trọng Vinh" />
+          <input
+            type="text"
+            value={receiverName}
+            onChange={(e) => setReceiverName(e.target.value)}
+          />
         </div>
         <div className="transfer-group">
           <label>Số tiền chuyển</label>
-          <input type="text" defaultValue="1.000.000 VND" />
+          <input
+            type="text"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
         </div>
         <div className="transfer-group">
           <label>Nội dung chuyển khoản</label>
-          <input type="text" defaultValue="tiền nhiều vô cùng" />
+          <input
+            type="text"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
         </div>
         <div className="transfer-actions">
-          <button type="button" className="transfer-cancel" onClick={() => setShowTransfer(false)}>
+          <button
+            type="button"
+            className="transfer-cancel"
+            onClick={() => setShowTransfer(false)}
+          >
             Hủy giao dịch
           </button>
-          <button type="submit" className="transfer-submit">
+          <button type="button" className="transfer-submit"
+            onClick={handleTransfer}>
             Chuyển Khoản
           </button>
         </div>

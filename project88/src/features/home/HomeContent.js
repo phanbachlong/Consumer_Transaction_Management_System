@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import TransferForm from "./Tranfer";
-
+import Deposite from "./Deposite";
 const HomeContent = () => {
   const [showTransfer, setShowTransfer] = useState(false);
+  const [showDeposite, setShowDeposite] = useState(false);
 
   return (
     <main className="flex-1 p-8 flex flex-col lg:flex-row gap-8 bg-gray-100">
@@ -34,7 +35,9 @@ const HomeContent = () => {
                 <div className="text-gray-500 ">Tiết kiệm</div>
                 <div className="text-2xl font-bold">1.000.000.000 VND</div>
                 <div className="flex justify-between space-x-4 mt-2">
-                  <button className="w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis">
+                  <button className="w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis" 
+                          onClick={() => setShowDeposite(true)}
+                  >
                     Gửi
                   </button>
                   <button className=" w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis">
@@ -129,6 +132,15 @@ const HomeContent = () => {
               ×
             </button>
             <TransferForm setShowTransfer={setShowTransfer}/>
+          </div>
+        </div>
+      )}
+
+      {/* Modal for Deposite */}
+      {showDeposite && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="relative w-full max-w-md">
+            <Deposite setShowDeposite={setShowDeposite}/>
           </div>
         </div>
       )}
