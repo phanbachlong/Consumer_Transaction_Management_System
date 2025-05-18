@@ -13,7 +13,8 @@ CREATE TABLE `user`(
     email 			VARCHAR(50) NOT NULL UNIQUE,
     gender 			ENUM('Male','Female','Other') NOT NULL,
     cccd			CHAR(12) NOT NULL, 
-    bankAccount		INT NOT NULL DEFAULT 0,
+    balance			INT NOT NULL DEFAULT 0,
+    birth			DATE NOT NULL,
     `password` 		VARCHAR(50) NOT NULL,
     `role` 			ENUM('Admin','Employee','User') DEFAULT 'User',
 	`status`		TINYINT DEFAULT 0, -- 0: Not Active, 1: Active
@@ -40,4 +41,5 @@ CREATE TABLE IF NOT EXISTS `transaction_history`(
 
 
 -- insert value to user 
-INSERT INTO `user`(firstName, lastName, userName, email, `password`) VALUE ('Phan Trong', 'Vinh', 'phtrvinh', '1phantrongvinh98@gmail.com', '123456')
+
+-- insert value to Transaction History

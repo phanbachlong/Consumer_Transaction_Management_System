@@ -9,7 +9,7 @@ const Register = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const initialValues = { username: '', firstName: '', lastName: '', email: '', gender: '', password: '', confirmPassword: '' };
+    const initialValues = { username: '', firstName: '', lastName: '', email: '', birth: '2000-01-01', cccd: '', gender: '', password: '', confirmPassword: '' };
 
 
     const onSubmit = (dataForm) => {
@@ -18,6 +18,7 @@ const Register = () => {
                 alert("dk thanh cong")
             }
         })
+        // console.log(dataForm)
     }
 
 

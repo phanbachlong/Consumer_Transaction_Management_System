@@ -1,7 +1,11 @@
 package com.project88.banking.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +26,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,15 +35,6 @@ public class User implements Serializable {
     @Column(name = "user_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private short userID;
-
-    public User(String firstName, String lastName, String username, String email, String gender, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.email = email;
-        this.gender = gender;
-        this.password = password;
-    }
 
     @Column(name = "`firstName`", nullable = false, length = 50)
     private String firstName;
@@ -54,6 +51,16 @@ public class User implements Serializable {
     @Column(name = "gender", nullable = false)
     private String gender;
 
+    @Column(name = "cccd", length = 12, nullable = false)
+    private String cccd;
+
+    @Column(name = "balance", nullable = false)
+    private int balance = 0;
+
+    @Column(name = "birth", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate birth;
+
     @Column(name = "password", nullable = false, length = 800)
     private String password;
 
@@ -69,5 +76,22 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user")
     private List<TransactionHistory> transactionHistories;
+
+    public User(String firstName, String lastName, String username, String email, String gender, String cccd,
+            LocalDate birth, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.gender = gender;
+        this.cccd = cccd;
+        this.birth = birth;
+        this.password = password;
+    }
+
+    public void setBirthFromString(String birthStr) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        this.birth = LocalDate.parse(birthStr, formatter);
+    }
 
 }

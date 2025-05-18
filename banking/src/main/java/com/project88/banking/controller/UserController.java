@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project88.banking.dto.UserDTO;
+import com.project88.banking.entity.User;
 import com.project88.banking.service.IUserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,9 @@ public class UserController {
 
     @PostMapping()
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
-        System.out.println("First Name: " + userDTO.getFirstName());
+        System.out.println("DTO birth: " + userDTO.getFirstName());
+        User user = userDTO.toEntity();
+        System.out.println("Entity birth: " + user.getBirth());
         userService.registerUser(userDTO.toEntity());
 
         return new ResponseEntity<>("Register successfully!!", HttpStatus.OK);

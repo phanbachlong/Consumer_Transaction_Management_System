@@ -1,16 +1,19 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
+import MyDatePicker from "./MyDatePicker";
 // import { Validation } from "../validation/Validation";
 
 const Form = ({ initialValues, onSubmit, btn, validation }) => {
 
-    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+
+    const { register, handleSubmit, control, formState: { errors }, reset } = useForm({
         resolver: zodResolver(validation),
         defaultValues: initialValues
     });
 
     const handleFormSubmit = (data) => {
+        console.log("Form submitted data:", data);
         onSubmit(data);
         reset();
     }
@@ -47,7 +50,7 @@ const Form = ({ initialValues, onSubmit, btn, validation }) => {
                             </label>
                         </div>
                     ) : field === "remember" ? (
-                        <div className="flex items-center">
+                        <div className="flex items-center" key={index}>
                             <input
                                 type="checkbox"
                                 {...register(field)}
@@ -58,10 +61,20 @@ const Form = ({ initialValues, onSubmit, btn, validation }) => {
                                 Remember me
                             </label>
                         </div>
+                    ) : field === "birth" ? (
+                        <Controller
+                            name="birth"
+                            control={control}
+                            render={({ field }) => (
+                                <MyDatePicker {...field}></MyDatePicker>
+                            )}
+                        >
+                        </Controller>
                     ) : (
                         <input
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             {...register(field)}
+                            key={index}
                             type={field.includes("password") || field.includes("confirmPassword") ? "password" : "text"}
                             id={field}
                             name={field}
