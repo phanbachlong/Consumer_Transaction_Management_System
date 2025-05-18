@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TransferForm from "./Tranfer";
 import Deposite from "./Deposite";
-const HomeContent = () => {
+const UserContent = () => {
   const [showTransfer, setShowTransfer] = useState(false);
   const [showDeposite, setShowDeposite] = useState(false);
 
@@ -148,4 +148,4 @@ const HomeContent = () => {
   );
 };
 
-export default HomeContent;
+export default UserContent;
