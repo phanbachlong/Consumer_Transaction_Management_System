@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "../styles/homepage.module.scss"; 
+import styles from "../styles/homepage.module.scss";
 
 const Header = ({ toggleTheme, currentTheme }) => (
   <header className={styles.header}>
