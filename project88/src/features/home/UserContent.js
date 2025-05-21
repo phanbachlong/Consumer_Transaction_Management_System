@@ -3,6 +3,8 @@ import TransferForm from "./Tranfer";
 import Deposite from "./Deposite";
 import Redeem from "./Redeem";
 import PaymentModal from "../../components/PaymentModal";
+import Transaction from "../user/Transaction";
+
 const UserContent = () => {
   const [showTransfer, setShowTransfer] = useState(false);
   const [showDeposite, setShowDeposite] = useState(false);
@@ -58,7 +60,7 @@ const UserContent = () => {
         {/* Transaction History */}
         <div className="bg-white p-6 rounded shadow">
           <h3 className="text-lg font-bold mb-4">Lịch sử giao dịch</h3>
-          <table className="w-full border-collapse border border-gray-300">
+          {/* <table className="w-full border-collapse border border-gray-300">
             <thead>
               <tr className="bg-gray-100">
                 <th className="border border-gray-300 px-4 py-2">Ngày</th>
@@ -85,7 +87,8 @@ const UserContent = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table> */}
+          <Transaction></Transaction>
 
           {/* Page */}
           <div className="text-right mt-4">

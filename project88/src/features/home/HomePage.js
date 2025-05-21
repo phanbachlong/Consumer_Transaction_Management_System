@@ -7,7 +7,8 @@ import EmployeeContent from "./EmployeeContent";
 export default function HomePage() {
   const [theme, setTheme] = useState("light");
   // const role = localStorage.getItem("role");
-  const role = "user"; // thay role để có màn hình home khác nhau
+
+  const role = "user"; // testing
 
   useEffect(() => {
     document.body.className = theme === "light" ? "bg-gray-50" : "bg-gray-900 text-white";
