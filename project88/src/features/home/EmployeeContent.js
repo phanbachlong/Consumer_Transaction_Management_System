@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import TopUp from "./TopUp";
 
 const customers = [
     {
@@ -41,6 +42,7 @@ const customers = [
 const EmployeeContent = () => {
     // State cho ô tìm kiếm (search)
     const [search, setSearch] = useState("");
+    const [showTopUp, setShowTopUp] = useState(false);
 
     return (
         <div className="min-h-screen bg-[#fafafa]">
@@ -117,11 +119,12 @@ const EmployeeContent = () => {
                                             </svg>
                                         </button>
 
-                                        {/* Dollar icon */}
+                                        {/* Top Up icon */}
                                         <button
                                             type="button"
                                             className="flex items-center justify-center p-1 rounded-full hover:bg-gray-200 active:bg-gray-300 transition"
                                             title="Giao dịch"
+                                            onClick={() => setShowTopUp(true)}
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -153,6 +156,14 @@ const EmployeeContent = () => {
                     </div>
                 </div>
             </div>
+            {/* Top Up Modal */}
+            {showTopUp && (
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                        <TopUp onClose={() => setShowTopUp(false)} />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

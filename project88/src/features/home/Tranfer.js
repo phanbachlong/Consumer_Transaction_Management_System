@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../../styles/TransferForm.scss";
 
 const TransferForm = ({ setShowTransfer }) => {
-  // State cho các trường input
+  
   const [bank, setBank] = useState("Techcombank");
   const [accountNumber, setAccountNumber] = useState("123323391232");
   const [receiverName, setReceiverName] = useState("Phan Trọng Vinh");
@@ -25,7 +25,6 @@ const TransferForm = ({ setShowTransfer }) => {
 
   return (
     <div className="transfer-form">
-      <div className="transfer-logo">LOGO</div>
       <hr className="transfer-divider" />
       <div className="transfer-user">
         <div className="transfer-avatar">AVA</div>
@@ -80,12 +79,12 @@ const TransferForm = ({ setShowTransfer }) => {
         <div className="transfer-actions">
           <button
             type="button"
-            className="transfer-cancel"
+            className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
             onClick={() => setShowTransfer(false)}
           >
             Hủy giao dịch
           </button>
-          <button type="button" className="transfer-submit"
+          <button type="button" className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
             onClick={handleTransfer}>
             Chuyển Khoản
           </button>

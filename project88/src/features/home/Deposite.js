@@ -21,10 +21,10 @@ const Deposite = ({ setShowDeposite }) => {
     }
 
     return (
-        <div className="max-w-md mx-auto mt-8 bg-white rounded shadow p-0">
+        <div className="max-w-md mx-auto mt-8 bg-white rounded-lg shadow p-0">
             {/* Balance Header */}
-            <div className="bg-red-100 text-red-600 font-bold text-center py-4 rounded-t text-lg">
-                Số dư khả dụng: <span className="text-2xl">1.000.000.000</span>
+            <div className="text-2xl font-bold px-6 py-5 text-center">
+                Số dư khả dụng: <span className="text-[#E65100]">1.000.000.000</span>
             </div>
             {/* Form */}
             <form className="p-8 space-y-4">
@@ -72,14 +72,14 @@ const Deposite = ({ setShowDeposite }) => {
                 <div className="flex justify-between pt-4">
                     <button
                         type="button"
-                        className="px-6 py-2 rounded bg-red-100 text-red-600 font-semibold hover:bg-red-200"
+                        className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
                         onClick={() => setShowDeposite(false)}
                     >
                         Hủy
                     </button>
                     <button
                         type="button"
-                        className="px-6 py-2 rounded bg-red-100 text-red-600 font-semibold hover:bg-red-200"
+                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                         onClick={handleDeposite}
                     >
                         Xác nhận
