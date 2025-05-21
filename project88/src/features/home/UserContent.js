@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import TransferForm from "./Tranfer";
 import Deposite from "./Deposite";
+import Redeem from "./Redeem";
+import PaymentModal from "../../components/PaymentModal";
 import Transaction from "../user/Transaction";
+
 const UserContent = () => {
   const [showTransfer, setShowTransfer] = useState(false);
   const [showDeposite, setShowDeposite] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+  const [showRedeem, setShowRedeem] = useState(false);
 
   return (
     <main className="flex-1 p-8 flex flex-col lg:flex-row gap-8 bg-gray-100">
@@ -41,7 +46,9 @@ const UserContent = () => {
                   >
                     Gửi
                   </button>
-                  <button className=" w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis">
+                  <button className=" w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis"
+                    onClick={() => setShowRedeem(true)}
+                  >
                     Rút
                   </button>
                 </div>
@@ -115,7 +122,8 @@ const UserContent = () => {
               <br />
               Số tiền cần thanh toán: 1.000.000 VND
             </div>
-            <button className="mt-4 w-full px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200">
+            <button className="mt-4 w-full px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200"
+              onClick={() => setShowPayment(true)}>
               Thanh Toán
             </button>
           </div>
@@ -145,6 +153,23 @@ const UserContent = () => {
             <Deposite setShowDeposite={setShowDeposite} />
           </div>
         </div>
+      )}
+      {/* Modal for Redeem */}
+      {showRedeem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="relative">
+            <Redeem setShowRedeem={setShowRedeem} />
+          </div>
+        </div>
+      )}
+
+      {/* Modal for Payment */}
+      {showPayment && (
+        <PaymentModal
+          isOpen={showPayment}
+          onClose={() => setShowPayment(false)}
+          billData={{ id: "987654321" }}
+        />
       )}
     </main>
   );

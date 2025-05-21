@@ -7,6 +7,7 @@ import EmployeeContent from "./EmployeeContent";
 export default function HomePage() {
   const [theme, setTheme] = useState("light");
   // const role = localStorage.getItem("role");
+
   const role = "user"; // testing
 
   useEffect(() => {
