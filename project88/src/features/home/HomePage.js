@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import HomeContent from "./HomeContent";
+import UserContent from "./UserContent";
+import EmployeeContent from "./EmployeeContent";
 
 export default function HomePage() {
   const [theme, setTheme] = useState("light");
+  // const role = localStorage.getItem("role");
+
+  const role = "user"; // testing
 
   useEffect(() => {
     document.body.className = theme === "light" ? "bg-gray-50" : "bg-gray-900 text-white";
@@ -17,7 +21,12 @@ export default function HomePage() {
   return (
     <div className="flex flex-col h-screen">
       <Header toggleTheme={toggleTheme} currentTheme={theme} />
-      <HomeContent />
+      {role === 'user' && (
+        <UserContent />)
+      }
+      {role === 'employee' && (
+        <EmployeeContent />)
+      }
       <Footer />
     </div>
   );

@@ -1,14 +1,15 @@
 import React, { useState } from "react";
+import TransferForm from "./Tranfer";
+import Deposite from "./Deposite";
+import Redeem from "./Redeem";
 import PaymentModal from "../../components/PaymentModal";
+import Transaction from "../user/Transaction";
 
-const HomeContent = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedBill, setSelectedBill] = useState(null);
-
-  const handlePaymentClick = (billId) => {
-    setSelectedBill({ id: billId });
-    setIsModalOpen(true);
-  };
+const UserContent = () => {
+  const [showTransfer, setShowTransfer] = useState(false);
+  const [showDeposite, setShowDeposite] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+  const [showRedeem, setShowRedeem] = useState(false);
 
   return (
     <main className="flex-1 p-8 flex flex-col lg:flex-row gap-8 bg-gray-100">
@@ -25,12 +26,14 @@ const HomeContent = () => {
             </div>
           </div>
           <div className="flex items-center justify-between">
-
             <div className="flex w-full mt-5 justify-between space-x-4">
               <div className="flex-1 text-center bg-white p-6 rounded shadow">
                 <div className="text-gray-500 ">Số dư</div>
                 <div className="text-2xl font-bold">1.000.000.000 VND</div>
-                <button className="mt-2 w-full h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200">
+                <button
+                  className="mt-2 w-full h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200"
+                  onClick={() => setShowTransfer(true)}
+                >
                   Chuyển khoản
                 </button>
               </div>
@@ -38,10 +41,14 @@ const HomeContent = () => {
                 <div className="text-gray-500 ">Tiết kiệm</div>
                 <div className="text-2xl font-bold">1.000.000.000 VND</div>
                 <div className="flex justify-between space-x-4 mt-2">
-                  <button className="w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis">
+                  <button className="w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis"
+                    onClick={() => setShowDeposite(true)}
+                  >
                     Gửi
                   </button>
-                  <button className=" w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis">
+                  <button className=" w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis"
+                    onClick={() => setShowRedeem(true)}
+                  >
                     Rút
                   </button>
                 </div>
@@ -50,12 +57,10 @@ const HomeContent = () => {
           </div>
         </div>
 
-
-
         {/* Transaction History */}
         <div className="bg-white p-6 rounded shadow">
           <h3 className="text-lg font-bold mb-4">Lịch sử giao dịch</h3>
-          <table className="w-full border-collapse border border-gray-300">
+          {/* <table className="w-full border-collapse border border-gray-300">
             <thead>
               <tr className="bg-gray-100">
                 <th className="border border-gray-300 px-4 py-2">Ngày</th>
@@ -82,7 +87,8 @@ const HomeContent = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table> */}
+          <Transaction></Transaction>
 
           {/* Page */}
           <div className="text-right mt-4">
@@ -112,28 +118,61 @@ const HomeContent = () => {
           <div className="p-4 bg-white shadow rounded" key={i}>
             <div className="text-lg font-bold">Hóa đơn điện</div>
             <div className="text-gray-500 mt-2">
-              Mã HD: {i === 0 ? "98765321" : i === 1 ? "98765421" : "98765421"}
+              Mã HD: 987654321
               <br />
               Số tiền cần thanh toán: 1.000.000 VND
             </div>
-            <button 
-              className="mt-4 w-full px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200"
-              onClick={() => handlePaymentClick(i === 0 ? "98765321" : i === 1 ? "98765421" : "98765421")}
-            >
+            <button className="mt-4 w-full px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200"
+              onClick={() => setShowPayment(true)}>
               Thanh Toán
             </button>
           </div>
         ))}
       </div>
 
-      {/* Payment Modal */}
-      <PaymentModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        billData={selectedBill} 
-      />
+      {/* Modal for TransferForm */}
+      {showTransfer && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="relative w-full max-w-md">
+            <button
+              className="absolute top-2 right-10 text-gray-400 hover:text-gray-600 text-2xl font-bold"
+              onClick={() => setShowTransfer(false)}
+              aria-label="Close"
+            >
+              ×
+            </button>
+            <TransferForm setShowTransfer={setShowTransfer} />
+          </div>
+        </div>
+      )}
+
+      {/* Modal for Deposite */}
+      {showDeposite && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="relative w-full max-w-md">
+            <Deposite setShowDeposite={setShowDeposite} />
+          </div>
+        </div>
+      )}
+      {/* Modal for Redeem */}
+      {showRedeem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="relative">
+            <Redeem setShowRedeem={setShowRedeem} />
+          </div>
+        </div>
+      )}
+
+      {/* Modal for Payment */}
+      {showPayment && (
+        <PaymentModal
+          isOpen={showPayment}
+          onClose={() => setShowPayment(false)}
+          billData={{ id: "987654321" }}
+        />
+      )}
     </main>
   );
 };
 
-export default HomeContent;
+export default UserContent;

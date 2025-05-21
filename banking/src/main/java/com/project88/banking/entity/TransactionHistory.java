@@ -1,6 +1,7 @@
 package com.project88.banking.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +16,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "`transation_history`")
+@Table(name = "`transaction_history`")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,6 +28,9 @@ public class TransactionHistory implements Serializable {
     @Column(name = "`trans_id`")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private short transID;
+
+    @Column(name = "createDate", updatable = false, insertable = false)
+    private LocalDate createDate;
 
     @Column(name = "transType", nullable = false)
     private String transType;
@@ -40,5 +44,12 @@ public class TransactionHistory implements Serializable {
 
     @Column(name = "fee", nullable = false)
     private int fee;
+
+    public TransactionHistory(LocalDate createDate, String transType, String content, int fee) {
+        this.createDate = createDate;
+        this.transType = transType;
+        this.content = content;
+        this.fee = fee;
+    }
 
 }
