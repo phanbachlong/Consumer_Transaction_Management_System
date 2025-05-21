@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TransferForm from "./Tranfer";
 import Deposite from "./Deposite";
+import Transaction from "../user/Transaction";
 const UserContent = () => {
   const [showTransfer, setShowTransfer] = useState(false);
   const [showDeposite, setShowDeposite] = useState(false);
@@ -35,8 +36,8 @@ const UserContent = () => {
                 <div className="text-gray-500 ">Tiết kiệm</div>
                 <div className="text-2xl font-bold">1.000.000.000 VND</div>
                 <div className="flex justify-between space-x-4 mt-2">
-                  <button className="w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis" 
-                          onClick={() => setShowDeposite(true)}
+                  <button className="w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis"
+                    onClick={() => setShowDeposite(true)}
                   >
                     Gửi
                   </button>
@@ -52,7 +53,7 @@ const UserContent = () => {
         {/* Transaction History */}
         <div className="bg-white p-6 rounded shadow">
           <h3 className="text-lg font-bold mb-4">Lịch sử giao dịch</h3>
-          <table className="w-full border-collapse border border-gray-300">
+          {/* <table className="w-full border-collapse border border-gray-300">
             <thead>
               <tr className="bg-gray-100">
                 <th className="border border-gray-300 px-4 py-2">Ngày</th>
@@ -79,7 +80,8 @@ const UserContent = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table> */}
+          <Transaction></Transaction>
 
           {/* Page */}
           <div className="text-right mt-4">
@@ -131,7 +133,7 @@ const UserContent = () => {
             >
               ×
             </button>
-            <TransferForm setShowTransfer={setShowTransfer}/>
+            <TransferForm setShowTransfer={setShowTransfer} />
           </div>
         </div>
       )}
@@ -140,7 +142,7 @@ const UserContent = () => {
       {showDeposite && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
           <div className="relative w-full max-w-md">
-            <Deposite setShowDeposite={setShowDeposite}/>
+            <Deposite setShowDeposite={setShowDeposite} />
           </div>
         </div>
       )}

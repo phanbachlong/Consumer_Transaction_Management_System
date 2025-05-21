@@ -14,7 +14,7 @@ CREATE TABLE `user`(
     gender 			ENUM('Male','Female','Other') NOT NULL,
     cccd			CHAR(12) NOT NULL, 
     balance			INT NOT NULL DEFAULT 0,
-    birth			DATE NOT NULL,
+    birth			DATE,
     `password` 		VARCHAR(50) NOT NULL,
     `role` 			ENUM('Admin','Employee','User') DEFAULT 'User',
 	`status`		TINYINT DEFAULT 0, -- 0: Not Active, 1: Active
@@ -41,5 +41,6 @@ CREATE TABLE IF NOT EXISTS `transaction_history`(
 
 
 -- insert value to user 
-
+insert into `user`(firstName, lastName, username, email, gender, cccd, `password`, avatarUrl) values("Phan Trong", "Vinh", "phtrvinh", "1phantrongvinh98@gmail.com", "Male", "079098009123", "123456", "a");
 -- insert value to Transaction History
+insert into `transaction_history`(transType, content, user_id, fee) values("CK", "abc123", 1, 100000)
