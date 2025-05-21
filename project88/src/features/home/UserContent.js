@@ -3,13 +3,26 @@ import TransferForm from "./Tranfer";
 import Deposite from "./Deposite";
 import Redeem from "./Redeem";
 import PaymentModal from "../../components/PaymentModal";
-import Transaction from "../user/Transaction";
+import DepositModal from "../../components/DepositModal";
 
-const UserContent = () => {
-  const [showTransfer, setShowTransfer] = useState(false);
-  const [showDeposite, setShowDeposite] = useState(false);
-  const [showPayment, setShowPayment] = useState(false);
-  const [showRedeem, setShowRedeem] = useState(false);
+const HomeContent = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
+  const [selectedBill, setSelectedBill] = useState(null);
+  // eslint-disable-next-line no-unused-vars
+  const [customerData, setCustomerData] = useState({
+    name: "Nguyễn Văn A",
+    accountNumber: "0123456789"
+  });
+
+  const handlePaymentClick = (billId) => {
+    setSelectedBill({ id: billId });
+    setIsModalOpen(true);
+  };
+
+  const handleDepositClick = () => {
+    setIsDepositModalOpen(true);
+  };
 
   return (
     <main className="flex-1 p-8 flex flex-col lg:flex-row gap-8 bg-gray-100">
@@ -30,12 +43,17 @@ const UserContent = () => {
               <div className="flex-1 text-center bg-white p-6 rounded shadow">
                 <div className="text-gray-500 ">Số dư</div>
                 <div className="text-2xl font-bold">1.000.000.000 VND</div>
-                <button
-                  className="mt-2 w-full h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200"
-                  onClick={() => setShowTransfer(true)}
-                >
-                  Chuyển khoản
-                </button>
+                <div className="flex justify-between space-x-4 mt-2">
+                  <button className="w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200">
+                    Chuyển khoản
+                  </button>
+                  <button
+                    className="w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200"
+                    onClick={handleDepositClick}
+                  >
+                    Nạp tiền
+                  </button>
+                </div>
               </div>
               <div className="flex-1 text-center bg-white p-6 rounded shadow">
                 <div className="text-gray-500 ">Tiết kiệm</div>
@@ -130,47 +148,19 @@ const UserContent = () => {
         ))}
       </div>
 
-      {/* Modal for TransferForm */}
-      {showTransfer && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="relative w-full max-w-md">
-            <button
-              className="absolute top-2 right-10 text-gray-400 hover:text-gray-600 text-2xl font-bold"
-              onClick={() => setShowTransfer(false)}
-              aria-label="Close"
-            >
-              ×
-            </button>
-            <TransferForm setShowTransfer={setShowTransfer} />
-          </div>
-        </div>
-      )}
+      {/* Payment Modal */}
+      <PaymentModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        billData={selectedBill}
+      />
 
-      {/* Modal for Deposite */}
-      {showDeposite && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="relative w-full max-w-md">
-            <Deposite setShowDeposite={setShowDeposite} />
-          </div>
-        </div>
-      )}
-      {/* Modal for Redeem */}
-      {showRedeem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="relative">
-            <Redeem setShowRedeem={setShowRedeem} />
-          </div>
-        </div>
-      )}
-
-      {/* Modal for Payment */}
-      {showPayment && (
-        <PaymentModal
-          isOpen={showPayment}
-          onClose={() => setShowPayment(false)}
-          billData={{ id: "987654321" }}
-        />
-      )}
+      {/* Deposit Modal */}
+      <DepositModal
+        isOpen={isDepositModalOpen}
+        onClose={() => setIsDepositModalOpen(false)}
+        customerData={customerData}
+      />
     </main>
   );
 };

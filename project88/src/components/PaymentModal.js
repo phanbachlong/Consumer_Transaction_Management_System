@@ -104,6 +104,7 @@ const PaymentModal = ({ isOpen, onClose, billData }) => {
         isOpen={showSuccess} 
         onClose={handleCloseSuccess}
         transactionId={transactionId}
+        type="payment"
       />
       
       <FailureModal 
@@ -116,6 +117,7 @@ const PaymentModal = ({ isOpen, onClose, billData }) => {
 };
 
 export default PaymentModal;
+
 
 
 
