@@ -1,13 +1,24 @@
 import React, { useState } from "react";
 import PaymentModal from "../../components/PaymentModal";
+import DepositModal from "../../components/DepositModal";
 
 const HomeContent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
   const [selectedBill, setSelectedBill] = useState(null);
+  // eslint-disable-next-line no-unused-vars
+  const [customerData, setCustomerData] = useState({
+    name: "Nguyễn Văn A",
+    accountNumber: "0123456789"
+  });
 
   const handlePaymentClick = (billId) => {
     setSelectedBill({ id: billId });
     setIsModalOpen(true);
+  };
+
+  const handleDepositClick = () => {
+    setIsDepositModalOpen(true);
   };
 
   return (
@@ -30,9 +41,17 @@ const HomeContent = () => {
               <div className="flex-1 text-center bg-white p-6 rounded shadow">
                 <div className="text-gray-500 ">Số dư</div>
                 <div className="text-2xl font-bold">1.000.000.000 VND</div>
-                <button className="mt-2 w-full h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200">
-                  Chuyển khoản
-                </button>
+                <div className="flex justify-between space-x-4 mt-2">
+                  <button className="w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200">
+                    Chuyển khoản
+                  </button>
+                  <button 
+                    className="w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200"
+                    onClick={handleDepositClick}
+                  >
+                    Nạp tiền
+                  </button>
+                </div>
               </div>
               <div className="flex-1 text-center bg-white p-6 rounded shadow">
                 <div className="text-gray-500 ">Tiết kiệm</div>
@@ -131,6 +150,13 @@ const HomeContent = () => {
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
         billData={selectedBill} 
+      />
+
+      {/* Deposit Modal */}
+      <DepositModal
+        isOpen={isDepositModalOpen}
+        onClose={() => setIsDepositModalOpen(false)}
+        customerData={customerData}
       />
     </main>
   );
