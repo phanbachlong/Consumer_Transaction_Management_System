@@ -8,7 +8,7 @@ export default function HomePage() {
   const [theme, setTheme] = useState("light");
   // const role = localStorage.getItem("role");
 
-  const role = "user"; // testing
+  const role = "employee"; // testing
 
   useEffect(() => {
     document.body.className = theme === "light" ? "bg-gray-50" : "bg-gray-900 text-white";

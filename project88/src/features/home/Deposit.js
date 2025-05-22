@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
-const Deposite = ({ setShowDeposite }) => {
+const Deposit = ({ setShowDeposit }) => {
     // State cho các trường input
     const [accountName, setAccountName] = useState("TK T5 2025");
     const [amount, setAmount] = useState("5.000.000");
     const [term, setTerm] = useState("1");
     const interestRate = "6.2%";
 
-    const handleDeposite = (e) => {
+    const handleDeposit = (e) => {
         e.preventDefault();
         alert("Gửi tiền thành công");
         console.log("Deposit confirmed");
@@ -17,7 +17,7 @@ const Deposite = ({ setShowDeposite }) => {
             term,
             interestRate
         });
-        setShowDeposite(false);
+        setShowDeposit(false);
     }
 
     return (
@@ -73,14 +73,14 @@ const Deposite = ({ setShowDeposite }) => {
                     <button
                         type="button"
                         className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
-                        onClick={() => setShowDeposite(false)}
+                        onClick={() => setShowDeposit(false)}
                     >
                         Hủy
                     </button>
                     <button
                         type="button"
                         className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                        onClick={handleDeposite}
+                        onClick={handleDeposit}
                     >
                         Xác nhận
                     </button>
@@ -90,4 +90,4 @@ const Deposite = ({ setShowDeposite }) => {
     );
 };
 
-export default Deposite;
+export default Deposit;
