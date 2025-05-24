@@ -3,7 +3,7 @@ import "../../styles/TransferForm.scss";
 
 const TransferForm = ({ setShowTransfer }) => {
   
-  const [bank, setBank] = useState("Techcombank");
+  const [bank, setBank] = useState("Ngân hàng G88");
   const [accountNumber, setAccountNumber] = useState("123323391232");
   const [receiverName, setReceiverName] = useState("Phan Trọng Vinh");
   const [amount, setAmount] = useState("1.000.000 VND");

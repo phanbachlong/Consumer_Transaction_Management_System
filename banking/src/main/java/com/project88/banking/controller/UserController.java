@@ -6,12 +6,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import com.project88.banking.dto.TranferDTO;
 import com.project88.banking.dto.UserDTO;
 import com.project88.banking.entity.User;
 import com.project88.banking.service.IUserService;
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+
 import java.util.HashMap;
 import java.util.Map;
+
 
 @RestController
 @RequestMapping(value = "/api/v1/users")
@@ -28,6 +35,12 @@ public class UserController {
         userService.registerUser(userDTO.toEntity());
 
         return new ResponseEntity<>("Register successfully!!", HttpStatus.OK);
+    }
+
+
+    @PutMapping
+    public void tranfer(@RequestBody TranferDTO form) {
+    	userService.tranfer(form);
     }
 
     @GetMapping("/search")
@@ -70,5 +83,6 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
+
 
 }
