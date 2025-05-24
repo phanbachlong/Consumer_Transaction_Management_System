@@ -8,6 +8,8 @@ const RegisterService = {
             lastName: values.lastName,
             username: values.username,
             email: values.email,
+            cccd: values.cccd,
+            birth: values.birth,
             gender: values.gender,
             password: values.password
         }

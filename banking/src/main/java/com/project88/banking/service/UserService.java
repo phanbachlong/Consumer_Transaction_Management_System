@@ -23,8 +23,10 @@ public class UserService implements IUserService {
 
     @Override
     public void registerUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println(">>> Password: " + user.getPassword());
+        System.out.println(">>> Password length: " + user.getPassword().length());
         userRepository.save(user);
     }
 

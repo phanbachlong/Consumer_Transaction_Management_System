@@ -31,15 +31,6 @@ public class UserDTO {
     // }
 
     public User toEntity() {
-        return User.builder()
-                .firstName(firstName)
-                .lastName(lastName)
-                .username(username)
-                .email(email)
-                .gender(gender)
-                .cccd(cccd)
-                .birth(birth)
-                .password(password)
-                .build();
+        return new User(firstName, lastName, username, email, gender, cccd, birth, password);
     }
 }
