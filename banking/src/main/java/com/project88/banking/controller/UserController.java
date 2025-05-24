@@ -7,10 +7,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project88.banking.dto.TranferDTO;
 import com.project88.banking.dto.UserDTO;
 import com.project88.banking.entity.User;
 import com.project88.banking.service.IUserService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -30,4 +32,8 @@ public class UserController {
         return new ResponseEntity<>("Register successfully!!", HttpStatus.OK);
     }
 
+    @PutMapping
+    public void tranfer(@RequestBody TranferDTO form) {
+    	userService.tranfer(form);
+    }
 }

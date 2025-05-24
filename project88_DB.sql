@@ -21,6 +21,12 @@ CREATE TABLE `user`(
     `avatarUrl`		VARCHAR(500)
 );
 
+CREATE TABLE IF NOT EXISTS `card_number` (
+card_number			INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+user_id				TINYINT NOT NULL UNIQUE KEY,
+FOREIGN KEY			(user_id) REFERENCES `user` (user_id)
+)AUTO_INCREMENT = 111111;
+
 -- Create table Registration_User_Token
 CREATE TABLE IF NOT EXISTS `Registration_User_Token` ( 	
 	id 				INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -41,6 +47,10 @@ CREATE TABLE IF NOT EXISTS `transaction_history`(
 
 
 -- insert value to user 
-insert into `user`(firstName, lastName, username, email, gender, cccd, `password`, avatarUrl) values("Phan Trong", "Vinh", "phtrvinh", "1phantrongvinh98@gmail.com", "Male", "079098009123", "123456", "a");
+insert into `user`(firstName, lastName, username, email, gender, cccd, birth, `password`, avatarUrl) values("Phan Trong", "Vinh", "phtrvinh", "1phantrongvinh98@gmail.com", "Male", "079098009123","1998-01-01", "123456", "a");
+insert into `user`(firstName, lastName, username, email, gender, cccd, birth, `password`, avatarUrl) values(" Tran Huu Viet", "Van", "vantran195", "tran1951999@gmail.com", "Male", "01234455675","1990-01-01", "123456", "b");
 -- insert value to Transaction History
-insert into `transaction_history`(transType, content, user_id, fee) values("CK", "abc123", 1, 100000)
+insert into `transaction_history`(transType, content, user_id, fee) values("CK", "abc123", 1, 100000);
+
+INSERT INTO `Card_Number` (user_id) values (1);
+INSERT INTO `Card_Number` (user_id) values (2)
