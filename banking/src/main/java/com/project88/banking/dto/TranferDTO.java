@@ -10,4 +10,5 @@ public class TranferDTO {
 	private short senderID;
 	private Integer cardNumber;
 	private Integer money;
+	private String content;
 }
