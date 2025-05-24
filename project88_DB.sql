@@ -15,7 +15,7 @@ CREATE TABLE `user`(
     cccd			CHAR(12) NOT NULL, 
     balance			INT NOT NULL DEFAULT 0,
     birth			DATE,
-    `password` 		VARCHAR(50) NOT NULL,
+    `password` 		VARCHAR(800) NOT NULL,
     `role` 			ENUM('Admin','Employee','User') DEFAULT 'User',
 	`status`		TINYINT DEFAULT 0, -- 0: Not Active, 1: Active
     `avatarUrl`		VARCHAR(500)

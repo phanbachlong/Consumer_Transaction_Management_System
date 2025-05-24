@@ -16,19 +16,14 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class UserService implements IUserService {
 
-	@Autowired
-	private IUserRepository userRepository;
+ @Override
+    public void registerUser(User user) {
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-
-	@Override
-	public void registerUser(User user) {
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-		userRepository.save(user);
-	}
-
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        System.out.println(">>> Password: " + user.getPassword());
+        System.out.println(">>> Password length: " + user.getPassword().length());
+        userRepository.save(user);
+    }
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
@@ -60,4 +55,27 @@ public class UserService implements IUserService {
 	}
 	
 	
+
+   
+
+    @Override
+    public User getUserByCCCD(String cccd) {
+        return userRepository.findByCccd(cccd);
+    }
+
+    @Override
+    public User addBalance(String cccd, int amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
+
+        int updated = userRepository.updateBalanceByCCCD(cccd, amount);
+        if (updated == 0) {
+            return null; // không tìm thấy CCCD
+        }
+
+        return userRepository.findByCccd(cccd); // trả lại user sau khi update
+    }
+
+   
 }
