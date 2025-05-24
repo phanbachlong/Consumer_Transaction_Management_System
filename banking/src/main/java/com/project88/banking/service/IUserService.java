@@ -6,4 +6,8 @@ import com.project88.banking.entity.User;
 
 public interface IUserService extends UserDetailsService {
     void registerUser(User user);
+
+    User getUserByCCCD(String cccd);
+
+    User addBalance(String cccd, int amount);
 }
