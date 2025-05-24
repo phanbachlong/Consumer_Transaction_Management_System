@@ -61,7 +61,7 @@ public class User implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birth;
 
-    @Column(name = "password", nullable = false, length = 800)
+    @Column(name = "`password`", nullable = false, length = 800)
     private String password;
 
     @Column(name = "role", nullable = false)
@@ -89,9 +89,9 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public void setBirthFromString(String birthStr) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        this.birth = LocalDate.parse(birthStr, formatter);
-    }
+    // public void setBirthFromString(String birthStr) {
+    // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    // this.birth = LocalDate.parse(birthStr, formatter);
+    // }
 
 }
