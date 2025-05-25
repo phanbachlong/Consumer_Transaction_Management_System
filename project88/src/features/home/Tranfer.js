@@ -42,6 +42,7 @@ const TransferForm = ({ setShowTransfer }) => {
             type="text"
             value={bank}
             onChange={(e) => setBank(e.target.value)}
+            readOnly
           />
         </div>
         <div className="transfer-group">
