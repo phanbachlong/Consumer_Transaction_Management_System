@@ -25,6 +25,7 @@ const TransferForm = (props) => {
           <input
             type="text"
             value={props.receiverName || ''}
+            placeholder="đang tải..."
             readOnly
           />
         </div>
@@ -33,6 +34,7 @@ const TransferForm = (props) => {
           <input
             type="text"
             value={props.transferDTO.money || ''}
+            placeholder="Nhập số tiền"
             name="money"
             onChange={props.handleInputChange}
           />
@@ -42,6 +44,7 @@ const TransferForm = (props) => {
           <input
             type="text"
             value={props.transferDTO.content || ''}
+            placeholder="Nhập nội dung chuyển khoản"
             name="content"
             onChange={props.handleInputChange}
           />
