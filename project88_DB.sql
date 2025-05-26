@@ -41,7 +41,9 @@ CREATE TABLE IF NOT EXISTS `transaction_history`(
     transType ENUM('CK','HD','NT') NOT NULL, -- CK: Chuyển khoản, HD: Hóa đơn, NT: Nạp tiền 
     content VARCHAR(800),
     user_id TINYINT NOT NULL,
+    createDate DATE default(CURRENT_DATE),
     fee INT NOT NULL,
+    
     CONSTRAINT fk_trans_user FOREIGN KEY (user_id) REFERENCES `user` (user_id)
 );
 
