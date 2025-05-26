@@ -3,35 +3,35 @@ import TopUp from "./TopUp";
 
 const customersLists = [
     {
-        id: "HA10022",
+        id: "NV1011",
         date: "04/05/2025",
         name: "Bùi Quang Huy",
         account: "1234********",
         address: "Thanh Chì, Hà Nội",
     },
     {
-        id: "HA10023",
+        id: "NV1012",
         date: "04/05/2025",
         name: "Nguyễn Văn A",
         account: "1234********",
         address: "Thanh Chì, Hà Nội",
     },
     {
-        id: "HA10024",
+        id: "NV1013",
         date: "04/05/2025",
         name: "Trần Văn B",
         account: "1234********",
         address: "Thanh Chì, Hà Nội",
     },
     {
-        id: "HA10025",
+        id: "NV1014",
         date: "04/05/2025",
         name: "Nguyễn Thị C",
         account: "1234********",
         address: "Thanh Chì, Hà Nội",
     },
     {
-        id: "HA10026",
+        id: "NV1015",
         date: "04/05/2025",
         name: "Đặng thị D",
         account: "1234********",
@@ -39,7 +39,7 @@ const customersLists = [
     },
 ];
 
-const EmployeeContent = () => {
+const AdminContent = () => {
     // State cho ô tìm kiếm (search)
     const [search, setSearch] = useState("");
     const [showTopUp, setShowTopUp] = useState(false);
@@ -48,7 +48,7 @@ const EmployeeContent = () => {
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [customerToDelete, setCustomerToDelete] = useState(null);
 
-    // Hàm xử lý xóa khách hàng
+    // Hàm xử lý xóa nhân viên
     const handleDeleteClick = (customer) => {
         setCustomerToDelete(customer);
         setShowDeleteConfirm(true);
@@ -72,23 +72,20 @@ const EmployeeContent = () => {
         <div className="min-h-screen bg-[#fafafa]">
             {/* Main content */}
             <div className="max-w-5xl mx-auto mt-8">
-                {/* Employee info */}
+                {/* NV info */}
                 <div className="flex items-center bg-white rounded p-6 mb-8 gap-8">
                     <div className="flex items-center gap-4 flex-1">
                         <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-orange-500 text-2xl font-bold">
                             AVA
                         </div>
-                        <span className="text-lg font-semibold">Tên nhân viên</span>
+                        <span className="text-lg font-semibold">Admin</span>
                     </div>
                     <button className="px-6 py-2 rounded bg-orange-200 text-orange-800 font-semibold border border-orange-400">
-                        Quản lý KH
-                    </button>
-                    <button className="px-6 py-2 rounded bg-red-100 text-red-600 font-semibold border border-red-200">
-                        Hồ sơ nhân viên
+                        Quản lý NV
                     </button>
                 </div>
 
-                {/* Customer list */}
+                {/* NV list */}
                 <div className="bg-white rounded p-6">
                     <div className="flex items-center justify-between mb-4">
                         <div className="text-lg font-bold">Danh sách khách hàng</div>
@@ -115,7 +112,7 @@ const EmployeeContent = () => {
                     <table className="w-full text-left">
                         <thead>
                             <tr className="border-b">
-                                <th className="py-2 font-semibold">ID KH</th>
+                                <th className="py-2 font-semibold">ID NV</th>
                                 <th className="py-2 font-semibold">Ngày tạo tài khoản</th>
                                 <th className="py-2 font-semibold">Tên tài khoản</th>
                                 <th className="py-2 font-semibold">Số tài khoản</th>
@@ -249,4 +246,4 @@ const EmployeeContent = () => {
     );
 };
 
-export default EmployeeContent;
+export default AdminContent;

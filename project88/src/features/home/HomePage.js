@@ -3,11 +3,13 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import UserContent from "./UserContent";
 import EmployeeContent from "./EmployeeContent";
+import AdminContent from "./AdminContent";
 
 export default function HomePage() {
   const [theme, setTheme] = useState("light");
   // const role = localStorage.getItem("role");
 
+  const role = "admin"; // testing
   const role = "user"; // testing
 
   useEffect(() => {
@@ -26,6 +28,9 @@ export default function HomePage() {
       }
       {role === 'employee' && (
         <EmployeeContent />)
+      }
+      {role === 'admin' && (
+        <AdminContent />)
       }
       <Footer />
     </div>

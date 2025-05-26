@@ -38,51 +38,11 @@ public class UserController {
     }
 
 
-    @PutMapping
+    @PutMapping("/tranfer")
     public void tranfer(@RequestBody TranferDTO form) {
     	userService.tranfer(form);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<?> getUserInfoByCCCD(@RequestParam("cccd") String cccd) {
-        User user = userService.getUserByCCCD(cccd);
-        if (user == null) {
-            return new ResponseEntity<>("User not found with CCCD: " + cccd, HttpStatus.NOT_FOUND);
-        }
-
-        Map<String, String> response = new HashMap<>();
-        response.put("fullName", user.getFirstName() + " " + user.getLastName());
-        response.put("cccd", user.getCccd());
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @PostMapping("/addBalance")
-    public ResponseEntity<?> addBalance(
-            @RequestParam("cccd") String cccd,
-            @RequestParam("amount") int amount) {
-
-        if (cccd == null || cccd.isBlank()) {
-            return ResponseEntity.badRequest().body("CCCD must not be blank");
-        }
-
-        if (amount <= 0) {
-            return ResponseEntity.badRequest().body("Amount must be greater than 0");
-        }
-
-        User updatedUser = userService.addBalance(cccd, amount);
-        if (updatedUser == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("User not found with CCCD: " + cccd);
-        }
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "Balance updated successfully");
-        response.put("cccd", updatedUser.getCccd());
-        response.put("newBalance", updatedUser.getBalance());
-
-        return ResponseEntity.ok(response);
-    }
 
 
 }
