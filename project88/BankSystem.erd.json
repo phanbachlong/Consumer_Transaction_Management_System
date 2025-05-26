@@ -1,0 +1,71 @@
+{
+  "tables": [
+    {
+      "name": "user",
+      "columns": [
+        { "name": "user_id", "type": "TINYINT", "primary": true, "autoIncrement": true },
+        { "name": "firstName", "type": "VARCHAR(50)", "notNull": true },
+        { "name": "lastName", "type": "VARCHAR(50)", "notNull": true },
+        { "name": "username", "type": "VARCHAR(50)", "notNull": true, "unique": true },
+        { "name": "email", "type": "VARCHAR(50)", "notNull": true, "unique": true },
+        { "name": "gender", "type": "ENUM('Male','Female','Other')", "notNull": true },
+        { "name": "cccd", "type": "CHAR(12)", "notNull": true },
+        { "name": "balance", "type": "INT", "notNull": true, "default": 0 },
+        { "name": "birth", "type": "DATE" },
+        { "name": "password", "type": "VARCHAR(50)", "notNull": true },
+        { "name": "role", "type": "ENUM('Admin','Employee','User')", "default": "User" },
+        { "name": "status", "type": "TINYINT", "default": 0 },
+        { "name": "avatarUrl", "type": "VARCHAR(500)" }
+      ]
+    },
+    {
+      "name": "card_number",
+      "columns": [
+        { "name": "card_number", "type": "INT", "primary": true, "autoIncrement": true },
+        { "name": "user_id", "type": "TINYINT", "notNull": true, "unique": true, "foreign": { "table": "user", "column": "user_id" } }
+      ]
+    },
+    {
+      "name": "Registration_User_Token",
+      "columns": [
+        { "name": "id", "type": "INT UNSIGNED", "primary": true, "autoIncrement": true },
+        { "name": "token", "type": "CHAR(36)", "notNull": true, "unique": true },
+        { "name": "user_id", "type": "SMALLINT UNSIGNED", "notNull": true, "foreign": { "table": "user", "column": "user_id" } },
+        { "name": "expiryDate", "type": "DATETIME", "notNull": true }
+      ]
+    },
+    {
+      "name": "transaction_history",
+      "columns": [
+        { "name": "trans_id", "type": "TINYINT", "primary": true, "autoIncrement": true },
+        { "name": "transType", "type": "ENUM('CK','HD','NT')", "notNull": true },
+        { "name": "content", "type": "VARCHAR(800)" },
+        { "name": "user_id", "type": "TINYINT", "notNull": true, "foreign": { "table": "user", "column": "user_id" } },
+        { "name": "fee", "type": "INT", "notNull": true }
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "fromTable": "card_number",
+      "fromColumn": "user_id",
+      "toTable": "user",
+      "toColumn": "user_id",
+      "type": "one-to-one"
+    },
+    {
+      "fromTable": "Registration_User_Token",
+      "fromColumn": "user_id",
+      "toTable": "user",
+      "toColumn": "user_id",
+      "type": "many-to-one"
+    },
+    {
+      "fromTable": "transaction_history",
+      "fromColumn": "user_id",
+      "toTable": "user",
+      "toColumn": "user_id",
+      "type": "many-to-one"
+    }
+  ]
+}

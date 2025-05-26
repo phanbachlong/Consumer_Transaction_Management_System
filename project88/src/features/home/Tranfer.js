@@ -3,7 +3,7 @@ import "../../styles/TransferForm.scss";
 
 const TransferForm = ({ setShowTransfer }) => {
   
-  const [bank, setBank] = useState("Techcombank");
+  const [bank, setBank] = useState("Ngân hàng G88");
   const [accountNumber, setAccountNumber] = useState("123323391232");
   const [receiverName, setReceiverName] = useState("Phan Trọng Vinh");
   const [amount, setAmount] = useState("1.000.000 VND");
@@ -42,6 +42,7 @@ const TransferForm = ({ setShowTransfer }) => {
             type="text"
             value={bank}
             onChange={(e) => setBank(e.target.value)}
+            readOnly
           />
         </div>
         <div className="transfer-group">
