@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.project88.banking.dto.TranferDTO;
+import com.project88.banking.dto.TransferDTO;
 import com.project88.banking.entity.TransactionHistory;
 import com.project88.banking.entity.User;
 import com.project88.banking.repository.ITransactionRepository;
@@ -41,7 +41,7 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public void tranfer(TranferDTO form) {
+	public void transfer(TransferDTO form) {
 		int money = form.getMoney();
 		User sender = userRepository.findById(form.getSenderID())
 				.orElseThrow(() -> new IllegalArgumentException("User không tồn tại với userID: " + form.getSenderID()));
@@ -65,7 +65,7 @@ public class UserService implements IUserService {
 	    //Receiver
 	    receiver.setBalance(receiver.getBalance() + money);
 	    String receiverTransType = "CK";
-	    String receiverContent = String.format("Nhan tien tu %S so tien %d ", sender.getFirstName() ,money);
+	    String receiverContent = String.format("Nhan tien tu %S so tien %d. Noi Dung: %s ", sender.getFirstName() ,money,form.getContent());
 	    TransactionHistory receiverTrans = new TransactionHistory(receiverTransType, receiverContent, money, receiver);
 	    
 	    // luu vao database
@@ -76,28 +76,12 @@ public class UserService implements IUserService {
 		
 	}
 	
-	
-
-   
-
-    @Override
-    public User getUserByCCCD(String cccd) {
-        return userRepository.findByCccd(cccd);
-    }
-
-    @Override
-    public User addBalance(String cccd, int amount) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Amount must be positive");
-        }
-
-        int updated = userRepository.updateBalanceByCCCD(cccd, amount);
-        if (updated == 0) {
-            return null; // không tìm thấy CCCD
-        }
-
-        return userRepository.findByCccd(cccd); // trả lại user sau khi update
-    }
+	@Override
+	public String findUserByCardNumber(int cardNumber) {
+		User u = userRepository.findUserByCardNumber(cardNumber);
+		String name = u.getFirstName() + " " + u. getLastName();
+		return name;
+	}
 
    
 }
