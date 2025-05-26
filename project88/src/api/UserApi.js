@@ -1,4 +1,4 @@
-import api from './Api';
+import axiosClient from './axiosClient';
 
 class UserApi {
     constructor() {
@@ -6,7 +6,7 @@ class UserApi {
     }
 
     createUser = (body) => {
-        api.post(this.url, body)
+        axiosClient.post(this.url, body)
     }
 }
 

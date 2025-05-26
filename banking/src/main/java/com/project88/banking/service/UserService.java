@@ -7,7 +7,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.project88.banking.dto.TranferDTO;
+import com.project88.banking.entity.TransactionHistory;
 import com.project88.banking.entity.User;
+import com.project88.banking.repository.ITransactionRepository;
 import com.project88.banking.repository.IUserRepository;
 
 import jakarta.transaction.Transactional;
@@ -15,6 +17,14 @@ import jakarta.transaction.Transactional;
 @Component
 @Transactional
 public class UserService implements IUserService {
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private IUserRepository userRepository;
+	
+	@Autowired
+	private ITransactionRepository transactionRepository;
 
  @Override
     public void registerUser(User user) {
@@ -46,11 +56,23 @@ public class UserService implements IUserService {
 	    }
 
 	    // Tiến hành giao dịch
+	    //Sender
 	    sender.setBalance(sender.getBalance() - money);
+	    String senderTransType = "CK";
+	    String senderContent = String.format("Chuyen Khoan den %s so tien %d", receiver.getFirstName() ,money);
+	    TransactionHistory senderTrans = new TransactionHistory(senderTransType, senderContent, - money, sender);
+	    
+	    //Receiver
 	    receiver.setBalance(receiver.getBalance() + money);
-
+	    String receiverTransType = "CK";
+	    String receiverContent = String.format("Nhan tien tu %S so tien %d ", sender.getFirstName() ,money);
+	    TransactionHistory receiverTrans = new TransactionHistory(receiverTransType, receiverContent, money, receiver);
+	    
+	    // luu vao database
 	    userRepository.save(sender);
 	    userRepository.save(receiver);
+	    transactionRepository.save(senderTrans);
+	    transactionRepository.save(receiverTrans);
 		
 	}
 	
