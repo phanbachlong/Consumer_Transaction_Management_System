@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class TranferDTO {
+public class TransferDTO {
 
 	private short senderID;
 	private Integer cardNumber;

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.project88.banking.dto.ChangeProfileDTO;
 import com.project88.banking.dto.ProfileDTO;
 import com.project88.banking.dto.TranferDTO;
+
 import com.project88.banking.dto.UserDTO;
 import com.project88.banking.entity.User;
 import com.project88.banking.service.IUserService;
@@ -34,9 +35,17 @@ public class UserController {
         return new ResponseEntity<>("Register successfully!!", HttpStatus.OK);
     }
 
-    @PutMapping("/tranfer")
-    public void tranfer(@RequestBody TranferDTO form) {
-        userService.tranfer(form);
+
+
+    @PutMapping("/transfer")
+    public void transfer(@RequestBody TransferDTO form) {
+    	userService.transfer(form);
+    }
+    
+    @GetMapping()
+    public String findUserByCardNumber (@RequestParam(name = "cardNumber") int cardNumber) {
+    	String userName = userService.findUserByCardNumber(cardNumber);
+    	return userName;
     }
 
     @GetMapping("/profile")

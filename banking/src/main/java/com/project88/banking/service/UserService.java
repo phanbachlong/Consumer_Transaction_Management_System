@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.project88.banking.dto.ChangeProfileDTO;
 import com.project88.banking.dto.ProfileDTO;
 import com.project88.banking.dto.TranferDTO;
+
 import com.project88.banking.entity.TransactionHistory;
 import com.project88.banking.entity.User;
 import com.project88.banking.repository.ITransactionRepository;
@@ -36,68 +37,55 @@ public class UserService implements IUserService {
         System.out.println(">>> Password length: " + user.getPassword().length());
         userRepository.save(user);
     }
+  
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public void transfer(TransferDTO form) {
+		int money = form.getMoney();
+		User sender = userRepository.findById(form.getSenderID())
+				.orElseThrow(() -> new IllegalArgumentException("User không tồn tại với userID: " + form.getSenderID()));
+		User receiver = userRepository.findUserByCardNumber(form.getCardNumber());
+		
+		if (receiver == null) {
+	        throw new IllegalArgumentException("Người nhận không tồn tại!");
+	    }
 
-    @Override
-    public void tranfer(TranferDTO form) {
-        int money = form.getMoney();
-        User sender = userRepository.findById(form.getSenderID())
-                .orElseThrow(
-                        () -> new IllegalArgumentException("User không tồn tại với userID: " + form.getSenderID()));
-        User receiver = userRepository.findUserByCardNumber(form.getCardNumber());
+	    if (sender.getBalance() < money) {
+	        throw new IllegalStateException("Không đủ số dư!");
+	    }
 
-        if (receiver == null) {
-            throw new IllegalArgumentException("Người nhận không tồn tại!");
-        }
-
-        if (sender.getBalance() < money) {
-            throw new IllegalStateException("Không đủ số dư!");
-        }
-
-        // Tiến hành giao dịch
-        // Sender
-        sender.setBalance(sender.getBalance() - money);
-        String senderTransType = "CK";
-        String senderContent = String.format("Chuyen Khoan den %s so tien %d", receiver.getFirstName(), money);
-        TransactionHistory senderTrans = new TransactionHistory(senderTransType, senderContent, -money, sender);
-
-        // Receiver
-        receiver.setBalance(receiver.getBalance() + money);
-        String receiverTransType = "CK";
-        String receiverContent = String.format("Nhan tien tu %S so tien %d ", sender.getFirstName(), money);
-        TransactionHistory receiverTrans = new TransactionHistory(receiverTransType, receiverContent, money, receiver);
-
-        // luu vao database
-        userRepository.save(sender);
-        userRepository.save(receiver);
-        transactionRepository.save(senderTrans);
-        transactionRepository.save(receiverTrans);
-
-    }
-
-    @Override
-    public User getUserByCCCD(String cccd) {
-        return userRepository.findByCccd(cccd);
-    }
-
-    @Override
-    public User addBalance(String cccd, int amount) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Amount must be positive");
-        }
-
-        int updated = userRepository.updateBalanceByCCCD(cccd, amount);
-        if (updated == 0) {
-            return null; // không tìm thấy CCCD
-        }
-
-        return userRepository.findByCccd(cccd); // trả lại user sau khi update
-    }
+	    // Tiến hành giao dịch
+	    //Sender
+	    sender.setBalance(sender.getBalance() - money);
+	    String senderTransType = "CK";
+	    String senderContent = String.format("Chuyen Khoan den %s so tien %d", receiver.getFirstName() ,money);
+	    TransactionHistory senderTrans = new TransactionHistory(senderTransType, senderContent, - money, sender);
+	    
+	    //Receiver
+	    receiver.setBalance(receiver.getBalance() + money);
+	    String receiverTransType = "CK";
+	    String receiverContent = String.format("Nhan tien tu %S so tien %d. Noi Dung: %s ", sender.getFirstName() ,money,form.getContent());
+	    TransactionHistory receiverTrans = new TransactionHistory(receiverTransType, receiverContent, money, receiver);
+	    
+	    // luu vao database
+	    userRepository.save(sender);
+	    userRepository.save(receiver);
+	    transactionRepository.save(senderTrans);
+	    transactionRepository.save(receiverTrans);
+		
+	}
+	
+	@Override
+	public String findUserByCardNumber(int cardNumber) {
+		User u = userRepository.findUserByCardNumber(cardNumber);
+		String name = u.getFirstName() + " " + u. getLastName();
+		return name;
+	}
 
     @Override
     public ProfileDTO getProfile(short userID) {
