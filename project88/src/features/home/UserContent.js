@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PaymentModal from "../../components/PaymentModal";
 import Transaction from "../user/Transaction";
-import Tranfer from "./Tranfer";
+import Transfer from "./Transfer";
 import Deposit from "./Deposit";
 import Redeem from "./Redeem";
 
@@ -123,7 +123,7 @@ const UserContent = () => {
       {showTransfer && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
           <div className="w-full p-6">
-            <Tranfer
+            <Transfer
               setShowTransfer={setShowTransfer}
             />
           </div>
