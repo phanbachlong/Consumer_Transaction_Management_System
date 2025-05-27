@@ -18,9 +18,12 @@ public class ProfileDTO {
     private String email;
     private LocalDate birth;
     private String avatarUrl;
+    private String cccd;
+    private String phone;
+    private String gender;
 
     public User toEntity() {
-        return new User(firstName, lastName, username, email, firstName, birth, avatarUrl);
+        return new User(firstName, lastName, username, email, gender, cccd, phone, birth, avatarUrl);
     }
 
 }

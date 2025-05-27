@@ -12,6 +12,7 @@ CREATE TABLE `user`(
     username 		VARCHAR(50) NOT NULL UNIQUE CHECK(length(username) >=6), 
     email 			VARCHAR(50) NOT NULL UNIQUE,
     gender 			ENUM('Male','Female','Other') NOT NULL,
+    phone 			CHAR(10) NOT NULL UNIQUE,
     cccd			CHAR(12) NOT NULL, 
     balance			INT NOT NULL DEFAULT 0,
     birth			DATE,
@@ -42,16 +43,14 @@ CREATE TABLE IF NOT EXISTS `transaction_history`(
     createDate DATE default(CURRENT_DATE),
     content VARCHAR(800),
     user_id TINYINT NOT NULL,
-    createDate DATE default(CURRENT_DATE),
     fee INT NOT NULL,
-    
     CONSTRAINT fk_trans_user FOREIGN KEY (user_id) REFERENCES `user` (user_id)
 );
 
 
 -- insert value to user 
-insert into `user`(firstName, lastName, username, email, gender, cccd, birth, `password`, avatarUrl, `role`, `status`,balance) values("Phan Trong", "Vinh", "phtrvinh", "1phantrongvinh98@gmail.com", "Male", "079098009123","1998-01-01", "123456", "a",'Admin',1,1000000);
-insert into `user`(firstName, lastName, username, email, gender, cccd, birth, `password`, avatarUrl, `role`, `status`) values(" Tran Huu Viet", "Van", "vantran195", "tran1951999@gmail.com", "Male", "01234455675","1990-01-01", "123456", "b",'Admin',1);
+insert into `user`(firstName, lastName, username, email, gender, phone, cccd, birth, `password`, avatarUrl, `role`, `status`,balance) values("Phan Trong", "Vinh", "phtrvinh", "1phantrongvinh98@gmail.com", "Male", "0772661877", "079098009123","1998-01-01", "123456", "a",'Admin',1,1000000);
+insert into `user`(firstName, lastName, username, email, gender, phone, cccd, birth, `password`, avatarUrl, `role`, `status`) values(" Tran Huu Viet", "Van", "vantran195", "tran1951999@gmail.com", "Male", "0932006977", "01234455675","1990-01-01", "123456", "b",'Admin',1);
 -- insert value to Transaction History
 insert into `transaction_history`(transType, content, user_id, fee) values("CK", "abc123", 1, 100000);
 

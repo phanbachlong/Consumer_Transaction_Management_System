@@ -31,7 +31,7 @@ const Register = () => {
                     <pp
                         className="text-sm text-gray-500 hover:underline"
                     >
-                        Đã có tài khoản?asdasdgsaugfdasuhfgajd
+                        Đã có tài khoản?
                     </pp>
                     <button
                         onClick={() => navigate('/login')}

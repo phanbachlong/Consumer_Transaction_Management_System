@@ -21,5 +21,9 @@ public interface IUserRepository extends JpaRepository<User, Short> {
     @Query("UPDATE User u SET u.balance = u.balance + :amount WHERE u.cccd = :cccd")
     int updateBalanceByCCCD(String cccd, int amount);
 
-    ProfileDTO findByID(short userID);
+    @Query("SELECT new com.project88.banking.dto.ProfileDTO(u.firstName, u.lastName,u.username, u.email, u.birth, u.avatarUrl, u.cccd, u.phone, u.gender) FROM User u WHERE u.userID = :userID")
+    ProfileDTO findByID(@Param("userID") short userID);
+
+    @Query("SELECT u FROM User u WHERE u.username = :username")
+    User findByUsername(@Param("username") String username);
 }

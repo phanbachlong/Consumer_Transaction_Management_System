@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.project88.banking.dto.ChangeProfileDTO;
 import com.project88.banking.dto.ProfileDTO;
 import com.project88.banking.dto.TranferDTO;
 import com.project88.banking.entity.TransactionHistory;
@@ -102,4 +103,16 @@ public class UserService implements IUserService {
     public ProfileDTO getProfile(short userID) {
         return userRepository.findByID(userID);
     }
+
+    @Override
+    public void changeUserProfile(String username, ChangeProfileDTO dto) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found: " + username);
+        }
+
+        user.setAvatarUrl(dto.getAvatarUrl());
+        userRepository.save(user);
+
+    };
 }
