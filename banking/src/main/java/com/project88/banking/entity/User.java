@@ -89,9 +89,13 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    // public void setBirthFromString(String birthStr) {
-    // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    // this.birth = LocalDate.parse(birthStr, formatter);
-    // }
+    public User(String firstName, String lastName, String username, String email, LocalDate birth, String avatarUrl) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.birth = birth;
+        this.avatarUrl = avatarUrl;
+    }
 
 }

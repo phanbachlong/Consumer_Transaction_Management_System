@@ -2,14 +2,18 @@ package com.project88.banking.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import com.project88.banking.dto.ProfileDTO;
 import com.project88.banking.dto.TranferDTO;
 import com.project88.banking.entity.User;
 
 public interface IUserService extends UserDetailsService {
     void registerUser(User user);
-    void tranfer (TranferDTO form);
+
+    void tranfer(TranferDTO form);
 
     User getUserByCCCD(String cccd);
 
     User addBalance(String cccd, int amount);
+
+    ProfileDTO getProfile(short userID);
 }

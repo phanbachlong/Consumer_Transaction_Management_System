@@ -9,7 +9,7 @@ export default function HomePage() {
   const [theme, setTheme] = useState("light");
   // const role = localStorage.getItem("role");
 
-  const role = "admin"; // testing
+  // const role = "admin"; // testing
   const role = "user"; // testing
 
   useEffect(() => {
