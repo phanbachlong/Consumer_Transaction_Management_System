@@ -8,6 +8,10 @@ class UserApi {
     createUser = (body) => {
         axiosClient.post(this.url, body)
     }
+
+    getProfile = () => {
+        return axiosClient.get(`${this.url}/profile`);
+    }
 }
 
 const userApi = new UserApi();

@@ -6,7 +6,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.project88.banking.dto.TransferDTO;
+import com.project88.banking.dto.ChangeProfileDTO;
+import com.project88.banking.dto.ProfileDTO;
+import com.project88.banking.dto.TranferDTO;
+
 import com.project88.banking.entity.TransactionHistory;
 import com.project88.banking.entity.User;
 import com.project88.banking.repository.ITransactionRepository;
@@ -17,16 +20,16 @@ import jakarta.transaction.Transactional;
 @Component
 @Transactional
 public class UserService implements IUserService {
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	@Autowired
-	private IUserRepository userRepository;
-	
-	@Autowired
-	private ITransactionRepository transactionRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
- @Override
+    @Autowired
+    private IUserRepository userRepository;
+
+    @Autowired
+    private ITransactionRepository transactionRepository;
+
+    @Override
     public void registerUser(User user) {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -34,6 +37,7 @@ public class UserService implements IUserService {
         System.out.println(">>> Password length: " + user.getPassword().length());
         userRepository.save(user);
     }
+  
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
@@ -83,5 +87,20 @@ public class UserService implements IUserService {
 		return name;
 	}
 
-   
+    @Override
+    public ProfileDTO getProfile(short userID) {
+        return userRepository.findByID(userID);
+    }
+
+    @Override
+    public void changeUserProfile(String username, ChangeProfileDTO dto) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found: " + username);
+        }
+
+        user.setAvatarUrl(dto.getAvatarUrl());
+        userRepository.save(user);
+
+    };
 }

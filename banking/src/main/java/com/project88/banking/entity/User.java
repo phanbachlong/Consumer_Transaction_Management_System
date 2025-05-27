@@ -54,6 +54,9 @@ public class User implements Serializable {
     @Column(name = "cccd", length = 12, nullable = false)
     private String cccd;
 
+    @Column(name = "phone", length = 10, unique = true)
+    private String phone;
+
     @Column(name = "balance", nullable = false)
     private int balance = 0;
 
@@ -71,7 +74,7 @@ public class User implements Serializable {
     @Enumerated(value = EnumType.ORDINAL)
     private Status status = Status.NOT_ACTIVE;
 
-    @Column(name = "`avatarUrl`")
+    @Column(name = "avatarUrl")
     private String avatarUrl;
 
     @OneToMany(mappedBy = "user")
@@ -89,9 +92,16 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    // public void setBirthFromString(String birthStr) {
-    // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    // this.birth = LocalDate.parse(birthStr, formatter);
-    // }
+    public User(String firstName, String lastName, String username, String email, String gender, String cccd,
+            String phone, LocalDate birth, String avatarUrl) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.cccd = cccd;
+        this.phone = phone;
+        this.birth = birth;
+        this.avatarUrl = avatarUrl;
+    }
 
 }

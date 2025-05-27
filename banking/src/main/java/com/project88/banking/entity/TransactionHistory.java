@@ -52,10 +52,10 @@ public class TransactionHistory implements Serializable {
         this.fee = fee;
     }
 
-    public TransactionHistory(String transType, String content,int fee, User user) {
-    	this.transType = transType;
-    	this.content = content;
-    	this.fee = fee;
-    	this.user = user;
+    public TransactionHistory(String transType, String content, int fee, User user) {
+        this.transType = transType;
+        this.content = content;
+        this.fee = fee;
+        this.user = user;
     }
 }

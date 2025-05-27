@@ -1,67 +1,51 @@
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Form from "../../components/Form";
+import { useDispatch, useSelector } from "react-redux";
+import { userProfile } from "../../redux/slices/userSlice";
+import { format } from "date-fns";
 
 const ProfileContent = () => {
+    const dispatch = useDispatch();
+    const { profile, loading, error } = useSelector((state) => state.profile);
+    const [birth, setBirth] = useState(null);
+    const hasValue = birth !== null;
+
+
     const [showForm, setShowForm] = useState(false);
 
-    const initialValues = { email: "", cccd: "", birth: "", phone: "" };
 
     const handleShowForm = () => {
         setShowForm(!showForm);
     }
 
-    const onSubmit = (e) => {
-        e.preventDefault();
-        handleShowForm();
-
+    const handleSubmit = () => {
+        alert("Cập nhật thành công");
     }
+
+    useEffect(() => {
+        dispatch(userProfile())
+    }, [dispatch]);
 
     return (
         <div className="flex-1 p-8 flex flex-col lg:flex-row gap-8 bg-gray-100">
             <div className="flex-1 space-y-8">
                 <div className="bg-white p-6 rounded shadow">
 
-                    {showForm === true ? (
-                        <div className="flex items-center m-8 min-w-[430px]">
-                            <div className="flex-none w-1/3 flex flex-col items-center text-center border-r border-gray-400">
-                                <img src="/download.jpg" className="w-40 h-40 rounded-full object-cover" />
-                                <div className="mt-8 font-bold text-xl">
-                                    <p>Phan Trọng Vinh</p>
-                                </div>
-                                <div className="mt-4 font-semibold text-xs">
-                                    <p>phtrvinh</p>
-                                </div>
-                                <button className="mt-4 w-1/2 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200">
-                                    Thay đổi ảnh
-                                </button>
-                            </div>
-                            <div className="flex-none w-2/3 ml-8 ">
-
-                                <div className="flex-none w-2/3 ml-8 ">
-                                    <div className="mb-12 font-bold text-sm">
-                                        <p>Thông tin cá nhân</p>
-                                    </div>
-                                </div>
-                                <div className="mb-8 flex justify-end w-full">
-                                    <button className="mt-4 w-1/5 px-4 py-2 bg-gray-100 text-red-600 rounded hover:bg-red-200 mr-12" onClick={handleShowForm}>
-                                        Quay lại
-                                    </button>
-                                    <button className="mt-4 w-1/5 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 mr-32">
-                                        Cập nhật
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
+                    {profile ? (
                         <div className="flex items-center m-8 w-400 min-w-[430px]">
                             <div className="flex-none w-1/3 flex flex-col items-center text-center border-r border-gray-400">
                                 <img src="/download.jpg" className="w-40 h-40 rounded-full object-cover" />
                                 <div className="mt-8 font-bold text-xl">
-                                    <p>Phan Trọng Vinh</p>
+                                    <p>{profile.profile.firstName} {profile.profile.lastName} </p>
                                 </div>
                                 <div className="mt-4 font-semibold text-xs">
-                                    <p>phtrvinh</p>
+                                    <p>{profile.profile.username}</p>
                                 </div>
+                                {showForm && (
+                                    <button className="mt-4 w-1/2 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200">
+                                        Thay đổi ảnh
+                                    </button>
+                                )}
                             </div>
                             <div className="flex-none w-2/3 ml-8 ">
                                 <div className="mb-12 font-bold text-sm">
@@ -69,30 +53,44 @@ const ProfileContent = () => {
                                 </div>
                                 <div className="mb-8 flex w-full">
                                     <div className="ml-12 flex-none" >Email:</div>
-                                    <div className="flex-none ml-auto mr-32">1phantrongvinh98@gmail.com </div>
+                                    <div className="flex-none ml-auto mr-32">{profile.profile.email} </div>
                                 </div>
                                 <div className="mb-8 flex w-full">
-                                    <div className="ml-12 flex-none" >Username:</div>
-                                    <div className="flex-none ml-auto mr-32">phtrvinh</div>
+                                    <div className="ml-12 flex-none" >birth:</div>
+                                    <div className="flex-none ml-auto mr-32">{format(new Date(profile.profile.birth), 'dd-MM-yyyy')}</div>
                                 </div>
                                 <div className="mb-8 flex w-full">
                                     <div className="ml-12 flex-none" >CCCD:</div>
-                                    <div className="flex-none ml-auto mr-32">123456789 </div>
+                                    <div className="flex-none ml-auto mr-32">{profile.profile.cccd} </div>
                                 </div>
                                 <div className="mb-8 flex w-full">
                                     <div className="ml-12 flex-none" >SDT:</div>
-                                    <div className="flex-none ml-auto mr-32">123456789 </div>
+                                    <div className="flex-none ml-auto mr-32">{profile.profile.phone} </div>
                                 </div>
 
-                                <div className="mb-8 flex justify-end w-full">
-                                    <button className="mt-4 w-1/4 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 mr-32" onClick={handleShowForm}>
-                                        chỉnh sửa thông tin
-                                    </button>
-                                </div>
+                                {showForm === false ? (
+                                    <div className="mb-8 flex justify-end w-full">
+                                        <button className="mt-4 w-1/4 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 mr-32" onClick={handleShowForm}>
+                                            chỉnh sửa thông tin
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="mb-8 flex justify-end w-full">
+                                        <button className="mt-4 w-1/4 px-4 py-2 bg-gray-100 text-red-600 rounded hover:bg-red-200 mr-8" onClick={handleShowForm}>
+                                            Hủy bỏ
+                                        </button>
+                                        <button className="mt-4 w-1/4 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 mr-32" onClick={handleSubmit}>
+                                            Cập nhật
+                                        </button>
+                                    </div>
+
+                                )}
+
                             </div>
                         </div>
+                    ) : (
+                        <div>{loading}</div>
                     )}
-
                 </div>
             </div>
         </div>
