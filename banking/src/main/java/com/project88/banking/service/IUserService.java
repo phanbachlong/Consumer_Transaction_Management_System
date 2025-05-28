@@ -9,4 +9,5 @@ public interface IUserService extends UserDetailsService {
     void registerUser(User user);
     void transfer (TransferDTO form);
 	String findUserByCardNumber(int cardNumber);
+	User findUserById(short id);
 }
