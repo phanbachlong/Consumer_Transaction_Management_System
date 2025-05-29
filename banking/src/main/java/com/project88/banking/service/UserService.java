@@ -86,6 +86,12 @@ public class UserService implements IUserService {
 		String name = u.getFirstName() + " " + u. getLastName();
 		return name;
 	}
+	@Override
+	public User findUserById(short id) {
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("User không tồn tại với id = " + id));
+		return user;
+	}
 
     @Override
     public ProfileDTO getProfile(short userID) {

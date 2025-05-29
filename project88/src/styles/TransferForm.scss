@@ -21,11 +21,20 @@
 
 .transfer-user {
   display: flex;
+  width: 100%;
   align-items: center;
-  background: #e0e0e0;
+  justify-content: center; // căn giữa theo chiều ngang
+  background: #f0f0f0;
   border-radius: 8px;
   margin-bottom: 24px;
   padding: 16px;
+}
+
+.transfer-user-balance-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .transfer-avatar {
@@ -53,6 +62,7 @@
 }
 
 .transfer-balance {
+  color: #E65100;
   font-weight: bold;
   font-size: 1rem;
 }
@@ -107,4 +117,12 @@
 .transfer-cancel:hover,
 .transfer-submit:hover {
   background: #fbbfbb;
+}
+
+.align-items-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  text-align: center;
 }

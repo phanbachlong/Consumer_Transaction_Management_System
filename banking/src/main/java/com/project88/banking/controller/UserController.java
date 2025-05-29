@@ -1,5 +1,6 @@
 package com.project88.banking.controller;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +13,15 @@ import com.project88.banking.dto.ProfileDTO;
 import com.project88.banking.dto.TranferDTO;
 
 import com.project88.banking.dto.UserDTO;
+import com.project88.banking.dto.UserDTOv2;
 import com.project88.banking.entity.User;
 import com.project88.banking.service.IUserService;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping(value = "/api/v1/users")
@@ -24,6 +29,9 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private IUserService userService;
+    
+    @Autowired
+	private ModelMapper modelMapper;
 
     @PostMapping()
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
@@ -48,6 +56,13 @@ public class UserController {
     	return userName;
     }
 
+    @GetMapping("/{id}")
+    public UserDTOv2 getUserById(@PathVariable(name = "id") short id) {
+         User user = userService.findUserById(id);
+         UserDTOv2 userDTOv2 = modelMapper.map(user, UserDTOv2.class);
+         return userDTOv2;
+    }
+    
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile() {
         ProfileDTO profileDTO = userService.getProfile((short) 1);
