@@ -3,20 +3,19 @@ package com.project88.banking.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+// import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.project88.banking.dto.ChangeProfileDTO;
 import com.project88.banking.dto.ProfileDTO;
-import com.project88.banking.dto.TranferDTO;
-
+import com.project88.banking.dto.TransferDTO;
 import com.project88.banking.dto.UserDTO;
 import com.project88.banking.entity.User;
 import com.project88.banking.service.IUserService;
 
-import java.util.HashMap;
-import java.util.Map;
+// import java.util.HashMap;
+// import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/v1/users")
@@ -35,17 +34,9 @@ public class UserController {
         return new ResponseEntity<>("Register successfully!!", HttpStatus.OK);
     }
 
-
-
-    @PutMapping("/transfer")
-    public void transfer(@RequestBody TransferDTO form) {
-    	userService.transfer(form);
-    }
-    
-    @GetMapping()
-    public String findUserByCardNumber (@RequestParam(name = "cardNumber") int cardNumber) {
-    	String userName = userService.findUserByCardNumber(cardNumber);
-    	return userName;
+    @PutMapping("/tranfer")
+    public void tranfer(@RequestBody TransferDTO form) {
+        userService.transfer(form);
     }
 
     @GetMapping("/profile")
