@@ -21,4 +21,6 @@ public interface IUserService extends UserDetailsService {
     void transfer(TransferDTO form);
 
     String findUserByCardNumber(int cardNumber);
+
+    User findUserById(short id);
 }

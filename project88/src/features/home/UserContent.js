@@ -1,28 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PaymentModal from "../../components/PaymentModal";
 import Transaction from "../user/Transaction";
 import Transfer from "./Transfer";
 import Deposit from "./Deposit";
 import Redeem from "./Redeem";
+import UserAPIv2 from "../../api/UserAPIv2";
 
 const UserContent = () => {
+  const userID = 1; 
+
   const [showTransfer, setShowTransfer] = useState(false);
   const [showDeposit, setShowDeposit] = useState(false);
   const [showRedeem, setShowRedeem] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBill, setSelectedBill] = useState(null);
+  const [balance, setBalance] = useState(0); 
+
   // eslint-disable-next-line no-unused-vars
   const [customerData, setCustomerData] = useState({
     name: "Nguyễn Văn A",
     accountNumber: "0123456789"
   });
 
+  const fetchUserBalance = async () => {
+    try {
+      const response = await UserAPIv2.FindUserById(userID);
+      if (response && response.data) {
+        setBalance(response.data.balance);
+      }
+    } catch (error) {
+      console.error("Error fetching user balance:", error);
+    }
+  }
   const handlePaymentClick = (billId) => {
     setSelectedBill({ id: billId });
     setIsModalOpen(true);
   };
+  const handleAfterTransfer = () => {
+    fetchUserBalance();
+  };
 
-
+useEffect(() => {
+  fetchUserBalance();}
+, [balance]);
 
   return (
     <main className="flex-1 p-8 flex flex-col lg:flex-row gap-8 bg-gray-100">
@@ -42,7 +62,9 @@ const UserContent = () => {
             <div className="flex w-full mt-5 justify-between space-x-4">
               <div className="flex-1 text-center bg-white p-6 rounded shadow">
                 <div className="text-gray-500 ">Số dư</div>
-                <div className="text-2xl font-bold">1.000.000.000 VND</div>
+                <div className="text-2xl font-bold">
+                  {Number(balance).toLocaleString("de-DE")}
+                </div>
                 <div className="flex justify-between space-x-4 mt-2">
                   <button className="w-full px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200"
                     onClick={() => setShowTransfer(true)}>
@@ -125,6 +147,7 @@ const UserContent = () => {
           <div className="w-full p-6">
             <Transfer
               setShowTransfer={setShowTransfer}
+              onAfterTransfer={handleAfterTransfer}
             />
           </div>
         </div>
