@@ -2,7 +2,6 @@ package com.project88.banking.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -34,7 +33,7 @@ public class User implements Serializable {
     @Id
     @Column(name = "user_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private short userID;
+    private Long userID;
 
     @Column(name = "`firstName`", nullable = false, length = 50)
     private String firstName;
@@ -51,16 +50,17 @@ public class User implements Serializable {
     @Column(name = "gender", nullable = false)
     private String gender;
 
-    @Column(name = "cccd", length = 12, nullable = false)
-    private String cccd;
 
     @Column(name = "phone", length = 10, unique = true)
     private String phone;
 
+    @Column(name = "cccd", length = 12, nullable = false)
+    private String cccd;
+
     @Column(name = "balance", nullable = false)
     private int balance = 0;
 
-    @Column(name = "birth", nullable = false)
+    @Column(name = "birth", nullable = true)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birth;
 

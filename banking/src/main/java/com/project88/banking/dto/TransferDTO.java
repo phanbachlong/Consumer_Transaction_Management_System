@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TransferDTO {
 
-	private short senderID;
+	private Long senderID;
 	private Integer cardNumber;
 	private Integer money;
 	private String content;

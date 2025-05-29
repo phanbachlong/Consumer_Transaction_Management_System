@@ -9,7 +9,7 @@ import com.project88.banking.dto.ProfileDTO;
 import com.project88.banking.entity.User;
 import org.springframework.data.jpa.repository.Modifying;
 
-public interface IUserRepository extends JpaRepository<User, Short> {
+public interface IUserRepository extends JpaRepository<User, Long> {
 
 
 	@Query("SELECT c.user FROM CardNumber c WHERE c.cardNumber = :cardNumber")
@@ -22,7 +22,7 @@ public interface IUserRepository extends JpaRepository<User, Short> {
     int updateBalanceByCCCD(String cccd, int amount);
 
     @Query("SELECT new com.project88.banking.dto.ProfileDTO(u.firstName, u.lastName,u.username, u.email, u.birth, u.avatarUrl, u.cccd, u.phone, u.gender) FROM User u WHERE u.userID = :userID")
-    ProfileDTO findByID(@Param("userID") short userID);
+    ProfileDTO findByID(@Param("userID") Long userID);
 
     @Query("SELECT u FROM User u WHERE u.username = :username")
     User findByUsername(@Param("username") String username);
