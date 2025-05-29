@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\features\\auth",
+    "\\src\\features\\home",
+    "\\src\\features\\register",
+    "\\src\\validation"
+  ],
+  "SelectedNode": "\\src\\App.js",
+  "PreviewInSolutionExplorer": false
+}
