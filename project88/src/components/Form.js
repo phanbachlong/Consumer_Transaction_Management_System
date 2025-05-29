@@ -87,12 +87,15 @@ const Form = ({ initialValues, onSubmit, btn, validation }) => {
                 </div>
 
             ))}
-            <button
-                type="submit"
-                className="w-full bg-red-100 text-red-600 py-2 px-4 rounded-md hover:bg-red-200 transition"
-            >
-                {btn}
-            </button>
+            {btn && (
+                <button
+                    type="submit"
+                    className="w-full bg-red-100 text-red-600 py-2 px-4 rounded-md hover:bg-red-200 transition"
+                >
+                    {btn}
+                </button>
+            )}
+
         </form>
     )
 }
