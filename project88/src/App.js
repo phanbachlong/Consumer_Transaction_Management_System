@@ -9,7 +9,6 @@ import ChangePassword from './features/auth/ChangePassword';
 import Profile from './features/user/Profile';
 import TransferForm from './features/home/Transfer';
 import Test from './features/Test';
-import EditEmployee from "./components/EditEmployee";
 
 
 
@@ -29,7 +28,6 @@ function App() {
         <Route path='/changePassword' element={<ChangePassword />} />
         <Route path='/Transfer' element={<TransferForm />} />
         <Route path='/test' element={<Test />} />
-        <Route path='/editEmployee' element={<EditEmployee />} />
       </Routes>
     </Router>
   );
