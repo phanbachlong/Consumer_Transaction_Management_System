@@ -16,8 +16,8 @@ import com.project88.banking.dto.UserDTOv2;
 import com.project88.banking.entity.User;
 import com.project88.banking.service.IUserService;
 
-import java.util.HashMap;
-import java.util.Map;
+// import java.util.HashMap;
+// import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/v1/users")
@@ -54,6 +54,13 @@ public class UserController {
     public ResponseEntity<?> getProfile() {
         ProfileDTO profileDTO = userService.getProfile((short) 1);
         return new ResponseEntity<>(profileDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public UserDTOv2 getUserById(@PathVariable(name = "id") short id) {
+        User user = userService.findUserById(id);
+        UserDTOv2 userDTOv2 = modelMapper.map(user, UserDTOv2.class);
+        return userDTOv2;
     }
 
     @PutMapping("/profile")
