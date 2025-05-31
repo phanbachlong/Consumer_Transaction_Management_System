@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
@@ -78,6 +79,7 @@ public class User implements Serializable {
     private String avatarUrl;
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private List<TransactionHistory> transactionHistories;
 
     public User(String firstName, String lastName, String username, String email, String gender, String cccd,

@@ -2,6 +2,7 @@ package com.project88.banking.controller;
 
 import com.project88.banking.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -87,5 +88,15 @@ public class UserController {
     public ResponseEntity<User> getUser(@PathVariable Long userId) {
         User user = userService.getUserById(userId);
         return ResponseEntity.ok(user);
+    }
+
+    //hien thị toan bo employee (phan minh)
+    @GetMapping("/employee")
+    public ResponseEntity<Page<User>> getAllUsers(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<User> users = userService.getAllUsers(page, size);
+        return ResponseEntity.ok(users);
     }
 }

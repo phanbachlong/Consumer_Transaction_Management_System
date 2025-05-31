@@ -1,6 +1,7 @@
 package com.project88.banking.service;
 
 import com.project88.banking.dto.*;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.project88.banking.entity.User;
@@ -28,4 +29,7 @@ public interface IUserService extends UserDetailsService {
 
     //lay thong tin user theo userId (phan minh)
     User getUserById(Long userId);
+
+    //hien thị toan bo employee (phan minh)
+    Page<User> getAllUsers(int page, int size);
 }

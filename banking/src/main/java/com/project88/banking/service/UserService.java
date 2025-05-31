@@ -2,6 +2,9 @@ package com.project88.banking.service;
 
 import com.project88.banking.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -150,5 +153,11 @@ public class UserService implements IUserService {
 
     };
 
+	//lay thong tin cac employee(phan minh)
+	@Override
+	public Page<User> getAllUsers(int page, int size) {
+		Pageable pageable = PageRequest.of(page - 1, size); // page - 1 vì Pageable bắt đầu từ 0
+		return userRepository.findAll(pageable);
+	}
 
 }

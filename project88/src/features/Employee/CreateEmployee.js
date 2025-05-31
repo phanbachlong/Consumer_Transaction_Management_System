@@ -1,9 +1,10 @@
 import { useState } from "react";
+import axios from "axios";
 
-
-export default function CreateEmployee({ employee, onCancel, onSave }) {
+export default function CreateEmployee({ onCancel }) {
   const [formData, setFormData] = useState({
     username: '',
+    password: '',
     firstName: '',
     lastName: '',
     identification: '',
@@ -20,22 +21,30 @@ export default function CreateEmployee({ employee, onCancel, onSave }) {
     }));
   };
 
-  // const handleCancel = () => {
-  //   setFormData({
-  //     username: '',
-  //     firstName: '',
-  //     lastName: '',
-  //     identification: '',
-  //     email: '',
-  //     phoneNumber: '',
-  //     gender: ''
-  //   });
-  // };
+  const handleSave = async () => {
+    const payload = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      username: formData.username,
+      email: formData.email,
+      birth: "", // không có trường nhập -> để rỗng
+      avatarUrl: "", // không có trường nhập -> để rỗng
+      cccd: formData.identification,
+      phone: formData.phoneNumber,
+      gender: formData.gender,
+      role: "", // không có trường nhập -> để rỗng
+      password: formData.password,
+    };
 
-  // const handleSave = () => {
-  //   console.log('Employee data:', formData);
-  //   // Handle save logic here
-  // };
+    try {
+      const response = await axios.post('http://localhost:8080/api/v1/users/new', payload);
+      console.log('User created:', response.data);
+      alert('Tạo người dùng thành công!');
+    } catch (error) {
+      console.error('Lỗi khi tạo người dùng:', error);
+      alert('Tạo người dùng thất bại!');
+    }
+  };
 
   return (
       <div className="min-h-screen bg-gray-100 p-8">
@@ -46,94 +55,25 @@ export default function CreateEmployee({ employee, onCancel, onSave }) {
 
           <div className="space-y-6">
             {/* Username */}
-            <div className="flex items-center">
-              <label className="w-32 text-gray-700 text-sm">Username:</label>
-              <div className="flex-1">
-                <input
-                    type="text"
-                    name="username"
-                    value={formData.username}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-orange-500"
-                />
-                <p className="text-xs text-gray-400 mt-1">Must not duplicate an existing username</p>
-              </div>
-            </div>
+            <InputField label="Username" name="username" value={formData.username} onChange={handleInputChange} />
+
+            {/* Password */}
+            <InputField label="Password" name="password" type="password" value={formData.password} onChange={handleInputChange} />
 
             {/* First Name */}
-            <div className="flex items-center">
-              <label className="w-32 text-gray-700 text-sm">First Name:</label>
-              <div className="flex-1">
-                <input
-                    type="text"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-orange-500"
-                />
-                <p className="text-xs text-gray-400 mt-1">Must not be empty</p>
-              </div>
-            </div>
+            <InputField label="First Name" name="firstName" value={formData.firstName} onChange={handleInputChange} />
 
             {/* Last Name */}
-            <div className="flex items-center">
-              <label className="w-32 text-gray-700 text-sm">Last Name:</label>
-              <div className="flex-1">
-                <input
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-orange-500"
-                />
-                <p className="text-xs text-gray-400 mt-1">Must not be empty</p>
-              </div>
-            </div>
+            <InputField label="Last Name" name="lastName" value={formData.lastName} onChange={handleInputChange} />
 
             {/* Identification */}
-            <div className="flex items-center">
-              <label className="w-32 text-gray-700 text-sm">Identification:</label>
-              <div className="flex-1">
-                <input
-                    type="text"
-                    name="identification"
-                    value={formData.identification}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-orange-500"
-                />
-                <p className="text-xs text-gray-400 mt-1">Must not be empty</p>
-              </div>
-            </div>
+            <InputField label="Identification" name="identification" value={formData.identification} onChange={handleInputChange} />
 
             {/* Email */}
-            <div className="flex items-center">
-              <label className="w-32 text-gray-700 text-sm">Email:</label>
-              <div className="flex-1">
-                <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-orange-500"
-                />
-                <p className="text-xs text-gray-400 mt-1">Valid format, not duplicated</p>
-              </div>
-            </div>
+            <InputField label="Email" name="email" type="email" value={formData.email} onChange={handleInputChange} />
 
             {/* Phone Number */}
-            <div className="flex items-center">
-              <label className="w-32 text-gray-700 text-sm">Phone Number:</label>
-              <div className="flex-1">
-                <input
-                    type="tel"
-                    name="phoneNumber"
-                    value={formData.phoneNumber}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-orange-500"
-                />
-                <p className="text-xs text-gray-400 mt-1">10 digits, starting with 0</p>
-              </div>
-            </div>
+            <InputField label="Phone Number" name="phoneNumber" value={formData.phoneNumber} onChange={handleInputChange} />
 
             {/* Gender */}
             <div className="flex items-center">
@@ -177,12 +117,30 @@ export default function CreateEmployee({ employee, onCancel, onSave }) {
               Hủy
             </button>
             <button
-                onClick={onSave}
+                onClick={handleSave}
                 className="px-8 py-2 bg-orange-400 text-white rounded hover:bg-orange-500 transition-colors"
             >
               Lưu
             </button>
           </div>
+        </div>
+      </div>
+  );
+}
+
+// Component Input đơn giản
+function InputField({ label, name, value, onChange, type = "text" }) {
+  return (
+      <div className="flex items-center">
+        <label className="w-32 text-gray-700 text-sm">{label}:</label>
+        <div className="flex-1">
+          <input
+              type={type}
+              name={name}
+              value={value}
+              onChange={onChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-orange-500"
+          />
         </div>
       </div>
   );
