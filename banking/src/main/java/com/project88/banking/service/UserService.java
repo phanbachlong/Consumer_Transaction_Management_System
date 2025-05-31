@@ -34,6 +34,9 @@ public class UserService implements IUserService {
 	
 	@Autowired
 	private IBillRepository billRepository;
+	
+	@Autowired
+	private IDepositService depositService;
 
 	@Override
 	public void registerUser(User user) {
@@ -129,5 +132,6 @@ public class UserService implements IUserService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 
 }
