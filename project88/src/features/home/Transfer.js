@@ -6,7 +6,7 @@ import TransferUserBalance from "../../components/TranferUserBalance";
 
 const Transfer = ({ setShowTransfer, onAfterTransfer }) => {
 
-  const userID = 1;
+  const userID = localStorage.getItem("userId");
 
   const [transferDTO, settransferDTO] = useState({
     senderID: userID,

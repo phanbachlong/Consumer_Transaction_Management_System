@@ -1,5 +1,8 @@
 package com.project88.banking.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,12 +11,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import com.project88.banking.dto.BillDTO;
 import com.project88.banking.dto.ChangeProfileDTO;
 import com.project88.banking.dto.ProfileDTO;
 import com.project88.banking.dto.TransferDTO;
 import com.project88.banking.dto.UserDTO;
 import com.project88.banking.dto.UserDTOv2;
+import com.project88.banking.entity.Bill;
 import com.project88.banking.entity.User;
+import com.project88.banking.service.IBillService;
 import com.project88.banking.service.IUserService;
 
 // import java.util.HashMap;
@@ -25,6 +31,9 @@ import com.project88.banking.service.IUserService;
 public class UserController {
     @Autowired
     private IUserService userService;
+    
+    @Autowired
+    private IBillService billService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -39,7 +48,7 @@ public class UserController {
         return new ResponseEntity<>("Register successfully!!", HttpStatus.OK);
     }
 
-    @PutMapping("/tranfer")
+    @PutMapping("/transfer")
     public void tranfer(@RequestBody TransferDTO form) {
         userService.transfer(form);
     }
@@ -73,6 +82,19 @@ public class UserController {
         userService.changeUserProfile(username, dto);
 
         return new ResponseEntity<>("Change Profile Successfully!", HttpStatus.OK);
+    }
+    
+    @GetMapping("/bills")
+    public List<BillDTO> getBill(@RequestParam(name = "userId") short userId) {
+     	List<Bill> bills = billService.findBillByUserId(userId);
+     	return bills.stream()
+                .map(bill -> modelMapper.map(bill, BillDTO.class))
+                .collect(Collectors.toList());
+    }
+    
+    @PutMapping("/bills")
+    public void payBill (@RequestParam(name = "billId") int billId) {
+    	billService.payBill(billId);
     }
 
 }
