@@ -1,14 +1,11 @@
 package com.project88.banking.service;
 
+import com.project88.banking.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import com.project88.banking.dto.ChangeProfileDTO;
-import com.project88.banking.dto.ProfileDTO;
-import com.project88.banking.dto.TranferDTO;
 
 import com.project88.banking.entity.TransactionHistory;
 import com.project88.banking.entity.User;
@@ -16,6 +13,8 @@ import com.project88.banking.repository.ITransactionRepository;
 import com.project88.banking.repository.IUserRepository;
 
 import jakarta.transaction.Transactional;
+
+import java.util.Optional;
 
 @Component
 @Transactional
@@ -87,8 +86,55 @@ public class UserService implements IUserService {
 		return name;
 	}
 
-    @Override
-    public ProfileDTO getProfile(short userID) {
+
+	//them user (phan minh)
+	@Override
+	public User createUser(CreateUserDTO createUserDTO) {
+		User user = new User();
+		user.setFirstName(createUserDTO.getFirstName());
+		user.setLastName(createUserDTO.getLastName());
+		user.setUsername(createUserDTO.getUsername());
+		user.setPassword(createUserDTO.getPassword());
+		user.setEmail(createUserDTO.getEmail());
+		user.setGender(createUserDTO.getGender());
+		user.setPhone(createUserDTO.getPhone());
+		user.setCccd(createUserDTO.getCccd());
+
+		return userRepository.save(user);
+	}
+
+	//chinh sua user (phan minh)
+	@Override
+	public User updateUser(Long userId, UpdateUserDTO updateUserDTO) {
+		Optional<User> optionalUser = userRepository.findById(userId);
+
+		if (!optionalUser.isPresent()) {
+			throw new RuntimeException("User not found"); // Ném ngoại lệ nếu không tìm thấy tài khoản
+		}
+
+		User user = optionalUser.get();
+		user.setUsername(user.getUsername());
+		user.setFirstName(updateUserDTO.getFirstName());
+		user.setLastName(updateUserDTO.getLastName());
+		user.setEmail(updateUserDTO.getEmail());
+		user.setGender(updateUserDTO.getGender());
+		user.setPhone(updateUserDTO.getPhone());
+		user.setCccd(updateUserDTO.getCccd());
+		user.setBirth(updateUserDTO.getBirth());
+		user.setRole(updateUserDTO.getRole());
+		user.setAvatarUrl(updateUserDTO.getAvatarUrl());
+
+		return userRepository.save(user);
+	}
+
+	//lay thong tin user theo userId (phan minh)
+	@Override
+	public User getUserById(Long userId) {
+		return userRepository.findByID(userId).toEntity();
+	}
+
+	@Override
+    public ProfileDTO getProfile(Long userID) {
         return userRepository.findByID(userID);
     }
 
@@ -103,4 +149,6 @@ public class UserService implements IUserService {
         userRepository.save(user);
 
     };
+
+
 }
