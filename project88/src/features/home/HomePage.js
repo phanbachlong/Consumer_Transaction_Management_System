@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import UserContent from "./UserContent";
@@ -10,8 +10,8 @@ export default function HomePage() {
     const [theme, setTheme] = useState("light");
     localStorage.setItem("userId", 1);
     // const role = localStorage.getItem("role");
-     //const role = "employee"; // testing
-    //  const role = "admin"; // testing
+    // const role = "employee"; // testing
+    // const role = "admin"; // testing
     const role = "user"; // testing
     useEffect(() => {
         document.body.className = theme === "light" ? "bg-gray-50" : "bg-gray-900 text-white";
@@ -23,17 +23,17 @@ export default function HomePage() {
 
     return (
         <div className="flex flex-col h-screen">
-            <Header toggleTheme={toggleTheme} currentTheme={theme}/>
+            <Header toggleTheme={toggleTheme} currentTheme={theme} />
             {role === 'user' && (
-                <UserContent/>)
+                <UserContent />)
             }
             {role === 'employee' && (
-                <EmployeeContent/>)
+                <EmployeeContent />)
             }
             {role === 'admin' && (
-                <EmployeeList/>)
+                <EmployeeList />)
             }
-            <Footer/>
+            <Footer />
         </div>
     );
 }

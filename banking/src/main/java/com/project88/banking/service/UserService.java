@@ -3,12 +3,16 @@ package com.project88.banking.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.project88.banking.dto.ChangeProfileDTO;
+import com.project88.banking.dto.GetAllUserDTO;
 import com.project88.banking.dto.ProfileDTO;
 import com.project88.banking.dto.TransferDTO;
 import com.project88.banking.entity.Bill;
@@ -31,10 +35,10 @@ public class UserService implements IUserService {
 
 	@Autowired
 	private ITransactionRepository transactionRepository;
-	
+
 	@Autowired
 	private IBillRepository billRepository;
-	
+
 	@Autowired
 	private IDepositService depositService;
 
@@ -42,8 +46,7 @@ public class UserService implements IUserService {
 	public void registerUser(User user) {
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		System.out.println(">>> Password: " + user.getPassword());
-		System.out.println(">>> Password length: " + user.getPassword().length());
+
 		userRepository.save(user);
 	}
 
@@ -51,6 +54,12 @@ public class UserService implements IUserService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Page<GetAllUserDTO> findAllUsers(int size, int page) {
+		Pageable pageable = PageRequest.of(page, size);
+		return userRepository.findAllUsers(pageable);
 	}
 
 	@Override
@@ -97,6 +106,7 @@ public class UserService implements IUserService {
 		String name = u.getFirstName() + " " + u.getLastName();
 		return name;
 	}
+
 	@Override
 	public User findUserById(short id) {
 		User user = userRepository.findById(id)
@@ -132,6 +142,5 @@ public class UserService implements IUserService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
 
 }
