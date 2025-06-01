@@ -12,6 +12,10 @@ class UserApi {
     getProfile = () => {
         return axiosClient.get(`${this.url}/profile`);
     }
+
+    getAllUsers = () => {
+        return axiosClient.get(`${this.url}/all`);
+    }
 }
 
 const userApi = new UserApi();

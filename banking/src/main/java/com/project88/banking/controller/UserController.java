@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,14 +41,14 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private IUserService userService;
-    
+
     @Autowired
     private IBillService billService;
 
 
     @Autowired
     private IDepositService depositService;
-    
+
     @Autowired
     private ModelMapper modelMapper;
 
@@ -59,6 +60,13 @@ public class UserController {
         userService.registerUser(userDTO.toEntity());
 
         return new ResponseEntity<>("Register successfully!!", HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllUsers(@RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "page", defaultValue = "0") int page) {
+        var usersPage = userService.findAllUsers(size, page);
+        return new ResponseEntity<>(usersPage, HttpStatus.OK);
     }
 
 
@@ -90,24 +98,24 @@ public class UserController {
 
         return new ResponseEntity<>("Change Profile Successfully!", HttpStatus.OK);
     }
-    
+
     @GetMapping("/bills")
     public List<BillDTO> getBill(@RequestParam(name = "userId") short userId) {
-     	List<Bill> bills = billService.findBillByUserId(userId);
-     	return bills.stream()
+        List<Bill> bills = billService.findBillByUserId(userId);
+        return bills.stream()
                 .map(bill -> modelMapper.map(bill, BillDTO.class))
                 .collect(Collectors.toList());
     }
-    
+
     @PutMapping("/bills")
-    public void payBill (@RequestParam(name = "billId") int billId) {
-    	billService.payBill(billId);
+    public void payBill(@RequestParam(name = "billId") int billId) {
+        billService.payBill(billId);
     }
-    
+
     @PutMapping("/deposit")
     public void deposit(@RequestBody DepositDTO form, @RequestParam(name = "userId") short userId) {
-    	depositService.createDeposit(form,userId);
-    	
+        depositService.createDeposit(form, userId);
+
     }
 
     //them user (phan minh)

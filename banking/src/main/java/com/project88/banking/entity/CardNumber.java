@@ -14,7 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="`card_number`")
+@Table(name = "`card_number`")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,7 +23,7 @@ public class CardNumber {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "card_number")
-	private Integer cardNumber;
+	private int cardNumber;
 
 	@OneToOne
 	@JoinColumn(name ="user_id", referencedColumnName = "user_id")
