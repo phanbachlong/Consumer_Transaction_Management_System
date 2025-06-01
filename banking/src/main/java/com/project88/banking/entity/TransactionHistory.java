@@ -3,6 +3,7 @@ package com.project88.banking.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,6 +41,7 @@ public class TransactionHistory implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "`user_id`")
+    @JsonManagedReference
     private User user;
 
     @Column(name = "fee", nullable = false)
