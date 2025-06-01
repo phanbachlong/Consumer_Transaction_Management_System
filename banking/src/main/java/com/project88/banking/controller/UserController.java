@@ -30,8 +30,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +42,6 @@ public class UserController {
 
     @Autowired
     private IBillService billService;
-
 
     @Autowired
     private IDepositService depositService;
@@ -69,16 +66,15 @@ public class UserController {
         return new ResponseEntity<>(usersPage, HttpStatus.OK);
     }
 
-
     @PutMapping("/transfer")
     public void transfer(@RequestBody TransferDTO form) {
-    	userService.transfer(form);
+        userService.transfer(form);
     }
-    
+
     @GetMapping()
-    public String findUserByCardNumber (@RequestParam(name = "cardNumber") int cardNumber) {
-    	String userName = userService.findUserByCardNumber(cardNumber);
-    	return userName;
+    public String findUserByCardNumber(@RequestParam(name = "cardNumber") int cardNumber) {
+        String userName = userService.findUserByCardNumber(cardNumber);
+        return userName;
     }
 
     @GetMapping("/profile")
@@ -118,14 +114,14 @@ public class UserController {
 
     }
 
-    //them user (phan minh)
+    // them user (phan minh)
     @PostMapping("/new")
     public ResponseEntity<User> craeteUser(@RequestBody CreateUserDTO createUserDTO) {
         User user = userService.createUser(createUserDTO);
         return ResponseEntity.ok(user);
     }
 
-    //chinh sua user theo user_id (phan minh)
+    // chinh sua user theo user_id (phan minh)
     @PutMapping("{userId}")
     public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody UpdateUserDTO updateUserDTO) {
         try {
@@ -138,19 +134,18 @@ public class UserController {
         }
     }
 
-    //lay thong tin user theo userId (phan minh)
+    // lay thong tin user theo userId (phan minh)
     @GetMapping("{userId}")
     public ResponseEntity<User> getUser(@PathVariable Long userId) {
         User user = userService.getUserById(userId);
         return ResponseEntity.ok(user);
     }
 
-    //hien thị toan bo employee (phan minh)
+    // hien thị toan bo employee (phan minh)
     @GetMapping("/employee")
-    public ResponseEntity<Page<User>> getAllUsers(
+    public ResponseEntity<Page<User>> getAllEmployees(
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size
-    ) {
+            @RequestParam(defaultValue = "10") int size) {
         Page<User> users = userService.getAllUsers(page, size);
         return ResponseEntity.ok(users);
     }
