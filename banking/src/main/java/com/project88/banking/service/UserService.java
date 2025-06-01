@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-
 import com.project88.banking.dto.ChangeProfileDTO;
 import com.project88.banking.dto.GetAllUserDTO;
 import com.project88.banking.dto.ProfileDTO;
@@ -32,11 +31,11 @@ import java.util.Optional;
 @Component
 @Transactional
 public class UserService implements IUserService {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private IUserRepository userRepository;
+	@Autowired
+	private IUserRepository userRepository;
 	@Autowired
 	private ITransactionRepository transactionRepository;
 
@@ -46,17 +45,13 @@ public class UserService implements IUserService {
 	@Autowired
 	private IDepositService depositService;
 
-    @Autowired
-    private ITransactionRepository transactionRepository;
+	@Override
+	public void registerUser(User user) {
 
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		userRepository.save(user);
+	}
 
-    @Override
-    public void registerUser(User user) {
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-    }
-  
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
@@ -73,54 +68,55 @@ public class UserService implements IUserService {
 	public void transfer(TransferDTO form) {
 		int money = form.getMoney();
 		User sender = userRepository.findById(form.getSenderID())
-				.orElseThrow(() -> new IllegalArgumentException("User không tồn tại với userID: " + form.getSenderID()));
+				.orElseThrow(
+						() -> new IllegalArgumentException("User không tồn tại với userID: " + form.getSenderID()));
 		User receiver = userRepository.findUserByCardNumber(form.getCardNumber());
-		
+
 		if (receiver == null) {
-	        throw new IllegalArgumentException("Người nhận không tồn tại!");
-	    }
+			throw new IllegalArgumentException("Người nhận không tồn tại!");
+		}
 
-	    if (sender.getBalance() < money) {
-	        throw new IllegalStateException("Không đủ số dư!");
-	    }
+		if (sender.getBalance() < money) {
+			throw new IllegalStateException("Không đủ số dư!");
+		}
 
-	    // Tiến hành giao dịch
-	    //Sender
-	    sender.setBalance(sender.getBalance() - money);
-	    String senderTransType = "CK";
-	    String senderContent = String.format("Chuyen Khoan den %s so tien %d", receiver.getFirstName() ,money);
-	    TransactionHistory senderTrans = new TransactionHistory(senderTransType, senderContent, - money, sender);
-	    
-	    //Receiver
-	    receiver.setBalance(receiver.getBalance() + money);
-	    String receiverTransType = "CK";
-	    String receiverContent = String.format("Nhan tien tu %S so tien %d. Noi Dung: %s ", sender.getFirstName() ,money,form.getContent());
-	    TransactionHistory receiverTrans = new TransactionHistory(receiverTransType, receiverContent, money, receiver);
-	    
-	    // luu vao database
-	    userRepository.save(sender);
-	    userRepository.save(receiver);
-	    transactionRepository.save(senderTrans);
-	    transactionRepository.save(receiverTrans);
-		
+		// Tiến hành giao dịch
+		// Sender
+		sender.setBalance(sender.getBalance() - money);
+		String senderTransType = "CK";
+		String senderContent = String.format("Chuyen Khoan den %s so tien %d", receiver.getFirstName(), money);
+		TransactionHistory senderTrans = new TransactionHistory(senderTransType, senderContent, -money, sender);
+
+		// Receiver
+		receiver.setBalance(receiver.getBalance() + money);
+		String receiverTransType = "CK";
+		String receiverContent = String.format("Nhan tien tu %S so tien %d. Noi Dung: %s ", sender.getFirstName(),
+				money, form.getContent());
+		TransactionHistory receiverTrans = new TransactionHistory(receiverTransType, receiverContent, money, receiver);
+
+		// luu vao database
+		userRepository.save(sender);
+		userRepository.save(receiver);
+		transactionRepository.save(senderTrans);
+		transactionRepository.save(receiverTrans);
+
 	}
-	
+
 	@Override
 	public String findUserByCardNumber(int cardNumber) {
 		User u = userRepository.findUserByCardNumber(cardNumber);
-		String name = u.getFirstName() + " " + u. getLastName();
+		String name = u.getFirstName() + " " + u.getLastName();
 		return name;
 	}
 
 	@Override
 	public User findUserById(short id) {
-		User user = userRepository.findById(id)
+		User user = userRepository.findById((long) id)
 				.orElseThrow(() -> new IllegalArgumentException("User không tồn tại với id = " + id));
 		return user;
 	}
 
-
-	//them user (phan minh)
+	// them user (phan minh)
 	@Override
 	public User createUser(CreateUserDTO createUserDTO) {
 		User user = new User();
@@ -136,7 +132,7 @@ public class UserService implements IUserService {
 		return userRepository.save(user);
 	}
 
-	//chinh sua user (phan minh)
+	// chinh sua user (phan minh)
 	@Override
 	public User updateUser(Long userId, UpdateUserDTO updateUserDTO) {
 		Optional<User> optionalUser = userRepository.findById(userId);
@@ -160,38 +156,38 @@ public class UserService implements IUserService {
 		return userRepository.save(user);
 	}
 
-	//lay thong tin user theo userId (phan minh)
+	// lay thong tin user theo userId (phan minh)
 	@Override
 	public User getUserById(Long userId) {
 		return userRepository.findByID(userId).toEntity();
 	}
 
-	@Override
-	public User getUserByCCCD(String cccd) {
-		// TODO Auto-generated method stub
-		return null;
+	// @Override
+	// public User getUserByCCCD(String cccd) {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+
+	public ProfileDTO getProfile(Long userID) {
+		return userRepository.findByID(userID);
 	}
-    public ProfileDTO getProfile(Long userID) {
-        return userRepository.findByID(userID);
-    }
 
-    @Override
-    public void changeUserProfile(String username, ChangeProfileDTO dto) {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found: " + username);
-        }
+	@Override
+	public void changeUserProfile(String username, ChangeProfileDTO dto) {
+		User user = userRepository.findByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException("User not found: " + username);
+		}
 
-        user.setAvatarUrl(dto.getAvatarUrl());
-        userRepository.save(user);
+		user.setAvatarUrl(dto.getAvatarUrl());
+		userRepository.save(user);
 
-    };
+	};
 
-	//lay thong tin cac employee(phan minh)
+	// lay thong tin cac employee(phan minh)
 	@Override
 	public Page<User> getAllUsers(int page, int size) {
 		Pageable pageable = PageRequest.of(page - 1, size); // page - 1 vì Pageable bắt đầu từ 0
 		return userRepository.findAll(pageable);
 	}
 }
-

@@ -15,7 +15,6 @@ const Transaction = () => {
     useEffect(() => {
 
         dispatch(transaction(1))
-        console.log(transactions);
 
     }, [dispatch])
 
