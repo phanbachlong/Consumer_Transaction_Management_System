@@ -4,6 +4,14 @@ import com.project88.banking.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.List;
+
+
+
+import com.project88.banking.dto.ChangeProfileDTO;
+import com.project88.banking.dto.ProfileDTO;
+import com.project88.banking.dto.TransferDTO;
+import com.project88.banking.entity.Bill;
 import com.project88.banking.entity.User;
 
 public interface IUserService extends UserDetailsService {
@@ -32,4 +40,7 @@ public interface IUserService extends UserDetailsService {
 
     //hien thị toan bo employee (phan minh)
     Page<User> getAllUsers(int page, int size);
+    User findUserById(short id);
+
+	
 }

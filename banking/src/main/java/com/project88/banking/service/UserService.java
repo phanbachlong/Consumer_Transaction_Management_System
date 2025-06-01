@@ -1,6 +1,8 @@
 package com.project88.banking.service;
 
 import com.project88.banking.dto.*;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,8 +12,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+
+import com.project88.banking.dto.ChangeProfileDTO;
+import com.project88.banking.dto.ProfileDTO;
+import com.project88.banking.dto.TransferDTO;
+import com.project88.banking.entity.Bill;
 import com.project88.banking.entity.TransactionHistory;
 import com.project88.banking.entity.User;
+import com.project88.banking.repository.IBillRepository;
 import com.project88.banking.repository.ITransactionRepository;
 import com.project88.banking.repository.IUserRepository;
 
@@ -27,6 +35,14 @@ public class UserService implements IUserService {
 
     @Autowired
     private IUserRepository userRepository;
+	@Autowired
+	private ITransactionRepository transactionRepository;
+	
+	@Autowired
+	private IBillRepository billRepository;
+	
+	@Autowired
+	private IDepositService depositService;
 
     @Autowired
     private ITransactionRepository transactionRepository;
@@ -159,5 +175,5 @@ public class UserService implements IUserService {
 		Pageable pageable = PageRequest.of(page - 1, size); // page - 1 vì Pageable bắt đầu từ 0
 		return userRepository.findAll(pageable);
 	}
-
 }
+

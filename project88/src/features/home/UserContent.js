@@ -1,26 +1,45 @@
 import React, { useEffect, useState } from "react";
-import PaymentModal from "../../components/PaymentModal";
 import Transaction from "../user/Transaction";
 import Transfer from "./Transfer";
 import Deposit from "./Deposit";
 import Redeem from "./Redeem";
 import UserAPIv2 from "../../api/UserAPIv2";
+import Bills from "./Bills";
 
 const UserContent = () => {
-  const userID = 1; 
+  const userID = localStorage.getItem("userId");
+
+  const [user, setUser] = useState({
+    firstName: "",
+    lastName: "",
+    fullname: "",
+    username: "",
+    balance: null
+  });
 
   const [showTransfer, setShowTransfer] = useState(false);
   const [showDeposit, setShowDeposit] = useState(false);
   const [showRedeem, setShowRedeem] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedBill, setSelectedBill] = useState(null);
-  const [balance, setBalance] = useState(0); 
+  const [balance, setBalance] = useState(0);
+  const [bills, setBills] = useState([]);
 
-  // eslint-disable-next-line no-unused-vars
-  const [customerData, setCustomerData] = useState({
-    name: "Nguyễn Văn A",
-    accountNumber: "0123456789"
-  });
+
+  const fetchUserById = async () => {
+    try {
+      const response = await UserAPIv2.FindUserById(userID);
+      if (response && response.data) {
+        setUser({
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          fullname: `${response.data.lastName} ${response.data.firstName}`,
+          username: response.data.username,
+          balance: response.data.balance
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching user by ID:", error);
+    }
+  }
 
   const fetchUserBalance = async () => {
     try {
@@ -32,17 +51,44 @@ const UserContent = () => {
       console.error("Error fetching user balance:", error);
     }
   }
-  const handlePaymentClick = (billId) => {
-    setSelectedBill({ id: billId });
-    setIsModalOpen(true);
-  };
+
+
+  const fetchBills = async () => {
+    try {
+      const response = await UserAPIv2.GetBillsByUserId(userID);
+      if (response && response.data) {
+        setBills(response.data);
+        console.log("Bills fetched successfully:", response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching bills:", error);
+
+    }
+  }
+
+  const fetchPayBill = async (billId) => {
+    try {
+      const response = await UserAPIv2.PayBill(billId);
+      alert("Thanh toán thành công!");
+      console.log("Bill paid successfully:", response.data);
+      fetchBills(); 
+      fetchUserBalance();
+    }
+    catch (error) {
+      alert(error.response?.data?.message || "Error paying bill");
+      console.error("Error paying bill:", error);
+    }
+  }
+
   const handleAfterTransfer = () => {
     fetchUserBalance();
   };
 
-useEffect(() => {
-  fetchUserBalance();}
-, [balance]);
+  useEffect(() => {
+    fetchUserById();
+    fetchUserBalance();
+    fetchBills();
+  }, []);
 
   return (
     <main className="flex-1 p-8 flex flex-col lg:flex-row gap-8 bg-gray-100">
@@ -55,7 +101,7 @@ useEffect(() => {
               AVA
             </div>
             <div>
-              <h2 className="text-xl font-bold">Nguyễn Văn A</h2>
+              <h2 className="text-xl font-bold">{user.fullname}</h2>
             </div>
           </div>
           <div className="flex items-center justify-between">
@@ -77,11 +123,11 @@ useEffect(() => {
                 <div className="text-2xl font-bold">1.000.000.000 VND</div>
                 <div className="flex justify-between space-x-4 mt-2">
                   <button className="w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis"
-                  onClick={() => setShowDeposit(true)}>
+                    onClick={() => setShowDeposit(true)}>
                     Gửi
                   </button>
                   <button className=" w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis"
-                  onClick={() => setShowRedeem(true)}>
+                    onClick={() => setShowRedeem(true)}>
                     Rút
                   </button>
                 </div>
@@ -89,10 +135,12 @@ useEffect(() => {
             </div>
           </div>
         </div>
+
         {/* Transaction History */}
         <div className="bg-white p-6 rounded shadow">
           <h3 className="text-lg font-bold mb-4">Lịch sử giao dịch</h3>
           <Transaction></Transaction>
+
           {/* Page */}
           <div className="text-right mt-4">
             <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
@@ -116,29 +164,10 @@ useEffect(() => {
       </div>
 
       {/* Thanh toán hóa đơn */}
-      <div className="w-full lg:w-1/5 space-y-4">
-        {[...Array(3)].map((_, i) => (
-          <div className="p-4 bg-white shadow rounded" key={i}>
-            <div className="text-lg font-bold">Hóa đơn điện</div>
-            <div className="text-gray-500 mt-2">
-              Mã HD: {i === 0 ? "98765321" : i === 1 ? "98765421" : "98765421"}
-              <br />
-              Số tiền cần thanh toán: 1.000.000 VND
-            </div>
-            <button
-              className="mt-4 w-full px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200"
-              onClick={() => handlePaymentClick(i === 0 ? "98765321" : i === 1 ? "98765421" : "98765421")}
-            >
-              Thanh Toán
-            </button>
-          </div>
-        ))}
-      </div>
-      {/* Payment Modal */}
-      <PaymentModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        billData={selectedBill}
+      <Bills
+        data={bills}
+        balance={balance}
+        fetchPayBill={fetchPayBill}
       />
 
       {/* Transfer Modal */}
