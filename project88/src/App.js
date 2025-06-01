@@ -9,14 +9,7 @@ import ChangePassword from './features/auth/ChangePassword';
 import Profile from './features/user/Profile';
 import TransferForm from './features/home/Transfer';
 import Test from './features/Test';
-import EmployeeList from "./features/Employee/EmployeeList";
 import CreateEmployee from "./features/Employee/CreateEmployee";
-import EditEmployee from "./features/Employee/EditEmployee";
-
-
-
-
-
 
 function App() {
   return (
@@ -30,8 +23,8 @@ function App() {
         <Route path='/homepage' element={<HomePage />} />
         <Route path='/changePassword' element={<ChangePassword />} />
         <Route path='/Transfer' element={<TransferForm />} />
-
         <Route path='/test' element={<Test />} />
+        <Route path='/create-employee' element={<CreateEmployee />} />
       </Routes>
     </Router>
   );

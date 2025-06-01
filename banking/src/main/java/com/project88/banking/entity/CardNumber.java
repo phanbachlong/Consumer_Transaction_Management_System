@@ -1,5 +1,6 @@
 package com.project88.banking.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +26,7 @@ public class CardNumber {
 	private int cardNumber;
 
 	@OneToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
+	@JoinColumn(name ="user_id", referencedColumnName = "user_id")
+	@JsonIgnore
 	private User user;
 }

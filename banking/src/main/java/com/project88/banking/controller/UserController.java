@@ -1,13 +1,15 @@
 package com.project88.banking.controller;
 
+import com.project88.banking.dto.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-// import org.springframework.security.core.Authentication;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +30,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
-// import java.util.HashMap;
-// import java.util.Map;
+
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/v1/users")
@@ -40,6 +44,7 @@ public class UserController {
 
     @Autowired
     private IBillService billService;
+
 
     @Autowired
     private IDepositService depositService;
@@ -64,28 +69,22 @@ public class UserController {
         return new ResponseEntity<>(usersPage, HttpStatus.OK);
     }
 
-    @PutMapping("/transfer")
-    public void tranfer(@RequestBody TransferDTO form) {
-        userService.transfer(form);
-    }
 
+    @PutMapping("/transfer")
+    public void transfer(@RequestBody TransferDTO form) {
+    	userService.transfer(form);
+    }
+    
     @GetMapping()
-    public String findUserByCardNumber(@RequestParam(name = "cardNumber") int cardNumber) {
-        String userName = userService.findUserByCardNumber(cardNumber);
-        return userName;
+    public String findUserByCardNumber (@RequestParam(name = "cardNumber") int cardNumber) {
+    	String userName = userService.findUserByCardNumber(cardNumber);
+    	return userName;
     }
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile() {
-        ProfileDTO profileDTO = userService.getProfile((short) 1);
+        ProfileDTO profileDTO = userService.getProfile(1L);
         return new ResponseEntity<>(profileDTO, HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}")
-    public UserDTOv2 getUserById(@PathVariable(name = "id") short id) {
-        User user = userService.findUserById(id);
-        UserDTOv2 userDTOv2 = modelMapper.map(user, UserDTOv2.class);
-        return userDTOv2;
     }
 
     @PutMapping("/profile")
@@ -119,4 +118,40 @@ public class UserController {
 
     }
 
+    //them user (phan minh)
+    @PostMapping("/new")
+    public ResponseEntity<User> craeteUser(@RequestBody CreateUserDTO createUserDTO) {
+        User user = userService.createUser(createUserDTO);
+        return ResponseEntity.ok(user);
+    }
+
+    //chinh sua user theo user_id (phan minh)
+    @PutMapping("{userId}")
+    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody UpdateUserDTO updateUserDTO) {
+        try {
+            User user = userService.updateUser(userId, updateUserDTO);
+            return ResponseEntity.ok(user);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(null);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(404).body(null);
+        }
+    }
+
+    //lay thong tin user theo userId (phan minh)
+    @GetMapping("{userId}")
+    public ResponseEntity<User> getUser(@PathVariable Long userId) {
+        User user = userService.getUserById(userId);
+        return ResponseEntity.ok(user);
+    }
+
+    //hien thị toan bo employee (phan minh)
+    @GetMapping("/employee")
+    public ResponseEntity<Page<User>> getAllUsers(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<User> users = userService.getAllUsers(page, size);
+        return ResponseEntity.ok(users);
+    }
 }
