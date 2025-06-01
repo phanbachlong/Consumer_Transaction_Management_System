@@ -1,5 +1,7 @@
 package com.project88.banking.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,8 +11,10 @@ import org.springframework.stereotype.Component;
 import com.project88.banking.dto.ChangeProfileDTO;
 import com.project88.banking.dto.ProfileDTO;
 import com.project88.banking.dto.TransferDTO;
+import com.project88.banking.entity.Bill;
 import com.project88.banking.entity.TransactionHistory;
 import com.project88.banking.entity.User;
+import com.project88.banking.repository.IBillRepository;
 import com.project88.banking.repository.ITransactionRepository;
 import com.project88.banking.repository.IUserRepository;
 
@@ -27,6 +31,12 @@ public class UserService implements IUserService {
 
 	@Autowired
 	private ITransactionRepository transactionRepository;
+	
+	@Autowired
+	private IBillRepository billRepository;
+	
+	@Autowired
+	private IDepositService depositService;
 
 	@Override
 	public void registerUser(User user) {
@@ -122,4 +132,6 @@ public class UserService implements IUserService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+
 }

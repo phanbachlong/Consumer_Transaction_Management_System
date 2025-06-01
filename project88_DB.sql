@@ -47,6 +47,15 @@ CREATE TABLE IF NOT EXISTS `transaction_history`(
     CONSTRAINT fk_trans_user FOREIGN KEY (user_id) REFERENCES `user` (user_id)
 );
 
+CREATE TABLE IF NOT EXISTS `bill`(
+	bill_Id 		INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    bill_name 		VARCHAR(80) NOT NULL,
+    createDate 		DATE default(CURRENT_DATE),
+    user_id 		TINYINT NOT NULL,
+    bill_amount INT NOT NULL,
+    FOREIGN KEY		(user_id) REFERENCES `user` (user_id)
+)AUTO_INCREMENT = 985321;
+
 
 -- insert value to user 
 insert into `user`(firstName, lastName, username, email, gender, phone, cccd, birth, `password`, avatarUrl, `role`, `status`,balance) values("Phan Trong", "Vinh", "phtrvinh", "1phantrongvinh98@gmail.com", "Male", "0772661877", "079098009123","1998-01-01", "123456", "a",'Admin',1,1000000);
@@ -55,4 +64,11 @@ insert into `user`(firstName, lastName, username, email, gender, phone, cccd, bi
 insert into `transaction_history`(transType, content, user_id, fee) values("CK", "abc123", 1, 100000);
 
 INSERT INTO `Card_Number` (user_id) values (1);
-INSERT INTO `Card_Number` (user_id) values (2)
+INSERT INTO `Card_Number` (user_id) values (2);
+
+INSERT INTO `bill` (bill_name, createDate, user_id, bill_amount) VALUES
+('Electricity Bill', CURRENT_DATE, 1, 500000),
+('Water Bill', CURRENT_DATE, 1, 300000),
+('Internet Bill', CURRENT_DATE, 1, 400000),
+('Rent', CURRENT_DATE, 2, 1500000),
+('Electricity Bill', CURRENT_DATE, 2, 700000);
