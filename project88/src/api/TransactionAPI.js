@@ -1,14 +1,13 @@
 import api from "./axiosClient";
 
-class TransactionApi {
-    constructor() {
-        this.url = '/transaction'
-    }
+const url = '/transaction'
 
-    getTransaction = (userID) => {
-        return api.get(this.url, { params: { userID } })
-    }
+const getTransaction = (userID) => {
+    return api.get(url, { params: { userID } })
 }
 
-const transactionApi = new TransactionApi();
+const transactionApi = {
+    getTransaction,
+};
+
 export default transactionApi;

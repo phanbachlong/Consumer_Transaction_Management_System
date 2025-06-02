@@ -25,6 +25,8 @@ const EmployeeList = () => {
     };
 
     const handleEdit = (employee) => {
+        console.log('Chỉnh sửa nhân viên:', employee.userID);
+
         navigate(`/edit-employee/${employee.userID}`, { state: employee });
     };
 
@@ -80,44 +82,44 @@ const EmployeeList = () => {
                 <div className="bg-white rounded-lg shadow">
                     <table className="min-w-full">
                         <thead className="bg-gray-50">
-                        <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">First Name</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Name</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CCCD</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gender</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                        </tr>
+                            <tr>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">First Name</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Name</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CCCD</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gender</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                        {filteredEmployees.map((employee) => (
-                            <tr key={employee.userID} className="hover:bg-gray-50">
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.userID}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.username}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.firstName}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.lastName}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.cccd}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.email}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.phone}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.gender}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    <div className="flex space-x-2">
-                                        <button
-                                            onClick={() => handleEdit(employee)}
-                                            className="text-blue-600 hover:text-blue-800 transition-colors"
-                                        >
-                                            <Edit className="w-4 h-4" />
-                                        </button>
-                                        <button className="text-red-600 hover:text-red-800 transition-colors">
-                                            <Trash2 className="w-4 h-4" />
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
+                            {filteredEmployees.map((employee) => (
+                                <tr key={employee.userID} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.userID}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.username}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.firstName}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.lastName}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.cccd}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.email}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.phone}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.gender}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <div className="flex space-x-2">
+                                            <button
+                                                onClick={() => handleEdit(employee)}
+                                                className="text-blue-600 hover:text-blue-800 transition-colors"
+                                            >
+                                                <Edit className="w-4 h-4" />
+                                            </button>
+                                            <button className="text-red-600 hover:text-red-800 transition-colors">
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>

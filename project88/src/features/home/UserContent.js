@@ -7,9 +7,12 @@ import UserAPIv2 from "../../api/UserAPIv2";
 import Bills from "./Bills";
 import TransactionService from "../user/TransactionService";
 import transactionApi from "../../api/TransactionAPI";
+import { transaction } from "../../redux/slices/transactionSlice";
+import { useDispatch } from "react-redux";
 
 const UserContent = () => {
   const userID = localStorage.getItem("userId");
+  const dispatch = useDispatch();
 
 
   const [user, setUser] = useState({
@@ -85,7 +88,7 @@ const UserContent = () => {
 
   const fetchTransaction = async () => {
     try {
-      const response = await transactionApi.getTransaction(userID);
+      const response = await dispatch(transaction(userID));
       if (response && response.data) {
         console.log("Transactions fetched successfully:", response.data);
       }

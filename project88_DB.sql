@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `bill`(
     bill_amount INT NOT NULL,
     FOREIGN KEY		(user_id) REFERENCES `user` (user_id)
 )AUTO_INCREMENT = 985321;
+ 
 
 
 -- insert value to user 
