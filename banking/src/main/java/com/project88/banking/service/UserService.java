@@ -85,14 +85,16 @@ public class UserService implements IUserService {
 		sender.setBalance(sender.getBalance() - money);
 		String senderTransType = "CK";
 		String senderContent = String.format("Chuyen Khoan den %s so tien %d", receiver.getFirstName(), money);
-		TransactionHistory senderTrans = new TransactionHistory(senderTransType, senderContent, -money, sender);
+		int newSenderBalance = sender.getBalance() - money;
+		TransactionHistory senderTrans = new TransactionHistory(senderTransType, senderContent, -money, sender, newSenderBalance);
 
 		// Receiver
 		receiver.setBalance(receiver.getBalance() + money);
 		String receiverTransType = "CK";
 		String receiverContent = String.format("Nhan tien tu %S so tien %d. Noi Dung: %s ", sender.getFirstName(),
 				money, form.getContent());
-		TransactionHistory receiverTrans = new TransactionHistory(receiverTransType, receiverContent, money, receiver);
+		int newReceiverBalance = receiver.getBalance() + money;
+		TransactionHistory receiverTrans = new TransactionHistory(receiverTransType, receiverContent, money, receiver,newReceiverBalance);
 
 		// luu vao database
 		userRepository.save(sender);
