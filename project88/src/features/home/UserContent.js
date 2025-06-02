@@ -79,6 +79,7 @@ const UserContent = () => {
       console.log("Bill paid successfully:", response.data);
       fetchBills();
       fetchUserBalance();
+      fetchTransaction();
     }
     catch (error) {
       alert(error.response?.data?.message || "Error paying bill");
