@@ -5,6 +5,8 @@ import Deposit from "./Deposit";
 import Redeem from "./Redeem";
 import UserAPIv2 from "../../api/UserAPIv2";
 import Bills from "./Bills";
+import TransactionService from "../user/TransactionService";
+import transactionApi from "../../api/TransactionAPI";
 
 const UserContent = () => {
   const userID = localStorage.getItem("userId");
@@ -81,7 +83,19 @@ const UserContent = () => {
     }
   }
 
+  const fetchTransaction = async () => {
+    try {
+      const response = await transactionApi.getTransaction(userID);
+      if (response && response.data) {
+        console.log("Transactions fetched successfully:", response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    }
+  }
+
   const handleAfterTransfer = () => {
+    fetchTransaction()
     fetchUserBalance();
   };
 
@@ -89,6 +103,7 @@ const UserContent = () => {
     fetchUserById();
     fetchUserBalance();
     fetchBills();
+    fetchTransaction();
   }, []);
 
   return (
