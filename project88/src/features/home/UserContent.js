@@ -9,6 +9,7 @@ import Bills from "./Bills";
 const UserContent = () => {
   const userID = localStorage.getItem("userId");
 
+
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -71,7 +72,7 @@ const UserContent = () => {
       const response = await UserAPIv2.PayBill(billId);
       alert("Thanh toán thành công!");
       console.log("Bill paid successfully:", response.data);
-      fetchBills(); 
+      fetchBills();
       fetchUserBalance();
     }
     catch (error) {
@@ -139,7 +140,7 @@ const UserContent = () => {
         {/* Transaction History */}
         <div className="bg-white p-6 rounded shadow">
           <h3 className="text-lg font-bold mb-4">Lịch sử giao dịch</h3>
-          <Transaction></Transaction>
+          <Transaction userID={userID}></Transaction>
 
           {/* Page */}
           <div className="text-right mt-4">

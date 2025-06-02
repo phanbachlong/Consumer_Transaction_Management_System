@@ -1,6 +1,5 @@
 package com.project88.banking.service;
 
-import com.project88.banking.service.ITransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +16,7 @@ public class TransactionService implements ITransactionService {
     private ITransactionRepository transactionRepository;
 
     @Override
-    public Page<TransactionHistoryDTO> getTransaction(short userID, Pageable pageable, TransactionFilter filter) {
+    public Page<TransactionHistoryDTO> getTransaction(long userID, Pageable pageable, TransactionFilter filter) {
         Page<TransactionHistoryDTO> transactionHistoryDTO = transactionRepository.findByUserID(userID,
                 filter.getStartDate(), filter.getEndDate(),
                 pageable);

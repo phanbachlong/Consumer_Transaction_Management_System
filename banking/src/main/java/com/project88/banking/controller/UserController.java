@@ -51,9 +51,7 @@ public class UserController {
 
     @PostMapping()
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
-        System.out.println("DTO birth: " + userDTO.getFirstName());
         User user = userDTO.toEntity();
-        System.out.println("Entity birth: " + user.getBirth());
         userService.registerUser(userDTO.toEntity());
 
         return new ResponseEntity<>("Register successfully!!", HttpStatus.OK);

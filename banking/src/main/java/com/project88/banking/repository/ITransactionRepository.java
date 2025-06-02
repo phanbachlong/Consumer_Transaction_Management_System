@@ -11,11 +11,11 @@ import org.springframework.data.repository.query.Param;
 import com.project88.banking.dto.TransactionHistoryDTO;
 import com.project88.banking.entity.TransactionHistory;
 
-public interface ITransactionRepository extends JpaRepository<TransactionHistory, Short> {
-    @Query("SELECT new com.project88.banking.dto.TransactionHistoryDTO(t.createDate, t.transType, t.content, t.fee, t.user.balance) "
-            + "FROM TransactionHistory t WHERE t.user.userID = :userID AND (:startDate IS NULL OR t.createDate >= :startDate) "
-            + "AND (:endDate IS NULL OR t.createDate <= :endDate)")
-    public Page<TransactionHistoryDTO> findByUserID(@Param("userID") short userID,
-            @Param("startDate") LocalDate startDate,
-            @Param("endDate") LocalDate endDate, Pageable pageable);
+public interface ITransactionRepository extends JpaRepository<TransactionHistory, Long> {
+        @Query("SELECT new com.project88.banking.dto.TransactionHistoryDTO(t.createDate, t.transType, t.content, t.fee, t.user.balance) "
+                        + "FROM TransactionHistory t WHERE t.user.userID = :userID AND (:startDate IS NULL OR t.createDate >= :startDate) "
+                        + "AND (:endDate IS NULL OR t.createDate <= :endDate)")
+        public Page<TransactionHistoryDTO> findByUserID(@Param("userID") long userID,
+                        @Param("startDate") LocalDate startDate,
+                        @Param("endDate") LocalDate endDate, Pageable pageable);
 }
