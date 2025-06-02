@@ -28,7 +28,7 @@ public class TransactionHistory implements Serializable {
     @Id
     @Column(name = "`trans_id`")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private short transID;
+    private long transID;
 
     @Column(name = "createDate", updatable = false, insertable = false)
     private LocalDate createDate;

@@ -52,7 +52,6 @@ public class User implements Serializable {
     @Column(name = "gender", nullable = false)
     private String gender;
 
-
     @Column(name = "phone", length = 10, unique = true)
     private String phone;
 

@@ -17,7 +17,4 @@ public class TransactionHistoryDTO {
     private int fee;
     private int balance;
 
-    // public TransactionHistory toEntity() {
-    // return new TransactionHistory(transType, content, fee);
-    // }
 }

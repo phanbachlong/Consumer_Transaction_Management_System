@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping(value = "/api/v1/transaction")
@@ -24,9 +25,9 @@ public class TransactionController {
     private ITransactionService transactionService;
 
     @GetMapping()
-    public ResponseEntity<?> getTransactionHistory(Pageable pageable,
+    public ResponseEntity<?> getTransactionHistory(@RequestParam long userID, Pageable pageable,
             TransactionFilter filter) {
-        Page<TransactionHistoryDTO> transactionHistoryDTO = transactionService.getTransaction((short) 1, pageable,
+        Page<TransactionHistoryDTO> transactionHistoryDTO = transactionService.getTransaction(userID, pageable,
                 filter);
         return new ResponseEntity<>(transactionHistoryDTO, HttpStatus.OK);
     }

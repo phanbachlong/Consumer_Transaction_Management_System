@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { transaction } from "../../redux/slices/transactionSlice";
 
 
-const Transaction = () => {
+const Transaction = ({ userID }) => {
 
     const dispatch = useDispatch();
 
@@ -12,9 +12,10 @@ const Transaction = () => {
     const { transactions, loading, error } = useSelector((state) => state.transaction);
 
 
+
     useEffect(() => {
 
-        dispatch(transaction(1))
+        dispatch(transaction(userID))
 
     }, [dispatch])
 
