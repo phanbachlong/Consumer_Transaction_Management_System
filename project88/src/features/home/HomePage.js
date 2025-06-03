@@ -11,8 +11,8 @@ export default function HomePage() {
     localStorage.setItem("userId", 1);
     // const role = localStorage.getItem("role");
     // const role = "employee"; // testing
-    const role = "admin"; // testing
-    // const role = "user"; // testing
+    // const role = "admin"; // testing
+    const role = "user"; // testing
     useEffect(() => {
         document.body.className = theme === "light" ? "bg-gray-50" : "bg-gray-900 text-white";
     }, [theme]);

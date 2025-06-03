@@ -11,28 +11,28 @@ const Table = ({ initialValues, content }) => {
     const hasActionsColumn = Object.keys(initialValues).includes("Thao tác");
 
     return (
-        <table className="w-full border-collapse border border-gray-300" initialValues={initialValues} content={content}>
+        <table className="min-w-full" initialValues={initialValues} content={content}>
             <thead>
-                <tr className="bg-gray-100">
+                <tr className="bg-gray-50">
 
                     {Object.keys(initialValues).filter(filed => filed != "Thao tác").map((field, index) => (
-                        <th className="border border-gray-300 px-4 py-2" key={index}>{field}</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" key={index}>{field}</th>
                     ))}
-                    {hasActionsColumn && <th className="border border-gray-300 px-4 py-2">Thao tác</th>}
+                    {hasActionsColumn && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thao tác</th>}
                 </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-white divide-y divide-gray-200">
                 {content.map((row, index) => (
-                    <tr key={index} className="text-center">
+                    <tr key={index} className="hover:bg-gray-50">
                         {Object.entries(row).map(([key, value], i) => (
-                            <td key={i} className="border border-gray-300 px-4 py-2">
+                            <td key={i} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                 {key === "createDate" ? formatDate(value) : value}
                             </td>
 
                         ))}
 
                         {hasActionsColumn && (
-                            <td className="py-2 flex gap-4 border border-gray-200 ">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                                 {/* Edit icon */}
                                 <button
                                     type="button"
