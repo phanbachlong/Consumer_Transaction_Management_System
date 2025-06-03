@@ -111,58 +111,10 @@ public class UserService implements IUserService {
 		return name;
 	}
 
-	@Override
-	public User findUserById(short id) {
-		User user = userRepository.findById((long) id)
-				.orElseThrow(() -> new IllegalArgumentException("User không tồn tại với id = " + id));
-		return user;
-	}
 
-	// them user (phan minh)
-	@Override
-	public User createUser(CreateUserDTO createUserDTO) {
-		User user = new User();
-		user.setFirstName(createUserDTO.getFirstName());
-		user.setLastName(createUserDTO.getLastName());
-		user.setUsername(createUserDTO.getUsername());
-		user.setPassword(createUserDTO.getPassword());
-		user.setEmail(createUserDTO.getEmail());
-		user.setGender(createUserDTO.getGender());
-		user.setPhone(createUserDTO.getPhone());
-		user.setCccd(createUserDTO.getCccd());
 
-		return userRepository.save(user);
-	}
 
-	// chinh sua user (phan minh)
-	@Override
-	public User updateUser(Long userId, UpdateUserDTO updateUserDTO) {
-		Optional<User> optionalUser = userRepository.findById(userId);
 
-		if (!optionalUser.isPresent()) {
-			throw new RuntimeException("User not found"); // Ném ngoại lệ nếu không tìm thấy tài khoản
-		}
-
-		User user = optionalUser.get();
-		user.setUsername(user.getUsername());
-		user.setFirstName(updateUserDTO.getFirstName());
-		user.setLastName(updateUserDTO.getLastName());
-		user.setEmail(updateUserDTO.getEmail());
-		user.setGender(updateUserDTO.getGender());
-		user.setPhone(updateUserDTO.getPhone());
-		user.setCccd(updateUserDTO.getCccd());
-		user.setBirth(updateUserDTO.getBirth());
-		user.setRole(updateUserDTO.getRole());
-		user.setAvatarUrl(updateUserDTO.getAvatarUrl());
-
-		return userRepository.save(user);
-	}
-
-	// lay thong tin user theo userId (phan minh)
-	@Override
-	public User getUserById(Long userId) {
-		return userRepository.findByID(userId).toEntity();
-	}
 
 	// @Override
 	// public User getUserByCCCD(String cccd) {
@@ -186,10 +138,4 @@ public class UserService implements IUserService {
 
 	};
 
-	// lay thong tin cac employee(phan minh)
-	@Override
-	public Page<User> getAllUsers(int page, int size) {
-		Pageable pageable = PageRequest.of(page - 1, size); // page - 1 vì Pageable bắt đầu từ 0
-		return userRepository.findAll(pageable);
-	}
 }
