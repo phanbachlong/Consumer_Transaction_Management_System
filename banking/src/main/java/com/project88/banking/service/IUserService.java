@@ -25,7 +25,8 @@ public interface IUserService extends UserDetailsService {
 
     String findUserByCardNumber(int cardNumber);
 
-
     Page<GetAllUserDTO> findAllUsers(int size, int page);
+
+    User findUserById(short id);
 
 }
