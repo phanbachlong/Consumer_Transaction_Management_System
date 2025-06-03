@@ -5,9 +5,14 @@ import Deposit from "./Deposit";
 import Redeem from "./Redeem";
 import UserAPIv2 from "../../api/UserAPIv2";
 import Bills from "./Bills";
+import TransactionService from "../user/TransactionService";
+import transactionApi from "../../api/TransactionAPI";
+import { transaction } from "../../redux/slices/transactionSlice";
+import { useDispatch } from "react-redux";
 
 const UserContent = () => {
   const userID = localStorage.getItem("userId");
+  const dispatch = useDispatch();
 
 
   const [user, setUser] = useState({
@@ -74,6 +79,7 @@ const UserContent = () => {
       console.log("Bill paid successfully:", response.data);
       fetchBills();
       fetchUserBalance();
+      fetchTransaction();
     }
     catch (error) {
       alert(error.response?.data?.message || "Error paying bill");
@@ -81,7 +87,19 @@ const UserContent = () => {
     }
   }
 
+  const fetchTransaction = async () => {
+    try {
+      const response = await dispatch(transaction(userID));
+      if (response && response.data) {
+        console.log("Transactions fetched successfully:", response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    }
+  }
+
   const handleAfterTransfer = () => {
+    fetchTransaction()
     fetchUserBalance();
   };
 
@@ -89,6 +107,7 @@ const UserContent = () => {
     fetchUserById();
     fetchUserBalance();
     fetchBills();
+    fetchTransaction();
   }, []);
 
   return (

@@ -13,22 +13,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.project88.banking.dto.BillDTO;
-import com.project88.banking.dto.ChangeProfileDTO;
-import com.project88.banking.dto.DepositDTO;
-import com.project88.banking.dto.ProfileDTO;
-import com.project88.banking.dto.TransferDTO;
-import com.project88.banking.dto.UserDTO;
-import com.project88.banking.dto.UserDTOv2;
 import com.project88.banking.entity.Bill;
 import com.project88.banking.entity.Deposit;
 import com.project88.banking.entity.User;
 import com.project88.banking.service.IBillService;
 import com.project88.banking.service.IDepositService;
 import com.project88.banking.service.IUserService;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,6 +52,13 @@ public class UserController {
             @RequestParam(name = "page", defaultValue = "0") int page) {
         var usersPage = userService.findAllUsers(size, page);
         return new ResponseEntity<>(usersPage, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public UserDTOv2 getUserById(@PathVariable(name = "id") short id) {
+        User user = userService.findUserById(id);
+        UserDTOv2 userDTOv2 = modelMapper.map(user, UserDTOv2.class);
+        return userDTOv2;
     }
 
     @PutMapping("/transfer")
@@ -111,6 +108,7 @@ public class UserController {
         depositService.createDeposit(form, userId);
 
     }
+
 
 
 
