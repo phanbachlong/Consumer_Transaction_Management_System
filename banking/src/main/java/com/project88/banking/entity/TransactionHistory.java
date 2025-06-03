@@ -46,7 +46,7 @@ public class TransactionHistory implements Serializable {
 
     @Column(name = "fee", nullable = false)
     private int fee;
-    
+
     // văn thêm
     @Column(name = "end_balance", nullable = false)
     private int endBalance;
@@ -58,7 +58,7 @@ public class TransactionHistory implements Serializable {
         this.fee = fee;
     }
 
-    //văn thêm
+    // văn thêm
     public TransactionHistory(String transType, String content, int fee, User user, int endBalance) {
         this.transType = transType;
         this.content = content;
