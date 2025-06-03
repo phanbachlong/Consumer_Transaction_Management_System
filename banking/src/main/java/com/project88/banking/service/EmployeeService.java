@@ -1,11 +1,19 @@
 package com.project88.banking.service;
 
+import com.project88.banking.dto.CreateEmployeeDTO;
+import com.project88.banking.dto.UpdateEmployeeDTO;
+import com.project88.banking.entity.Status;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.project88.banking.dto.TopUpDTO;
 import com.project88.banking.entity.User;
 import com.project88.banking.repository.IEmployeeRepository;
+
+import java.util.Optional;
 
 @Service
 public class EmployeeService implements IEmployeeService {
@@ -17,12 +25,68 @@ public class EmployeeService implements IEmployeeService {
 	public void topUp(TopUpDTO form) {
 		short userID = form.getUserID();
 		int money = form.getMoney();
-		User u = employeeRepository.findById(userID).orElseThrow(() ->
+		User u = employeeRepository.findById((long) userID).orElseThrow(() ->
 			new IllegalArgumentException("User không tồn tại: " + userID)
 				);
 		int oldBalance = u.getBalance();
 		u.setBalance(oldBalance + money);
 		employeeRepository.save(u);
+	}
+
+
+	//lay thon tin cac employee (phan minh)
+	@Override
+	public Page<User> getAllEmployees(int page, int size) {
+		Pageable pageable = PageRequest.of(page - 1, size); // page - 1 vì Pageable bắt đầu từ 0
+		return employeeRepository.getAllEmployees(pageable);
+	}
+
+	//lay thong tin employee theo userId (phan minh)
+	@Override
+	public User getEmployeeById(Long userId) {
+		return employeeRepository.findEmployeeById(userId);
+	}
+
+	//update employee (phan minh)
+	@Override
+	public User updateEmployee(Long userId, UpdateEmployeeDTO dto) {
+		Optional<User> optionalUser = employeeRepository.findById(userId);
+
+		if (!optionalUser.isPresent()) {
+			throw new RuntimeException("User not found"); // Ném ngoại lệ nếu không tìm thấy tài khoản
+		}
+		User user = optionalUser.get();
+		user.setUsername(user.getUsername());
+		user.setFirstName(dto.getFirstName());
+		user.setLastName(dto.getLastName());
+		user.setEmail(dto.getEmail());
+		user.setGender(dto.getGender());
+		user.setPhone(dto.getPhone());
+		user.setCccd(dto.getCccd());
+		user.setBirth(dto.getBirth());
+		user.setPassword(dto.getPassword());
+		user.setRole(dto.getRole());
+		user.setStatus(Status.valueOf(dto.getStatus()));
+		user.setAvatarUrl(dto.getAvatarUrl());
+
+		return employeeRepository.save(user);
+	}
+
+	//them employee (phan minh)
+	@Override
+	public User createEmployee(CreateEmployeeDTO dto) {
+		User user = new User();
+		user.setUsername(dto.getUsername());
+		user.setFirstName(dto.getFirstName());
+		user.setLastName(dto.getLastName());
+		user.setEmail(dto.getEmail());
+		user.setGender(dto.getGender());
+		user.setPhone(dto.getPhone());
+		user.setCccd(dto.getCccd());
+		user.setRole(dto.getRole());
+		user.setPassword(dto.getPassword());
+
+		return employeeRepository.save(user);
 	}
 
 }

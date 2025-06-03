@@ -1,12 +1,24 @@
 package com.project88.banking.repository;
 
+import com.project88.banking.dto.ProfileDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.project88.banking.entity.User;
 
 @Repository
-public interface IEmployeeRepository extends JpaRepository<User, Short>, JpaSpecificationExecutor<User> {
+public interface IEmployeeRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
+    //lay thon tin cac employee (phan minh)
+    @Query("SELECT u FROM User u WHERE u.role = 'Employee' OR u.role = 'User'")
+    Page<User> getAllEmployees(Pageable pageable);
+
+    //lay thong tin employee theo userId (phan minh)
+    @Query("FROM User u WHERE u.userID = :userId AND u.role = 'Employee'")
+    User findEmployeeById(@Param("userId") Long userId);
 }

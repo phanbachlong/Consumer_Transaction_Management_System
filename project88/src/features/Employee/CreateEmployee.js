@@ -27,17 +27,14 @@ export default function CreateEmployee({ onCancel }) {
       lastName: formData.lastName,
       username: formData.username,
       email: formData.email,
-      birth: "", // không có trường nhập -> để rỗng
-      avatarUrl: "", // không có trường nhập -> để rỗng
       cccd: formData.identification,
       phone: formData.phoneNumber,
       gender: formData.gender,
-      role: "", // không có trường nhập -> để rỗng
       password: formData.password,
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/users/new', payload);
+      const response = await axios.post('http://localhost:8080/api/v1/employees', payload);
       console.log('User created:', response.data);
       alert('Tạo người dùng thành công!');
     } catch (error) {

@@ -2,15 +2,15 @@ package com.project88.banking.service;
 
 import java.util.List;
 
+import com.project88.banking.entity.Bill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.project88.banking.entity.Bill;
 import com.project88.banking.entity.TransactionHistory;
 import com.project88.banking.entity.User;
 import com.project88.banking.repository.IBillRepository;
 import com.project88.banking.repository.ITransactionRepository;
 import com.project88.banking.repository.IUserRepository;
+
 
 import jakarta.transaction.Transactional;
 
@@ -28,7 +28,7 @@ public class BillService implements IBillService {
 	private IUserRepository userRepository;
 	
 	@Override
-	public List<Bill>  findBillByUserId(short userId) {
+	public List<Bill> findBillByUserId(short userId) {
 		List<Bill> bills = billRepository.findBillByUserId(userId);
 		return bills;
 	}
