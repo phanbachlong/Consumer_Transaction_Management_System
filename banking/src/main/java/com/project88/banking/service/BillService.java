@@ -47,8 +47,8 @@ public class BillService implements IBillService {
 		if (oldBalance < billAmount) {
 			throw new IllegalStateException("Không đủ số dư!");
 		}
-		
-		TransactionHistory trans = new TransactionHistory("HD",content,-billAmount,user);
+		int newBalance = oldBalance - billAmount;
+		TransactionHistory trans = new TransactionHistory("HD",content,-billAmount,user,newBalance);
 		user.setBalance(oldBalance - billAmount);
 		
 		transactionRepository.save(trans);
