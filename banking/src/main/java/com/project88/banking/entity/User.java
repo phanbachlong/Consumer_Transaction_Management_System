@@ -86,7 +86,7 @@ public class User implements Serializable {
     private CardNumber cardNumber;
 
     public User(String firstName, String lastName, String username, String email, String gender, String cccd,
-            LocalDate birth, String password) {
+                LocalDate birth, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -98,7 +98,7 @@ public class User implements Serializable {
     }
 
     public User(String firstName, String lastName, String username, String email, String gender, String cccd,
-            String phone, LocalDate birth, String avatarUrl) {
+                String phone, LocalDate birth, String avatarUrl) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
