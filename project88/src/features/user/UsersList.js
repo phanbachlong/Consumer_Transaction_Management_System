@@ -4,7 +4,7 @@ import { getAllUsers } from "../../redux/slices/userSlice";
 import Table from "../../components/Table";
 
 
-const UsersContent = () => {
+const UserList = () => {
     const dispatch = useDispatch();
 
     const initialValues = { "ID": "", "Tên": "", "Email": "", "Số điện thoại": "", "Số thẻ": "", "Thao tác": "" };
@@ -21,4 +21,4 @@ const UsersContent = () => {
     )
 }
 
-export default UsersContent;
+export default UserList;

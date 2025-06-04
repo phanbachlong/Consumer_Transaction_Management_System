@@ -59,6 +59,13 @@ public class UserService implements IUserService {
 	}
 
 	@Override
+	public User findUserById(short id) {
+		User user = userRepository.findById((long) id)
+				.orElseThrow(() -> new IllegalArgumentException("User không tồn tại với id = " + id));
+		return user;
+	}
+
+	@Override
 	public Page<GetAllUserDTO> findAllUsers(int size, int page) {
 		Pageable pageable = PageRequest.of(page, size);
 		return userRepository.findAllUsers(pageable);
@@ -86,7 +93,8 @@ public class UserService implements IUserService {
 		String senderTransType = "CK";
 		String senderContent = String.format("Chuyen Khoan den %s so tien %d", receiver.getFirstName(), money);
 		int newSenderBalance = sender.getBalance() - money;
-		TransactionHistory senderTrans = new TransactionHistory(senderTransType, senderContent, -money, sender, newSenderBalance);
+		TransactionHistory senderTrans = new TransactionHistory(senderTransType, senderContent, -money, sender,
+				newSenderBalance);
 
 		// Receiver
 		receiver.setBalance(receiver.getBalance() + money);
@@ -94,7 +102,8 @@ public class UserService implements IUserService {
 		String receiverContent = String.format("Nhan tien tu %S so tien %d. Noi Dung: %s ", sender.getFirstName(),
 				money, form.getContent());
 		int newReceiverBalance = receiver.getBalance() + money;
-		TransactionHistory receiverTrans = new TransactionHistory(receiverTransType, receiverContent, money, receiver,newReceiverBalance);
+		TransactionHistory receiverTrans = new TransactionHistory(receiverTransType, receiverContent, money, receiver,
+				newReceiverBalance);
 
 		// luu vao database
 		userRepository.save(sender);
@@ -109,59 +118,6 @@ public class UserService implements IUserService {
 		User u = userRepository.findUserByCardNumber(cardNumber);
 		String name = u.getFirstName() + " " + u.getLastName();
 		return name;
-	}
-
-	@Override
-	public User findUserById(short id) {
-		User user = userRepository.findById((long) id)
-				.orElseThrow(() -> new IllegalArgumentException("User không tồn tại với id = " + id));
-		return user;
-	}
-
-	// them user (phan minh)
-	@Override
-	public User createUser(CreateUserDTO createUserDTO) {
-		User user = new User();
-		user.setFirstName(createUserDTO.getFirstName());
-		user.setLastName(createUserDTO.getLastName());
-		user.setUsername(createUserDTO.getUsername());
-		user.setPassword(createUserDTO.getPassword());
-		user.setEmail(createUserDTO.getEmail());
-		user.setGender(createUserDTO.getGender());
-		user.setPhone(createUserDTO.getPhone());
-		user.setCccd(createUserDTO.getCccd());
-
-		return userRepository.save(user);
-	}
-
-	// chinh sua user (phan minh)
-	@Override
-	public User updateUser(Long userId, UpdateUserDTO updateUserDTO) {
-		Optional<User> optionalUser = userRepository.findById(userId);
-
-		if (!optionalUser.isPresent()) {
-			throw new RuntimeException("User not found"); // Ném ngoại lệ nếu không tìm thấy tài khoản
-		}
-
-		User user = optionalUser.get();
-		user.setUsername(user.getUsername());
-		user.setFirstName(updateUserDTO.getFirstName());
-		user.setLastName(updateUserDTO.getLastName());
-		user.setEmail(updateUserDTO.getEmail());
-		user.setGender(updateUserDTO.getGender());
-		user.setPhone(updateUserDTO.getPhone());
-		user.setCccd(updateUserDTO.getCccd());
-		user.setBirth(updateUserDTO.getBirth());
-		user.setRole(updateUserDTO.getRole());
-		user.setAvatarUrl(updateUserDTO.getAvatarUrl());
-
-		return userRepository.save(user);
-	}
-
-	// lay thong tin user theo userId (phan minh)
-	@Override
-	public User getUserById(Long userId) {
-		return userRepository.findByID(userId).toEntity();
 	}
 
 	// @Override
@@ -186,10 +142,4 @@ public class UserService implements IUserService {
 
 	};
 
-	// lay thong tin cac employee(phan minh)
-	@Override
-	public Page<User> getAllUsers(int page, int size) {
-		Pageable pageable = PageRequest.of(page - 1, size); // page - 1 vì Pageable bắt đầu từ 0
-		return userRepository.findAll(pageable);
-	}
 }

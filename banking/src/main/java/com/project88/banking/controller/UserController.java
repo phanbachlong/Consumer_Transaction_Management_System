@@ -109,39 +109,9 @@ public class UserController {
 
     }
 
-    // them user (phan minh)
-    @PostMapping("/new")
-    public ResponseEntity<User> craeteUser(@RequestBody CreateUserDTO createUserDTO) {
-        User user = userService.createUser(createUserDTO);
-        return ResponseEntity.ok(user);
-    }
 
-    // chinh sua user theo user_id (phan minh)
-    @PutMapping("{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody UpdateUserDTO updateUserDTO) {
-        try {
-            User user = userService.updateUser(userId, updateUserDTO);
-            return ResponseEntity.ok(user);
-        } catch (IllegalArgumentException ex) {
-            return ResponseEntity.badRequest().body(null);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.status(404).body(null);
-        }
-    }
 
-    // lay thong tin user theo userId (phan minh)
-    // @GetMapping("{userId}")
-    // public ResponseEntity<User> getUser(@PathVariable Long userId) {
-    // User user = userService.getUserById(userId);
-    // return ResponseEntity.ok(user);
-    // }
 
-    // hien thị toan bo employee (phan minh)
-    @GetMapping("/employee")
-    public ResponseEntity<Page<User>> getAllEmployees(
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Page<User> users = userService.getAllUsers(page, size);
-        return ResponseEntity.ok(users);
-    }
+
+
 }

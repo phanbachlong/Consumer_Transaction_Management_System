@@ -10,7 +10,7 @@ const EmployeeList = () => {
     useEffect(() => {
         const fetchEmployees = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/v1/users/employee');
+                const response = await fetch('http://localhost:8080/api/v1/employees');
                 const data = await response.json();
                 setEmployees(data.content);
             } catch (error) {
@@ -29,6 +29,7 @@ const EmployeeList = () => {
 
         navigate(`/edit-employee/${employee.userID}`, { state: employee });
     };
+
 
     const filteredEmployees = employees.filter(emp =>
         emp.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||

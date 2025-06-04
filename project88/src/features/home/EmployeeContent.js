@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TopUp from "./TopUp";
-import UsersContent from "../user/UsersContent";
+import UsersList from "../user/UsersList";
 
 const customersLists = [
     {
@@ -113,7 +113,7 @@ const EmployeeContent = () => {
                             </button>
                         </div>
                     </div>
-                    <UsersContent></UsersContent>
+                    <UsersList></UsersList>
                     {/* Page */}
                     <div className="text-right mt-4">
                         <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">

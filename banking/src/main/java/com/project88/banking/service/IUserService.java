@@ -25,20 +25,8 @@ public interface IUserService extends UserDetailsService {
 
     String findUserByCardNumber(int cardNumber);
 
-    // them user (phan minh)
-    User createUser(CreateUserDTO createUserDTO);
-
-    // chinh sua user (phan minh)
-    User updateUser(Long userId, UpdateUserDTO updateUserDTO);
-
-    // lay thong tin user theo userId (phan minh)
-    User getUserById(Long userId);
-
-    // hien thị toan bo employee (phan minh)
-    Page<User> getAllUsers(int page, int size);
+    Page<GetAllUserDTO> findAllUsers(int size, int page);
 
     User findUserById(short id);
-
-    Page<GetAllUserDTO> findAllUsers(int size, int page);
 
 }

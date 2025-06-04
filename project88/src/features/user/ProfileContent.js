@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userProfile } from "../../redux/slices/userSlice";
 import { format } from "date-fns";
-import EditEmployee from "../../components/EditEmployee";
+import EditEmployee from "../Employee/EditEmployee";
+
 
 
 const ProfileContent = () => {

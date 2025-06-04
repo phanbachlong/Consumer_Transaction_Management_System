@@ -10,6 +10,8 @@ import Profile from './features/user/Profile';
 import TransferForm from './features/home/Transfer';
 import Test from './features/Test';
 import CreateEmployee from "./features/Employee/CreateEmployee";
+import EmployeeList from "./features/Employee/EmployeeList";
+import EditEmployee from "./features/Employee/EditEmployee";
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
         <Route path='/Transfer' element={<TransferForm />} />
         <Route path='/test' element={<Test />} />
         <Route path='/create-employee' element={<CreateEmployee />} />
+        <Route path='/list-employees' element={<EmployeeList />} />
+        <Route path="/edit-employee/:userId" element={<EditEmployee />} />
       </Routes>
     </Router>
   );
