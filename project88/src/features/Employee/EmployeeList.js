@@ -26,10 +26,53 @@ const EmployeeList = () => {
 
     const handleEdit = (employee) => {
         console.log('Chỉnh sửa nhân viên:', employee.userID);
-
         navigate(`/edit-employee/${employee.userID}`, { state: employee });
     };
 
+    const handleToggleStatus = async (userID) => {
+        try {
+            // Đảo trạng thái ACTIVE <-> NOT_ACTIVE
+            const updatedEmployees = employees.map(emp => {
+                if (emp.userID === userID) {
+                    return {
+                        ...emp,
+                        status: emp.status === 'ACTIVE' ? 'NOT_ACTIVE' : 'ACTIVE'
+                    };
+                }
+                return emp;
+            });
+            setEmployees(updatedEmployees);
+
+            const newStatus = updatedEmployees.find(emp => emp.userID === userID).status;
+            // Chuyển trạng thái sang số tương ứng nếu backend cần (0 hoặc 1)
+            const statusNumber = newStatus === 'ACTIVE' ? 1 : 0;
+
+            await fetch(`http://localhost:8080/api/v1/employees/${userID}/status`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: statusNumber }),
+            });
+        } catch (error) {
+            console.error('Lỗi khi cập nhật trạng thái:', error);
+        }
+    };
+
+    // Hàm mới xử lý xóa (đổi status thành 2)
+    const handleDelete = async (userID) => {
+        try {
+            // Gọi API cập nhật status = 2 (đã xóa)
+            await fetch(`http://localhost:8080/api/v1/employees/${userID}/status`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 2 }),
+            });
+
+            // Cập nhật state: loại bỏ nhân viên đã bị xóa khỏi danh sách hiện tại
+            setEmployees(prevEmployees => prevEmployees.filter(emp => emp.userID !== userID));
+        } catch (error) {
+            console.error('Lỗi khi xóa nhân viên:', error);
+        }
+    };
 
     const filteredEmployees = employees.filter(emp =>
         emp.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -83,44 +126,59 @@ const EmployeeList = () => {
                 <div className="bg-white rounded-lg shadow">
                     <table className="min-w-full">
                         <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">First Name</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Name</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CCCD</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gender</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                            </tr>
+                        <tr>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">First Name</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Name</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CCCD</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gender</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {filteredEmployees.map((employee) => (
-                                <tr key={employee.userID} className="hover:bg-gray-50">
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.userID}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.username}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.firstName}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.lastName}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.cccd}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.email}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.phone}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.gender}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        <div className="flex space-x-2">
-                                            <button
-                                                onClick={() => handleEdit(employee)}
-                                                className="text-blue-600 hover:text-blue-800 transition-colors"
-                                            >
-                                                <Edit className="w-4 h-4" />
-                                            </button>
-                                            <button className="text-red-600 hover:text-red-800 transition-colors">
-                                                <Trash2 className="w-4 h-4" />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
+                        {filteredEmployees.map((employee) => (
+                            <tr key={employee.userID} className="hover:bg-gray-50">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.userID}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.username}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.firstName}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.lastName}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.cccd}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.email}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.phone}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{employee.gender}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <label className="inline-flex relative items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={employee.status === 'ACTIVE'}
+                                            onChange={() => handleToggleStatus(employee.userID)}
+                                            className="sr-only peer"
+                                        />
+                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:bg-green-500 transition-all duration-300 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white relative"></div>
+                                    </label>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <div className="flex space-x-2">
+                                        <button
+                                            onClick={() => handleEdit(employee)}
+                                            className="text-blue-600 hover:text-blue-800 transition-colors"
+                                        >
+                                            <Edit className="w-4 h-4" />
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(employee.userID)}
+                                            className="text-black hover:text-gray-700 transition-colors"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                 </div>

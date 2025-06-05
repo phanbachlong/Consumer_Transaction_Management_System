@@ -110,6 +110,17 @@ public class UserController {
     }
 
 
+    @PostMapping("/top-up")
+    public ResponseEntity<String> topUpBalance(@RequestBody TopUpDTO dto) {
+        try {
+            userService.topUpBalance(dto);
+            return ResponseEntity.ok("Nạp tiền thành công");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 
 

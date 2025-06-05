@@ -2,7 +2,9 @@ package com.project88.banking.service;
 
 import com.project88.banking.dto.CreateEmployeeDTO;
 import com.project88.banking.dto.UpdateEmployeeDTO;
+import com.project88.banking.dto.UpdateStatusEmployeeDTO;
 import com.project88.banking.entity.Status;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,6 +43,13 @@ public class EmployeeService implements IEmployeeService {
 		return employeeRepository.getAllEmployees(pageable);
 	}
 
+	//lay thon tin cac employee da bi xoa (phan minh)
+	@Override
+	public Page<User> getDeletedEmployeeList(int page, int size) {
+		Pageable pageable = PageRequest.of(page - 1, size); // page - 1 vì Pageable bắt đầu từ 0
+		return employeeRepository.getDeletedEmployeeList(pageable);
+	}
+
 	//lay thong tin employee theo userId (phan minh)
 	@Override
 	public User getEmployeeById(Long userId) {
@@ -56,7 +65,7 @@ public class EmployeeService implements IEmployeeService {
 			throw new RuntimeException("User not found"); // Ném ngoại lệ nếu không tìm thấy tài khoản
 		}
 		User user = optionalUser.get();
-		user.setUsername(user.getUsername());
+		user.setUsername(dto.getUserName());
 		user.setFirstName(dto.getFirstName());
 		user.setLastName(dto.getLastName());
 		user.setEmail(dto.getEmail());
@@ -87,6 +96,24 @@ public class EmployeeService implements IEmployeeService {
 		user.setPassword(dto.getPassword());
 
 		return employeeRepository.save(user);
+	}
+
+	@Override
+	public User updateStatus(Long userId, UpdateStatusEmployeeDTO request) {
+		User user = employeeRepository.findById(userId)
+				.orElseThrow(() -> new EntityNotFoundException("Không tìm thấy người dùng với ID: " + userId));
+
+		user.setStatus(request.getStatus());
+		return employeeRepository .save(user);
+	}
+
+	@Override
+	public void deleteEmployee(Long userId) {
+		var existingGroups = employeeRepository.findById(userId);
+		if (existingGroups.isEmpty()) {
+			throw new RuntimeException("Employee not found");
+		}
+		employeeRepository.delete(existingGroups.get());
 	}
 
 }

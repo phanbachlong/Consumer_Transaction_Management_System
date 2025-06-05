@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import LoginPage from './features/auth/LoginPage';
@@ -12,25 +12,37 @@ import Test from './features/Test';
 import CreateEmployee from "./features/Employee/CreateEmployee";
 import EmployeeList from "./features/Employee/EmployeeList";
 import EditEmployee from "./features/Employee/EditEmployee";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import DeletedEmployees from "./features/Employee/DeletedEmployees";
 
 function App() {
+  const [theme, setTheme] = useState("light");
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === "light" ? "dark" : "light"));
+  };
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/fogotPassword" element={<FogotPassword />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/homepage' element={<HomePage />} />
-        <Route path='/changePassword' element={<ChangePassword />} />
-        <Route path='/Transfer' element={<TransferForm />} />
-        <Route path='/test' element={<Test />} />
-        <Route path='/create-employee' element={<CreateEmployee />} />
-        <Route path='/list-employees' element={<EmployeeList />} />
-        <Route path="/edit-employee/:userId" element={<EditEmployee />} />
-      </Routes>
-    </Router>
+      <Router>
+        <Header toggleTheme={toggleTheme} currentTheme={theme} />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/fogotPassword" element={<FogotPassword />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/homepage' element={<HomePage />} />
+          <Route path='/changePassword' element={<ChangePassword />} />
+          <Route path='/Transfer' element={<TransferForm />} />
+          <Route path='/test' element={<Test />} />
+          <Route path='/create-employee' element={<CreateEmployee />} />
+          <Route path='/list-employees' element={<EmployeeList />} />
+          <Route path="/edit-employee/:userId" element={<EditEmployee />} />
+          <Route path="/delete-employees" element={<DeletedEmployees />} />
+        </Routes>
+        <Footer toggleTheme={toggleTheme} currentTheme={theme} />
+      </Router>
   );
 }
 

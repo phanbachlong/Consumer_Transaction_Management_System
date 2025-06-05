@@ -34,4 +34,8 @@ public interface IUserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT new com.project88.banking.dto.GetAllUserDTO(u.userID, CONCAT(u.firstName, ' ', u.lastName), u.email, u.phone, c.cardNumber) FROM User u JOIN u.cardNumber c ")
     Page<GetAllUserDTO> findAllUsers(Pageable pageable);
+
+    @Modifying
+    @Query("UPDATE User u SET u.balance = u.balance + :amount WHERE u.userID = :userId")
+    void topUp(@Param("userId") Short userId, @Param("amount") Integer amount);
 }

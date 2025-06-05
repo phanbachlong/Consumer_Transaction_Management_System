@@ -1,18 +1,13 @@
 package com.project88.banking.controller;
 
-import com.project88.banking.dto.CreateEmployeeDTO;
-import com.project88.banking.dto.UpdateEmployeeDTO;
-import com.project88.banking.dto.UpdateUserDTO;
+import com.project88.banking.dto.*;
 import com.project88.banking.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.project88.banking.dto.TopUpDTO;
 import com.project88.banking.service.IEmployeeService;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/employees")
@@ -59,6 +54,29 @@ public class EmployeeController {
 	public ResponseEntity<User> createEmployee(@RequestBody CreateEmployeeDTO dto) {
 		User user = employeeService.createEmployee(dto);
 		return ResponseEntity.ok(user);
+	}
+
+	//update status employee (phan minh)
+	@PutMapping("/{userId}/status")
+	public ResponseEntity<User> updateStatus(@PathVariable Long userId, @RequestBody UpdateStatusEmployeeDTO request) {
+		User updatedUser = employeeService.updateStatus(userId, request);
+		return ResponseEntity.ok(updatedUser);
+	}
+
+	//lay thon tin cac employee da bi xoa (phan minh)
+	@GetMapping("/delete")
+	public ResponseEntity<Page<User>> getDeletedEmployeeList(
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "10") int size) {
+		Page<User> users = employeeService.getDeletedEmployeeList(page, size);
+		return ResponseEntity.ok(users);
+	}
+
+	//xoa employee
+	@DeleteMapping("/delete/{userId}")
+	public ResponseEntity<Object> deleteEmployee(@PathVariable Long userId) {
+		employeeService.deleteEmployee(userId);
+		return ResponseEntity.ok(null);
 	}
 
 }
