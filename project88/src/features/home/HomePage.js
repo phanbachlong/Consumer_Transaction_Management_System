@@ -23,7 +23,6 @@ export default function HomePage() {
 
     return (
         <div className="flex flex-col h-screen">
-            <Header toggleTheme={toggleTheme} currentTheme={theme} />
             {role === 'user' && (
                 <UserContent />)
             }
@@ -33,7 +32,6 @@ export default function HomePage() {
             {role === 'admin' && (
                 <EmployeeList />)
             }
-            <Footer />
         </div>
     );
 }

@@ -15,10 +15,14 @@ import com.project88.banking.entity.User;
 public interface IEmployeeRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
     //lay thon tin cac employee (phan minh)
-    @Query("SELECT u FROM User u WHERE u.role = 'Employee' OR u.role = 'User'")
+    @Query("SELECT u FROM User u WHERE u.role = 'Employee' AND (u.status = 0 OR u.status = 1)")
     Page<User> getAllEmployees(Pageable pageable);
 
     //lay thong tin employee theo userId (phan minh)
     @Query("FROM User u WHERE u.userID = :userId AND u.role = 'Employee'")
     User findEmployeeById(@Param("userId") Long userId);
+
+    //lay thon tin cac employee da bi xoa (phan minh)
+    @Query("SELECT u FROM User u WHERE u.role = 'Employee' AND u.status=2")
+    Page<User> getDeletedEmployeeList(Pageable pageable);
 }
