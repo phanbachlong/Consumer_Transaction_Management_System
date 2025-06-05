@@ -74,3 +74,8 @@ INSERT INTO `bill` (bill_name, createDate, user_id, bill_amount) VALUES
 ('Internet Bill', CURRENT_DATE, 1, 400000),
 ('Rent', CURRENT_DATE, 2, 1500000),
 ('Electricity Bill', CURRENT_DATE, 2, 700000);
+
+CREATE TABLE IF NOT EXISTS `log`(
+`date` 		DATETIME DEFAULT CURRENT_TIMESTAMP,
+content		VARCHAR(100)
+)
