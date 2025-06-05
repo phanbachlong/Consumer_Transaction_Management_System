@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `Registration_User_Token` (
 CREATE TABLE IF NOT EXISTS `transaction_history`(
 	trans_id TINYINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     transType ENUM('CK','HD','NT') NOT NULL, -- CK: Chuyển khoản, HD: Hóa đơn, NT: Nạp tiền 
-    createDate DATE default(CURRENT_DATE),
+    createDate DATETIME DEFAULT CURRENT_TIMESTAMP,
     content VARCHAR(800),
     user_id TINYINT NOT NULL,
     fee INT NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `bill`(
 insert into `user`(firstName, lastName, username, email, gender, phone, cccd, birth, `password`, avatarUrl, `role`, `status`,balance) values("Phan Trong", "Vinh", "phtrvinh", "1phantrongvinh98@gmail.com", "Male", "0772661877", "079098009123","1998-01-01", "123456", "a",'Admin',1,1000000);
 insert into `user`(firstName, lastName, username, email, gender, phone, cccd, birth, `password`, avatarUrl, `role`, `status`,balance) values(" Tran Huu Viet", "Van", "vantran195", "tran1951999@gmail.com", "Male", "0932006977", "01234455675","1990-01-01", "123456", "b",'Admin',1,2000000);
 -- insert value to Transaction History
-insert into `transaction_history`(transType, content, user_id, fee) values("CK", "abc123", 1, 100000);
+insert into `transaction_history`(transType, content, user_id, fee, end_balance) values("CK", "abc123", 1, -100000,1000000 - 100000);
 
 INSERT INTO `Card_Number` (user_id) values (1);
 INSERT INTO `Card_Number` (user_id) values (2);
