@@ -4,10 +4,18 @@ import { getAllUsers } from "../../redux/slices/userSlice";
 import Table from "../../components/Table";
 
 
-const UserList = () => {
+const UserList = ({ onTopUp }) => {
     const dispatch = useDispatch();
 
-    const initialValues = { "ID": "", "Tên": "", "Email": "", "Số điện thoại": "", "Số thẻ": "", "Thao tác": "" };
+    const initialValues = {
+        "ID": "",
+        "Tên": "",
+        "Email": "",
+        "Số điện thoại": "",
+        "Số thẻ": "",
+        "Thao tác": ""
+    };
+
     const { users, loading, error } = useSelector((state) => state.user);
 
     useEffect(() => {
@@ -16,9 +24,13 @@ const UserList = () => {
 
     return (
         <div>
-            <Table initialValues={initialValues} content={users.content || []}></Table>
+            <Table
+                initialValues={initialValues}
+                content={users.content || []}
+                onTopUp={onTopUp} //
+            />
         </div>
-    )
-}
+    );
+};
 
 export default UserList;

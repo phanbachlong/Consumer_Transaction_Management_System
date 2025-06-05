@@ -142,4 +142,18 @@ public class UserService implements IUserService {
 
 	};
 
+	public void topUpBalance(TopUpDTO dto) {
+		Optional<User> userOptional = userRepository.findById(Long.valueOf(dto.getUserID()));
+		if (userOptional.isEmpty()) {
+			throw new RuntimeException("Không tìm thấy User " /*+ dto.getUserID()*/);
+		}
+
+		if (dto.getMoney() == null || dto.getMoney() <= 0) {
+			throw new IllegalArgumentException("Số tiền phải >0");
+		}
+
+		userRepository.topUp(dto.getUserID(), dto.getMoney());
+	}
+
+
 }
