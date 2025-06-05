@@ -24,8 +24,9 @@ function App() {
   };
 
   return (
-      <Router>
-        <Header toggleTheme={toggleTheme} currentTheme={theme} />
+    <Router>
+      <Header toggleTheme={toggleTheme} currentTheme={theme} />
+      <div className='mt-20'>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -41,8 +42,10 @@ function App() {
           <Route path="/edit-employee/:userId" element={<EditEmployee />} />
           <Route path="/delete-employees" element={<DeletedEmployees />} />
         </Routes>
-        <Footer toggleTheme={toggleTheme} currentTheme={theme} />
-      </Router>
+      </div>
+
+      <Footer toggleTheme={toggleTheme} currentTheme={theme} />
+    </Router>
   );
 }
 

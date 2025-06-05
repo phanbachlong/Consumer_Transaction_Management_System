@@ -92,7 +92,7 @@ public class UserService implements IUserService {
 		sender.setBalance(sender.getBalance() - money);
 		String senderTransType = "CK";
 		String senderContent = String.format("Chuyen Khoan den %s so tien %d", receiver.getFirstName(), money);
-		int newSenderBalance = sender.getBalance() - money;
+		int newSenderBalance = sender.getBalance();
 		TransactionHistory senderTrans = new TransactionHistory(senderTransType, senderContent, -money, sender,
 				newSenderBalance);
 
@@ -101,7 +101,7 @@ public class UserService implements IUserService {
 		String receiverTransType = "CK";
 		String receiverContent = String.format("Nhan tien tu %S so tien %d. Noi Dung: %s ", sender.getFirstName(),
 				money, form.getContent());
-		int newReceiverBalance = receiver.getBalance() + money;
+		int newReceiverBalance = receiver.getBalance();
 		TransactionHistory receiverTrans = new TransactionHistory(receiverTransType, receiverContent, money, receiver,
 				newReceiverBalance);
 

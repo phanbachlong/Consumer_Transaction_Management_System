@@ -1,7 +1,7 @@
 package com.project88.banking.entity;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
@@ -31,7 +31,7 @@ public class TransactionHistory implements Serializable {
     private long transID;
 
     @Column(name = "createDate", updatable = false, insertable = false)
-    private LocalDate createDate;
+    private LocalDateTime createDate;
 
     @Column(name = "transType", nullable = false)
     private String transType;
@@ -51,7 +51,7 @@ public class TransactionHistory implements Serializable {
     @Column(name = "end_balance", nullable = false)
     private int endBalance;
 
-    public TransactionHistory(LocalDate createDate, String transType, String content, int fee) {
+    public TransactionHistory(LocalDateTime createDate, String transType, String content, int fee) {
         this.createDate = createDate;
         this.transType = transType;
         this.content = content;

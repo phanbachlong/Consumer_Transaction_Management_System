@@ -6,7 +6,7 @@ const Table = ({ initialValues, content, onTopUp }) => {
     const formatDate = (value) => {
         const date = new Date(value);
         // Kiểm tra nếu `value` là ngày hợp lệ
-        return isNaN(date.getTime()) ? value : format(date, 'dd-MM-yyyy');
+        return isNaN(date.getTime()) ? value : format(date, 'dd-MM-yyyy HH:mm:ss');
     };
 
     const hasActionsColumn = Object.keys(initialValues).includes("Thao tác");
@@ -27,9 +27,8 @@ const Table = ({ initialValues, content, onTopUp }) => {
                     <tr key={index} className="hover:bg-gray-50">
                         {Object.entries(row).map(([key, value], i) => (
                             <td key={i} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {key === "createDate" ? formatDate(value) : value}
+                                {key === "createDate" ? formatDate(value) : key === "endBalance" || key === "balance" || key === "fee" ? Number(value).toLocaleString("de-DE") : value}
                             </td>
-
                         ))}
 
                         {hasActionsColumn && (
