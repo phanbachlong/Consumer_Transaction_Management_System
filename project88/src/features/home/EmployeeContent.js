@@ -48,6 +48,7 @@ const EmployeeContent = () => {
     const [customers, setCustomers] = useState(customersLists);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [customerToDelete, setCustomerToDelete] = useState(null);
+    const [selectedUser, setSelectedUser] = useState(null);
 
     // Hàm xử lý xóa khách hàng
     const handleDeleteClick = (customer) => {
@@ -68,6 +69,13 @@ const EmployeeContent = () => {
         setShowDeleteConfirm(false);
         setCustomerToDelete(null);
     };
+
+
+    const openTopUpModal = (user) => {
+        setSelectedUser(user);
+        setShowTopUp(true);
+    };
+
 
     return (
         <div className="min-h-screen bg-[#fafafa]">
@@ -113,7 +121,9 @@ const EmployeeContent = () => {
                             </button>
                         </div>
                     </div>
-                    <UsersList></UsersList>
+                    <UsersList onTopUp={openTopUpModal} />
+
+
                     {/* Page */}
                     <div className="text-right mt-4">
                         <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
@@ -139,7 +149,10 @@ const EmployeeContent = () => {
             {showTopUp && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-                        <TopUp onClose={() => setShowTopUp(false)} />
+
+                        <TopUp user={selectedUser} onClose={() => setShowTopUp(false)} />
+
+
                     </div>
                 </div>
             )}

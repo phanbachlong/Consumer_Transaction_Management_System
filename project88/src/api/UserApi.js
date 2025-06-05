@@ -16,6 +16,11 @@ class UserApi {
     getAllUsers = () => {
         return axiosClient.get(`${this.url}/all`);
     }
+
+    topUp = (body) => {
+        return axiosClient.post("/users/top-up", body);
+    };
+
 }
 
 const userApi = new UserApi();

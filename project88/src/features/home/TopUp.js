@@ -1,19 +1,28 @@
 import React, { useState } from "react";
+import userApi from "../../api/UserApi";
 
-export default function TopUp({ onClose }) {
+export default function TopUp({ user, onClose }) {
+
   const [amount, setAmount] = useState("");
 
-  const handleTopUp = (e) => {  
+  const handleTopUp = async (e) => {
     e.preventDefault();
-    if (amount) {
-      alert(`Nạp tiền thành công: ${amount} VND`);
-      console.log("Top up confirmed");
-      console.log({ amount });
-      onClose(); // Close the modal after successful top-up
-    } else {
-      alert("Vui lòng nhập số tiền cần nạp");
+    if (!amount || !user) {
+      alert("Vui lòng nhập số tiền hợp lệ");
+      return;
     }
-  }
+
+    try {
+      const res = await userApi.topUp({
+        userID: user.userID,
+        money: Number(amount),
+      });
+      alert("✅ " + res.data); // "Nạp tiền thành công"
+      onClose(); // đóng modal
+    } catch (err) {
+      alert("❌ Lỗi khi nạp tiền: " + err.response?.data || err.message);
+    }
+  };
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white relative">
@@ -23,8 +32,8 @@ export default function TopUp({ onClose }) {
           A
         </div>
         <div>
-          <div className="font-bold text-base">Nguyễn Văn A</div>
-          <div className="text-gray-600 text-sm">STK: 0123456789</div>
+          <div className="font-bold text-base">{user?.fullName}</div>
+          <div className="text-gray-600 text-sm">STK: {user?.cardNumber}</div>
         </div>
       </div>
 
