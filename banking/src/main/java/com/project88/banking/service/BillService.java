@@ -28,7 +28,7 @@ public class BillService implements IBillService {
 	private IUserRepository userRepository;
 	
 	@Override
-	public List<Bill> findBillByUserId(short userId) {
+	public List<Bill> findBillByUserId(Long userId) {
 		List<Bill> bills = billRepository.findBillByUserId(userId);
 		return bills;
 	}

@@ -1,13 +1,12 @@
 package com.project88.banking.service;
 
 import com.project88.banking.dto.*;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +16,6 @@ import com.project88.banking.dto.ChangeProfileDTO;
 import com.project88.banking.dto.GetAllUserDTO;
 import com.project88.banking.dto.ProfileDTO;
 import com.project88.banking.dto.TransferDTO;
-import com.project88.banking.entity.Bill;
 import com.project88.banking.entity.TransactionHistory;
 import com.project88.banking.entity.User;
 import com.project88.banking.repository.IBillRepository;
@@ -39,12 +37,6 @@ public class UserService implements IUserService {
 	@Autowired
 	private ITransactionRepository transactionRepository;
 
-	@Autowired
-	private IBillRepository billRepository;
-
-	@Autowired
-	private IDepositService depositService;
-
 	@Override
 	public void registerUser(User user) {
 
@@ -52,11 +44,6 @@ public class UserService implements IUserService {
 		userRepository.save(user);
 	}
 
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public User findUserById(short id) {
@@ -153,6 +140,20 @@ public class UserService implements IUserService {
 		}
 
 		userRepository.topUp(dto.getUserID(), dto.getMoney());
+	}
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		 User user = userRepository.findByUsername(username);
+		 
+		 if (user == null) {
+			throw new UsernameNotFoundException(username);
+		}
+		 
+		 return new org.springframework.security.core.userdetails.User(
+				 user.getUsername(), 
+				 user.getPassword(), 
+				 AuthorityUtils.createAuthorityList(user.getRole().toString()));
 	}
 
 

@@ -22,7 +22,7 @@ public class DepositService implements IDepositService {
 	private IUserRepository userRepository;
 
 	@Override
-	public void createDeposit(DepositDTO form, short userId) {
+	public void createDeposit(DepositDTO form, Long userId) {
 		User user = userRepository.getUserById(userId);
 		Deposit deposit = new Deposit(form.getDepositName(),form.getInterest(),user ,form.getDepositAmount());
 		
