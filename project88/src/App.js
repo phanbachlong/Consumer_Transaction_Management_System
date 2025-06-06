@@ -26,7 +26,7 @@ function App() {
   return (
     <Router>
       <Header toggleTheme={toggleTheme} currentTheme={theme} />
-      <div className='mt-20'>
+      <div className='mt-16'>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />

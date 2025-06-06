@@ -22,8 +22,10 @@ public class TransactionSpecification implements Specification<TransactionHistor
     public Predicate toPredicate(Root<TransactionHistory> root, CriteriaQuery<?> query,
             CriteriaBuilder criteriaBuilder) {
 
-        if (criteria.getOperator().equalsIgnoreCase("Like")) {
-            return criteriaBuilder.like(root.get(criteria.getKey()), "%" + criteria.getValue() + "%");
+        if ("like".equalsIgnoreCase(criteria.getOperator()) && criteria.getValue() != null) {
+            return criteriaBuilder.like(
+                    criteriaBuilder.lower(root.get(criteria.getKey())),
+                    "%" + criteria.getValue().toString().toLowerCase() + "%");
         }
 
         if (criteria.getOperator().equalsIgnoreCase(">=")) {
