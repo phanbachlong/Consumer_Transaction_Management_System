@@ -2,8 +2,15 @@ import api from "./axiosClient";
 
 const url = '/transaction'
 
-const getTransaction = (userID) => {
-    return api.get(url, { params: { userID } })
+const getTransaction = (userID, page, size, filter) => {
+    return api.get(url, {
+        params: {
+            userID,
+            page,
+            size,
+            ...filter
+        },
+    });
 }
 
 const transactionApi = {

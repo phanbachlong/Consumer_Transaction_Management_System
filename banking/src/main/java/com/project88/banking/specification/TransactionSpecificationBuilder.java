@@ -12,10 +12,10 @@ public class TransactionSpecificationBuilder {
         this.filter = filter;
     }
 
-    @SuppressWarnings("deprecation")
     public Specification<TransactionHistory> build() {
         SearchCriteria startDateCriteria = new SearchCriteria("transactionDate", ">=", filter.getStartDate());
         SearchCriteria endDateCriteria = new SearchCriteria("transactionDate", "<=", filter.getEndDate());
+        SearchCriteria name = new SearchCriteria("name", "Like", filter.getName());
 
         Specification<TransactionHistory> where = null;
 
@@ -30,6 +30,14 @@ public class TransactionSpecificationBuilder {
                 where = where.and(new TransactionSpecification(endDateCriteria));
             } else {
                 where = new TransactionSpecification(endDateCriteria);
+            }
+        }
+
+        if (filter.getName() != null && !filter.getName().isEmpty()) {
+            if (where != null) {
+                where = where.and(new TransactionSpecification(name));
+            } else {
+                where = new TransactionSpecification(name);
             }
         }
 
