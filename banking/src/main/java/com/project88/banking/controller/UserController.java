@@ -91,7 +91,7 @@ public class UserController {
     }
 
     @GetMapping("/bills")
-    public List<BillDTO> getBill(@RequestParam(name = "userId") short userId) {
+    public List<BillDTO> getBill(@RequestParam(name = "userId") Long userId) {
         List<Bill> bills = billService.findBillByUserId(userId);
         return bills.stream()
                 .map(bill -> modelMapper.map(bill, BillDTO.class))
@@ -104,7 +104,7 @@ public class UserController {
     }
 
     @PutMapping("/deposit")
-    public void deposit(@RequestBody DepositDTO form, @RequestParam(name = "userId") short userId) {
+    public void deposit(@RequestBody DepositDTO form, @RequestParam(name = "userId") Long userId) {
         depositService.createDeposit(form, userId);
 
     }
