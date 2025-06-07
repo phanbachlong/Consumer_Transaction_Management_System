@@ -14,6 +14,9 @@ const ProfileContent = () => {
     const handleShowForm = () => {
         setShowForm(!showForm);
     };
+    const handleSubmit = () => {
+        alert("Cập nhật thông tin thành công!");
+    }
 
     useEffect(() => {
         dispatch(userProfile());
@@ -28,59 +31,70 @@ const ProfileContent = () => {
             <div className="flex-1 space-y-8">
                 <div className="bg-white p-6 rounded shadow">
                     {profile ? (
-                        <>
-                            {!showForm ? (
-                                <div className="flex items-center m-8 w-400 min-w-[430px]">
-                                    <div className="flex-none w-1/3 flex flex-col items-center text-center border-r border-gray-400">
-                                        <img src="/download.jpg" className="w-40 h-40 rounded-full object-cover" />
-                                        <div className="mt-8 font-bold text-xl">
-                                            <p>{profile.profile.firstName} {profile.profile.lastName}</p>
-                                        </div>
-                                        <div className="mt-4 font-semibold text-xs">
-                                            <p>{profile.profile.username}</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex-none w-2/3 ml-8">
-                                        <div className="mb-12 font-bold text-sm">
-                                            <p>Thông tin cá nhân</p>
-                                        </div>
-                                        <div className="mb-8 flex w-full">
-                                            <div className="ml-12 flex-none">Số tài khoản</div>
-                                            <div className="flex-none ml-auto mr-32">{profile.profile.cardNumber}</div>
-                                        </div>
-                                        <div className="mb-8 flex w-full">
-                                            <div className="ml-12 flex-none">Email:</div>
-                                            <div className="flex-none ml-auto mr-32">{profile.profile.email}</div>
-                                        </div>
-                                        <div className="mb-8 flex w-full">
-                                            <div className="ml-12 flex-none">Birth:</div>
-                                            <div className="flex-none ml-auto mr-32">{format(new Date(profile.profile.birth), 'dd-MM-yyyy')}</div>
-                                        </div>
-                                        <div className="mb-8 flex w-full">
-                                            <div className="ml-12 flex-none">CCCD:</div>
-                                            <div className="flex-none ml-auto mr-32">{profile.profile.cccd}</div>
-                                        </div>
-                                        <div className="mb-8 flex w-full">
-                                            <div className="ml-12 flex-none">SDT:</div>
-                                            <div className="flex-none ml-auto mr-32">{profile.profile.phone}</div>
-                                        </div>
-                                        <div className="mb-8 flex justify-end w-full">
-                                            <button
-                                                className="mt-4 w-1/4 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 mr-32"
-                                                onClick={handleShowForm}
-                                            >
-                                                Chỉnh sửa thông tin
-                                            </button>
-                                        </div>
-                                    </div>
+                        <div className="flex items-center m-8 w-400 min-w-[430px]">
+                            <div className="flex-none w-1/3 flex flex-col items-center text-center border-r border-gray-400">
+                                <img src="/download.jpg" className="w-40 h-40 rounded-full object-cover" />
+                                <div className="mt-8 font-bold text-xl">
+                                    <p>{profile.profile.firstName} {profile.profile.lastName} </p>
                                 </div>
-                            ) : (
-                                <EditEmployee profile={profile.profile} onCancel={handleShowForm} />
-                            )}
-                        </>
+                                <div className="mt-4 font-semibold text-xs">
+                                    <p>{profile.profile.username}</p>
+                                </div>
+                                {showForm && (
+                                    <button className="mt-4 w-1/2 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200">
+                                        Thay đổi ảnh
+                                    </button>
+                                )}
+                            </div>
+                            <div className="flex-none w-2/3 ml-8 ">
+                                <div className="mb-12 font-bold text-sm">
+                                    <p>Thông tin cá nhân</p>
+                                </div>
+                                <div className="mb-8 flex w-full">
+                                    <div className="ml-12 flex-none" >Số tài khoản:</div>
+                                    <div className="flex-none ml-auto mr-32">{profile.profile.cardNumber} </div>
+                                </div>
+                                <div className="mb-8 flex w-full">
+                                    <div className="ml-12 flex-none" >Email:</div>
+                                    <div className="flex-none ml-auto mr-32">{profile.profile.email} </div>
+                                </div>
+                                <div className="mb-8 flex w-full">
+                                    <div className="ml-12 flex-none" >birth:</div>
+                                    <div className="flex-none ml-auto mr-32">{format(new Date(profile.profile.birth), 'dd-MM-yyyy')}</div>
+                                </div>
+                                <div className="mb-8 flex w-full">
+                                    <div className="ml-12 flex-none" >CCCD:</div>
+                                    <div className="flex-none ml-auto mr-32">{profile.profile.cccd} </div>
+                                </div>
+                                <div className="mb-8 flex w-full">
+                                    <div className="ml-12 flex-none" >SDT:</div>
+                                    <div className="flex-none ml-auto mr-32">{profile.profile.phone} </div>
+                                </div>
+
+                                {showForm === false ? (
+                                    <div className="mb-8 flex justify-end w-full">
+                                        <button className="mt-4 w-1/4 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 mr-32" onClick={handleShowForm}>
+                                            chỉnh sửa thông tin
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="mb-8 flex justify-end w-full">
+                                        <button className="mt-4 w-1/4 px-4 py-2 bg-gray-100 text-red-600 rounded hover:bg-red-200 mr-8" onClick={handleShowForm}>
+                                            Hủy bỏ
+                                        </button>
+                                        <button className="mt-4 w-1/4 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 mr-32" onClick={handleSubmit}>
+                                            Cập nhật
+                                        </button>
+                                    </div>
+
+                                )}
+
+                            </div>
+                        </div>
                     ) : (
-                        <div>Không tìm thấy thông tin người dùng.</div>
+                        <div>{loading}</div>
                     )}
+
                 </div>
             </div>
         </div>

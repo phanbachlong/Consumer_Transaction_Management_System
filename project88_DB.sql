@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `bill`(
 
 
 -- insert value to user 
-insert into `user`(firstName, lastName, username, email, gender, phone, cccd, birth, `password`, avatarUrl, `role`, `status`,balance) values("Phan Trong", "Vinh", "phtrvinh", "1phantrongvinh98@gmail.com", "Male", "0772661877", "079098009123","1998-01-01", "123456", "a",'Admin',1,1000000);
+insert into `user`(firstName, lastName, username, email, gender, phone, cccd, birth, `password`, avatarUrl, `role`, `status`,balance) values("Phan Trong", "Vinh", "phtrvinh", "1phantrongvinh98@gmail.com", "Male", "0772661877", "079098009123","1998-01-01", "$2a$10$8rscmAyP5l1ijXPe.dNarembt.PgxrbfrK4LrH7K4U4o3cUMBIRG6", "a",'Admin',1,1000000);
 insert into `user`(firstName, lastName, username, email, gender, phone, cccd, birth, `password`, avatarUrl, `role`, `status`,balance) values(" Tran Huu Viet", "Van", "vantran195", "tran1951999@gmail.com", "Male", "0932006977", "01234455675","1990-01-01", "$2a$10$vEu9ah/1CLe.T9Oob/q4E.vgEEGYLiiCkNjaLCNa71P5lDVYZ5sam", "b",'Admin',1,2000000);
 insert into `user`(firstName, lastName, username, email, gender, phone, cccd, birth, `password`, avatarUrl, `role`, `status`,balance) values("Tran Viet","Hoang", "hoangtran","tranhoang001@gmail.com","Male","0932006978","01234455677","1990-02-01","$2a$10$8rscmAyP5l1ijXPe.dNarembt.PgxrbfrK4LrH7K4U4o3cUMBIRG6","c","User",1,5000000);
 -- insert value to Transaction History
