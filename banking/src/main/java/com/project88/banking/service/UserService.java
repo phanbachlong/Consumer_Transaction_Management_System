@@ -1,6 +1,7 @@
 package com.project88.banking.service;
 
 import com.project88.banking.dto.*;
+import com.project88.banking.security.CustomUserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -54,7 +55,7 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public User findUserById(short id) {
+	public User findUserById(Long id) {
 		User user = userRepository.findById((long) id)
 				.orElseThrow(() -> new IllegalArgumentException("User không tồn tại với id = " + id));
 		return user;
@@ -152,6 +153,24 @@ public class UserService implements IUserService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    User user = userRepository.findByUsername(username);
+    
+    if (user == null) {
+        throw new UsernameNotFoundException("User not found with username: " + username);
+    }
+    
+    return new CustomUserDetails(user);
+}
+
+
+	@Override
+	public User findUserByUsername(String username) {
+		User user = userRepository.findByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException("User not found with username: " + username);
+		}
+		return user;
+	}
 		User user = userRepository.findByUsername(username);
 
 		if (user == null) {

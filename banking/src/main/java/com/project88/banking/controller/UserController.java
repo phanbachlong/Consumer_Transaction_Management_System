@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserDTOv2 getUserById(@PathVariable(name = "id") short id) {
+    public UserDTOv2 getUserById(@PathVariable(name = "id") Long id) {
         User user = userService.findUserById(id);
         UserDTOv2 userDTOv2 = modelMapper.map(user, UserDTOv2.class);
         return userDTOv2;

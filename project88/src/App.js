@@ -28,7 +28,7 @@ function App() {
       <Header toggleTheme={toggleTheme} currentTheme={theme} />
       <div className='mt-16'>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/fogotPassword" element={<FogotPassword />} />
           <Route path='/register' element={<Register />} />

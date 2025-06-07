@@ -25,7 +25,7 @@ public class EmployeeService implements IEmployeeService {
 	
 	@Override
 	public void topUp(TopUpDTO form) {
-		short userID = form.getUserID();
+		Long userID = form.getUserID();
 		int money = form.getMoney();
 		User u = employeeRepository.findById((long) userID).orElseThrow(() ->
 			new IllegalArgumentException("User không tồn tại: " + userID)

@@ -2,17 +2,29 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Form from '../../components/Form';
 import { ValidationLogin } from '../../validation/ValidationLogin';
+import AuthAPI from '../../api/AuthAPI';
 
 const LoginPage = () => {
   const navigate = useNavigate();
 
   const initialValues = { username: '', password: '', remember: false };
 
-  const onSubmit = (data) => {
-    console.log('Form Data:', data);
-    alert('Đăng nhập thành công!');
-    // sau khi đăng nhập thành công => chuyển hướng đến homepage
-
+  const onSubmit = async (data) => {
+    try {
+      const response = await AuthAPI.login({
+        username: data.username,
+        password: data.password,
+      });
+      const token = response.data.token;
+      const userId = response.data.userId;
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', userId);
+      localStorage.setItem('role', response.data.role);
+      alert('Đăng nhập thành công!');
+      navigate('/homepage'); // chuyển hướng về homepage
+    } catch (error) {
+      alert('Đăng nhập thất bại!');
+    }
   };
 
   return (
