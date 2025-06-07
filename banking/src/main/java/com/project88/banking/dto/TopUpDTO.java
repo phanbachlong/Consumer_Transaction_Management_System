@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class TopUpDTO {
-	private Short userID;
+	private Long userID;
 	private Integer money; 
 }

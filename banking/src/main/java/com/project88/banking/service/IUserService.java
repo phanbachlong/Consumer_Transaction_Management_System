@@ -27,6 +27,8 @@ public interface IUserService extends UserDetailsService {
 
     Page<GetAllUserDTO> findAllUsers(int size, int page);
 
-    User findUserById(short id);
+    User findUserById(Long id);
     void topUpBalance(TopUpDTO dto);
+
+    User findUserByUsername(String username);
 }
