@@ -66,6 +66,7 @@ insert into `user`(firstName, lastName, username, email, gender, phone, cccd, bi
 insert into `user`(firstName, lastName, username, email, gender, phone, cccd, birth, `password`, avatarUrl, `role`, `status`,balance) values("Tran Viet","Hoang", "hoangtran","tranhoang001@gmail.com","Male","0932006978","01234455677","1990-02-01","$2a$10$8rscmAyP5l1ijXPe.dNarembt.PgxrbfrK4LrH7K4U4o3cUMBIRG6","c","User",1,5000000);
 -- insert value to Transaction History
 insert into `transaction_history`(transType, content, user_id, fee, end_balance) values("CK", "abc123", 1, -100000,1000000 - 100000);
+insert into `transaction_history`(transType, content, user_id, fee, end_balance) values("CK", "abc123", 3, -100000,1000000 - 100000);
 
 INSERT INTO `Card_Number` (user_id) values (1);
 INSERT INTO `Card_Number` (user_id) values (2);

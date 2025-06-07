@@ -6,7 +6,7 @@ import { set } from "lodash";
 import { current } from "@reduxjs/toolkit";
 
 
-const Transaction = ({ userID, params, startDate, endDate, currentPage }) => {
+const Transaction = ({ params, startDate, endDate, currentPage }) => {
 
     const dispatch = useDispatch();
 
@@ -20,9 +20,9 @@ const Transaction = ({ userID, params, startDate, endDate, currentPage }) => {
     }, [params, startDate, endDate]);
 
     useEffect(() => {
-        dispatch(transaction({ userID, page: currentPage, size, filter: { startDate: startDate, endDate: endDate, name: params } }))
+        dispatch(transaction({ page: currentPage, size, filter: { startDate: startDate, endDate: endDate, name: params } }))
 
-    }, [dispatch, userID, startDate, endDate, currentPage, size, params]);
+    }, [dispatch, startDate, endDate, currentPage, size, params]);
 
 
     return (

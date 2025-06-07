@@ -136,7 +136,7 @@ public class UserService implements IUserService {
 		user.setAvatarUrl(dto.getAvatarUrl());
 		userRepository.save(user);
 
-	};
+	}
 
 	public void topUpBalance(TopUpDTO dto) {
 		Optional<User> userOptional = userRepository.findById(Long.valueOf(dto.getUserID()));
@@ -153,15 +153,14 @@ public class UserService implements IUserService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = userRepository.findByUsername(username);
-    
-    if (user == null) {
-        throw new UsernameNotFoundException("User not found with username: " + username);
-    }
-    
-    return new CustomUserDetails(user);
-}
+		User user = userRepository.findByUsername(username);
 
+		if (user == null) {
+			throw new UsernameNotFoundException("User not found with username: " + username);
+		}
+
+		return new CustomUserDetails(user);
+	}
 
 	@Override
 	public User findUserByUsername(String username) {
@@ -170,17 +169,6 @@ public class UserService implements IUserService {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
 		return user;
-	}
-		User user = userRepository.findByUsername(username);
-
-		if (user == null) {
-			throw new UsernameNotFoundException(username);
-		}
-
-		return new org.springframework.security.core.userdetails.User(
-				user.getUsername(),
-				user.getPassword(),
-				AuthorityUtils.createAuthorityList(user.getRole().toString()));
 	}
 
 }

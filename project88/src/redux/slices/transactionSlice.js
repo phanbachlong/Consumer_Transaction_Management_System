@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import TransactionService from "../../features/user/TransactionService";
 
 
-export const transaction = createAsyncThunk('transaction/history', async ({ userID, page, size, filter }, { rejectWithValue }) => {
+export const transaction = createAsyncThunk('transaction/history', async ({ page, size, filter }, { rejectWithValue }) => {
     try {
         const formatStartDateTime = (dateStr) => {
             if (!dateStr) return null;
@@ -15,7 +15,7 @@ export const transaction = createAsyncThunk('transaction/history', async ({ user
             return dateStr.length === 10 ? `${dateStr}T23:59:59` : dateStr;
         }
         const params = { startDate: formatStartDateTime(filter.startDate) || null, endDate: formatEndDateTime(filter.endDate) || null, name: filter.name || null };
-        const res = await TransactionService.getTransaction(userID, page, size, params);
+        const res = await TransactionService.getTransaction(page, size, params);
 
         return res.data;
     } catch (error) {

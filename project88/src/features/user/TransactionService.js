@@ -1,8 +1,8 @@
 import transactionApi from "../../api/TransactionAPI";
 
 const TransactionService = {
-    getTransaction: async (userID, page, size, filter) => {
-        return await transactionApi.getTransaction(userID, page, size, filter);
+    getTransaction: async (page, size, filter) => {
+        return await transactionApi.getTransaction(page, size, filter);
     }
 }
 

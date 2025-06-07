@@ -25,10 +25,10 @@ import java.util.Map;
 @RestController
 @RequestMapping(value = "/api/v1/auth")
 public class AuthController {
-	
-	@Autowired
+
+    @Autowired
     private IUserService userService;
-	
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -41,8 +41,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-        );
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateToken((UserDetails) authentication.getPrincipal());
@@ -55,9 +54,10 @@ public class AuthController {
         response.put("token", jwt);
         response.put("userId", user.getUserID());
         response.put("role", user.getRole());
+        response.put("username", user.getUsername());
         return ResponseEntity.ok(response);
     }
-    
+
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
         User user = userDTO.toEntity();
@@ -65,7 +65,7 @@ public class AuthController {
 
         return new ResponseEntity<>("Register successfully!!", HttpStatus.OK);
     }
-    
+
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
         String token = jwtUtils.getJwtFromRequest(request);
