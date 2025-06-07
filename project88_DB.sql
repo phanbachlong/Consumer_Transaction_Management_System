@@ -56,6 +56,19 @@ CREATE TABLE IF NOT EXISTS `bill`(
     bill_amount INT NOT NULL,
     FOREIGN KEY		(user_id) REFERENCES `user` (user_id)
 )AUTO_INCREMENT = 985321;
+
+CREATE TABLE IF NOT EXISTS `deposit` (
+    deposit_Id 		INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    deposit_name 	VARCHAR(100) NOT NULL,
+    createDate 		DATE NOT NULL DEFAULT(CURRENT_DATE),
+    interest_rate 	FLOAT NOT NULL,
+    term_months 	INT NOT NULL,
+    transaction_id	VARCHAR(50) UNIQUE KEY,
+    user_id 		TINYINT NOT NULL,
+    deposit_amount 	INT NOT NULL,
+    `status` 		ENUM('ACTIVE', 'REDEEMED', 'MATURED') NOT NULL DEFAULT 'ACTIVE', -- ACTIVE: Đang hoạt động, REDEEMED: Đã tất toán, MATURED: Đã đáo hạn
+    FOREIGN KEY (user_id) REFERENCES `user` (user_id)
+);
  
 
 
@@ -74,3 +87,9 @@ INSERT INTO `bill` (bill_name, createDate, user_id, bill_amount) VALUES
 ('Internet Bill', CURRENT_DATE, 1, 400000),
 ('Rent', CURRENT_DATE, 2, 1500000),
 ('Electricity Bill', CURRENT_DATE, 2, 700000);
+
+INSERT INTO `deposit` (deposit_name, interest_rate, term_months, user_id, deposit_amount, `status`) VALUES
+('Sổ tiết kiệm 1', 4.20, 3, 1, 200000, 'ACTIVE'),
+('Sổ tiết kiệm 2', 4.80, 6, 1, 300000, 'ACTIVE'),
+('Sổ tiết kiệm 3', 5.20, 12, 2, 100000, 'REDEEMED'),
+('Sổ tiết kiệm 4', 3.80, 1, 2, 1000000, 'MATURED');
