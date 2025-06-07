@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import debounce from "lodash.debounce";
 
 const Search = ({ onChangeSearch, isReset }) => {
 

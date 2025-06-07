@@ -24,13 +24,9 @@ public class UserDTO {
     private LocalDate birth;
     private String gender;
     private String password;
-
-    // public User toEntity() {
-    // return new User(firstName, lastName, username, email, gender, cccd, birth,
-    // password);
-    // }
+    private String phone;
 
     public User toEntity() {
-        return new User(firstName, lastName, username, email, gender, cccd, birth, password);
+        return new User(firstName, lastName, username, email, gender, cccd, birth, password, phone);
     }
 }

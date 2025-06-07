@@ -12,7 +12,7 @@ const Transaction = ({ userID, params, startDate, endDate, currentPage }) => {
 
     const initialValues = { "Ngày": "", "Loại": "", "Nội dung": "", "Phí": "", "Số dư": "" };
     const { transactions, loading, error } = useSelector((state) => state.transaction);
-    const [size, setSize] = useState(1);
+    const [size, setSize] = useState(10);
 
     useEffect(() => {
         // reset về page 1 nếu là tìm kiếm

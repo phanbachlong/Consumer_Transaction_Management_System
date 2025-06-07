@@ -18,6 +18,10 @@ const Form = ({ initialValues, onSubmit, btn, validation }) => {
         reset();
     }
 
+    const today = new Date();
+    const pastDate = new Date(today);
+    pastDate.setFullYear(today.getFullYear() - 18);
+
     return (
         <form onSubmit={handleSubmit(handleFormSubmit)} initialValues={initialValues}>
             {Object.keys(initialValues).map((field, index) => (
@@ -66,7 +70,7 @@ const Form = ({ initialValues, onSubmit, btn, validation }) => {
                             name="birth"
                             control={control}
                             render={({ field }) => (
-                                <MyDatePicker {...field}></MyDatePicker>
+                                <MyDatePicker {...field} typeDate={pastDate}></MyDatePicker>
                             )}
                         >
                         </Controller>

@@ -45,6 +45,10 @@ const ProfileContent = () => {
                                             <p>Thông tin cá nhân</p>
                                         </div>
                                         <div className="mb-8 flex w-full">
+                                            <div className="ml-12 flex-none">Số tài khoản</div>
+                                            <div className="flex-none ml-auto mr-32">{profile.profile.cardNumber}</div>
+                                        </div>
+                                        <div className="mb-8 flex w-full">
                                             <div className="ml-12 flex-none">Email:</div>
                                             <div className="flex-none ml-auto mr-32">{profile.profile.email}</div>
                                         </div>

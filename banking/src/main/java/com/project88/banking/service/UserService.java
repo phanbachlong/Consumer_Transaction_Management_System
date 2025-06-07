@@ -16,9 +16,10 @@ import com.project88.banking.dto.ChangeProfileDTO;
 import com.project88.banking.dto.GetAllUserDTO;
 import com.project88.banking.dto.ProfileDTO;
 import com.project88.banking.dto.TransferDTO;
+import com.project88.banking.entity.CardNumber;
 import com.project88.banking.entity.TransactionHistory;
 import com.project88.banking.entity.User;
-import com.project88.banking.repository.IBillRepository;
+import com.project88.banking.repository.ICardRepository;
 import com.project88.banking.repository.ITransactionRepository;
 import com.project88.banking.repository.IUserRepository;
 
@@ -34,16 +35,23 @@ public class UserService implements IUserService {
 
 	@Autowired
 	private IUserRepository userRepository;
+
 	@Autowired
 	private ITransactionRepository transactionRepository;
+
+	@Autowired
+	private ICardRepository cardRepository;
 
 	@Override
 	public void registerUser(User user) {
 
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userRepository.save(user);
-	}
+		CardNumber cardNumber = new CardNumber();
+		cardNumber.setUser(user);
+		cardRepository.save(cardNumber);
 
+	}
 
 	@Override
 	public User findUserById(short id) {
@@ -113,7 +121,7 @@ public class UserService implements IUserService {
 	// return null;
 	// }
 
-	public ProfileDTO getProfile(Long userID) {
+	public ProfileDTO getProfile(long userID) {
 		return userRepository.findByID(userID);
 	}
 
@@ -132,7 +140,7 @@ public class UserService implements IUserService {
 	public void topUpBalance(TopUpDTO dto) {
 		Optional<User> userOptional = userRepository.findById(Long.valueOf(dto.getUserID()));
 		if (userOptional.isEmpty()) {
-			throw new RuntimeException("Không tìm thấy User " /*+ dto.getUserID()*/);
+			throw new RuntimeException("Không tìm thấy User " /* + dto.getUserID() */);
 		}
 
 		if (dto.getMoney() == null || dto.getMoney() <= 0) {
@@ -141,20 +149,19 @@ public class UserService implements IUserService {
 
 		userRepository.topUp(dto.getUserID(), dto.getMoney());
 	}
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		 User user = userRepository.findByUsername(username);
-		 
-		 if (user == null) {
+		User user = userRepository.findByUsername(username);
+
+		if (user == null) {
 			throw new UsernameNotFoundException(username);
 		}
-		 
-		 return new org.springframework.security.core.userdetails.User(
-				 user.getUsername(), 
-				 user.getPassword(), 
-				 AuthorityUtils.createAuthorityList(user.getRole().toString()));
-	}
 
+		return new org.springframework.security.core.userdetails.User(
+				user.getUsername(),
+				user.getPassword(),
+				AuthorityUtils.createAuthorityList(user.getRole().toString()));
+	}
 
 }
