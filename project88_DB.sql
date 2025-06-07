@@ -13,12 +13,13 @@ CREATE TABLE `user`(
     email 			VARCHAR(50) NOT NULL UNIQUE,
     gender 			ENUM('Male','Female','Other') NOT NULL,
     phone 			CHAR(10) NOT NULL UNIQUE,
-    cccd			CHAR(12) NOT NULL, 
+    cccd			CHAR(12) NOT NULL UNIQUE, 
     balance			INT NOT NULL DEFAULT 0,
-    birth			DATE,
+    birth			DATE NOT NULL,
     `password` 		VARCHAR(800) NOT NULL,
     `role` 			ENUM('Admin','Employee','User') DEFAULT 'User',
 	`status`		TINYINT DEFAULT 0, -- 0: Not Active, 1: Active
+    createdDate		DATETIME DEFAULT CURRENT_TIMESTAMP,
     `avatarUrl`		VARCHAR(500)
 );
 
@@ -38,13 +39,13 @@ CREATE TABLE IF NOT EXISTS `Registration_User_Token` (
 
 -- Create table Transaction History(Lịch sử giao dịch)
 CREATE TABLE IF NOT EXISTS `transaction_history`(
-	trans_id TINYINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    transType ENUM('CK','HD','NT') NOT NULL, -- CK: Chuyển khoản, HD: Hóa đơn, NT: Nạp tiền 
-    createDate DATETIME DEFAULT CURRENT_TIMESTAMP,
-    content VARCHAR(800),
-    user_id TINYINT NOT NULL,
-    fee INT NOT NULL,
-    end_balance INT NOT NULL DEFAULT(0),
+	trans_id 		TINYINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    transType 		ENUM('CK','HD','NT') NOT NULL, -- CK: Chuyển khoản, HD: Hóa đơn, NT: Nạp tiền 
+    createDate 		DATETIME DEFAULT CURRENT_TIMESTAMP,
+    content 		VARCHAR(800),
+    user_id 		TINYINT NOT NULL,
+    fee 			INT NOT NULL,
+    end_balance 	INT NOT NULL DEFAULT(0),
     CONSTRAINT fk_trans_user FOREIGN KEY (user_id) REFERENCES `user` (user_id)
 );
 

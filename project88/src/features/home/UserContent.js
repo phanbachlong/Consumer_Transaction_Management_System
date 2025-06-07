@@ -191,7 +191,7 @@ const UserContent = () => {
           <h3 className="text-lg font-bold mb-4">Lịch sử giao dịch</h3>
           <div className="flex justify-between mb-4">
             <div className="flex items-center space-x-2">
-              <span className="text-gray-500">Từ ngày</span>
+              <span className="text-gray-500">Từ ngày:</span>
               <MyDatePicker value={startDate} onChange={(date) => { setStartDate(date) }} typeDate={startToday}></MyDatePicker>
               <span className="text-gray-500">đến</span>
               <MyDatePicker value={endDate} onChange={(date) => setEndDate(date)} typeDate={endToday}></MyDatePicker>

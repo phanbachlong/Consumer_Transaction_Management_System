@@ -11,6 +11,7 @@ const RegisterService = {
             cccd: values.cccd,
             birth: values.birth,
             gender: values.gender,
+            phone: values.phone,
             password: values.password
         }
 

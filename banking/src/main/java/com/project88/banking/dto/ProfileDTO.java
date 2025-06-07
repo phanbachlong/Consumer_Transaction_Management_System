@@ -21,9 +21,11 @@ public class ProfileDTO {
     private String cccd;
     private String phone;
     private String gender;
+    private int cardNumber;
 
-    public User toEntity() {
-        return new User(firstName, lastName, username, email, gender, cccd, phone, birth, avatarUrl);
-    }
+    // public User toEntity() {
+    // return new User(firstName, lastName, username, email, gender, cccd, phone,
+    // birth, avatarUrl);
+    // }
 
 }

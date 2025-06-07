@@ -16,6 +16,10 @@ export const Validation = z.object({
     gender: z.enum(['Male', 'Female', 'Other'], {
         errorMap: () => ({ message: 'Vui lòng chọn giới tính' })
     }),
+    phone: z
+        .string()
+        .nonempty({ message: "Số điện thoại không được để trống" })
+        .regex(/^\d{10}$/, { message: "Số điện thoại phải gồm đúng 10 chữ số" }),
     password: z.string().min(6, "Mật khẩu cần ít nhất 6 ký tựtự"),
     confirmPassword: z
         .string()
