@@ -31,7 +31,10 @@ public class TransactionController {
             TransactionFilter filter) {
 
         String username = authentication.getName();
+        String role = authentication.getAuthorities().stream()
+                .findFirst().orElseThrow(() -> new RuntimeException("Role not found")).getAuthority();
         System.out.println("Username 1123: " + username);
+        System.out.println("Role 1123: " + role);
         Page<TransactionHistoryDTO> transactionHistoryDTO = transactionService.getTransaction(username, pageable,
                 filter);
 
