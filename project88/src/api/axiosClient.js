@@ -7,28 +7,32 @@ const axiosClient = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
-})
+});
 
-// axiosClient.interceptors.request.use((config) => {
-//     const token = localStorage.getItem('token');
-//     if (token) {
-//         config.headers.Authorization = `Bearer ${token}`;
-//     }
-//     return config;
-// }, (error) => {
-//     return Promise.reject(error);
-// });
+// Thêm interceptor để tự động gắn token vào header Authorization
+axiosClient.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
-// axiosClient.interceptors.response.use(
-//     response => response,
-//     error => {
-//         if (error.response && error.response.status === 401) {
-//             // Token hết hạn hoặc không hợp lệ
-//             localStorage.removeItem("token"); // Xóa token khỏi localStorage
-//             window.location.href = "/login"; // Redirect về trang login
-//         }
-//         return Promise.reject(error);
-//     }
-// );
+// Xử lý response lỗi 401 (token hết hạn hoặc không hợp lệ)
+axiosClient.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response && error.response.status === 401) {
+            localStorage.removeItem("token");
+            window.location.href = "/login";
+        }
+        return Promise.reject(error);
+    }
+);
 
 export default axiosClient;
