@@ -1,22 +1,25 @@
 package com.project88.banking.config.authentication;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import com.project88.banking.config.jwt.JwtAuthenticationFilter;
 import com.project88.banking.service.IUserService;
 
 @Configuration
+@EnableWebSecurity
 public class WebSecurityConfiguration {
 
     @Autowired
@@ -25,10 +28,8 @@ public class WebSecurityConfiguration {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public WebSecurityConfiguration(IUserService service, PasswordEncoder passwordEncoder) {
-        this.service = service;
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
@@ -42,11 +43,20 @@ public class WebSecurityConfiguration {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors() // ✅ Thêm dòng này để bật CORS
+                .cors()
                 .and()
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll())
-                .csrf().disable(); // Tắt CSRF nếu bạn dùng API
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeHttpRequests()
+                .requestMatchers("/api/v1/auth/**").permitAll()
+                .requestMatchers("/api/v1/admin/**").hasAuthority("ROLE_ADMIN")
+                .requestMatchers("/api/v1/users/**")
+                .hasAnyAuthority("ROLE_ADMIN", "ROLE_USER", "ROLE_EMPLOYEE")
+                .requestMatchers("/api/v1/employees/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -55,9 +65,9 @@ public class WebSecurityConfiguration {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Cho phép React gọi
-        config.setAllowedHeaders(Arrays.asList("*"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.addAllowedOriginPattern("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
