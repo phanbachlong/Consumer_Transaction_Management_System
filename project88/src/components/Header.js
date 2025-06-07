@@ -1,9 +1,24 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AuthAPI from "../api/AuthAPI";
 
 const Header = ({ toggleTheme, currentTheme }) => {
     const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
+
+    // Hàm xử lý logout
+    const handleLogout = async () => {
+        try {
+            await AuthAPI.logout();
+        } catch (error) {
+            // Có thể log lỗi nếu cần
+        }
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('role');
+        setMenuOpen(false);
+        navigate('/login');
+    };
 
     const handleNavigate = (path) => {
         navigate(path);
@@ -93,6 +108,12 @@ const Header = ({ toggleTheme, currentTheme }) => {
                         onClick={() => handleNavigate("/delete-employees")}
                     >
                         Employee đã xóa
+                    </button>
+                    <button
+                        className="text-left px-4 py-2 hover:bg-gray-100 rounded"
+                        onClick={handleLogout}
+                    >
+                        Logout
                     </button>
                 </nav>
             </div>

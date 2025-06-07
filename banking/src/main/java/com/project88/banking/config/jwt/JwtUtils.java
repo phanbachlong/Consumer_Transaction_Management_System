@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Component
@@ -48,5 +50,11 @@ public class JwtUtils {
             return bearerToken.substring(7);
         }
         return null;
+    }
+
+    public LocalDateTime getExpiryFromToken(String token) {
+        Claims claims = Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token).getBody();
+        Date expiry = claims.getExpiration();
+        return expiry.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 }

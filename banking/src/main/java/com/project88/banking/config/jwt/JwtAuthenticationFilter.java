@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.project88.banking.service.IUserService;
+import com.project88.banking.service.JwtBlacklistService;
 
 import java.io.IOException;
 
@@ -24,23 +25,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private JwtBlacklistService jwtBlacklistService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        try {
-            String jwt = jwtUtils.getJwtFromRequest(request);
-            if (jwt != null && jwtUtils.validateToken(jwt)) {
-                String username = jwtUtils.getUsernameFromJWT(jwt);
-                UserDetails userDetails = userService.loadUserByUsername(username);
-                
-                UsernamePasswordAuthenticationToken authentication = 
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.getJwtFromRequest(request);
+        if (jwt != null && jwtUtils.validateToken(jwt)) {
+            if (jwtBlacklistService.isBlacklisted(jwt)) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
             }
-        } catch (Exception e) {
-            logger.error("Cannot set user authentication: {}", e);
+            String username = jwtUtils.getUsernameFromJWT(jwt);
+            UserDetails userDetails = userService.loadUserByUsername(username);
+            
+            UsernamePasswordAuthenticationToken authentication = 
+                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
     }

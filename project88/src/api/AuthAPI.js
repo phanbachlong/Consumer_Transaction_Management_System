@@ -7,7 +7,12 @@ const AuthAPI = {
     },
     register: (data) => {
         return axiosClient.post('/auth/register', data);
+    },
+
+    logout: () => {
+        return axiosClient.post('/auth/logout');
     }
+
 };
 
 export default AuthAPI;
