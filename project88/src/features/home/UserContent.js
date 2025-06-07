@@ -8,7 +8,11 @@ import Bills from "./Bills";
 import TransactionService from "../user/TransactionService";
 import transactionApi from "../../api/TransactionAPI";
 import { transaction } from "../../redux/slices/transactionSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Search from "../../components/Search";
+import MyDatePicker from "../../components/MyDatePicker";
+import { set } from "lodash";
+import Pagination from "../../components/Pagination";
 
 const UserContent = () => {
   const userID = localStorage.getItem("userId");
@@ -110,6 +114,32 @@ const UserContent = () => {
     fetchTransaction();
   }, []);
 
+  const [params, setParams] = useState("")
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [isReset, setIsReset] = useState(false);
+
+  const today = new Date();
+  const startToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+  const endToday = new Date(today);
+  endToday.setHours(23, 59, 59, 999);
+
+  const handleResetTable = () => {
+    setIsReset(true);
+    setParams("");
+    setStartDate(null);
+    setEndDate(null);
+    setTimeout(() => setIsReset(false), 0);
+  }
+
+  const { totalPages, totalElements, currentPage } = useSelector((state) => state.transaction);
+  const [page, setPage] = useState(1);
+
+  const onPageChange = (currentPage) => {
+    setPage(currentPage);
+  }
+
   return (
     <main className="flex-1 p-8 flex flex-col lg:flex-row gap-8 bg-gray-100">
       {/* Left Section */}
@@ -159,26 +189,23 @@ const UserContent = () => {
         {/* Transaction History */}
         <div className="bg-white p-6 rounded shadow">
           <h3 className="text-lg font-bold mb-4">Lịch sử giao dịch</h3>
-          <Transaction userID={userID}></Transaction>
+          <div className="flex justify-between mb-4">
+            <div className="flex items-center space-x-2">
+              <span className="text-gray-500">Từ ngày:</span>
+              <MyDatePicker value={startDate} onChange={(date) => { setStartDate(date) }} typeDate={startToday}></MyDatePicker>
+              <span className="text-gray-500">đến</span>
+              <MyDatePicker value={endDate} onChange={(date) => setEndDate(date)} typeDate={endToday}></MyDatePicker>
+            </div>
+            <Search onChangeSearch={setParams} isReset={isReset}></Search>
+          </div>
+          <Transaction userID={userID} params={params} startDate={startDate} endDate={endDate} currentPage={page}></Transaction>
 
           {/* Page */}
-          <div className="text-right mt-4">
-            <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
-              First
+          <div className="flex justify-between items-center mt-4">
+            <button className="px-4 py-2 bg-gray-100 bg-red-100 text-red-600 rounded hover:bg-red-200" onClick={handleResetTable}>
+              Tải lại
             </button>
-            <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
-              1
-            </button>
-            <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
-              2
-            </button>
-            <span className="px-4 py-2">...</span>
-            <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
-              5
-            </button>
-            <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
-              Last
-            </button>
+            <Pagination totalPages={totalPages} onPageChange={onPageChange}></Pagination>
           </div>
         </div>
       </div>

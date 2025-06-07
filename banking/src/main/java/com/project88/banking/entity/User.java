@@ -35,7 +35,7 @@ public class User implements Serializable {
     @Id
     @Column(name = "user_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userID;
+    private long userID;
 
     @Column(name = "`firstName`", nullable = false, length = 50)
     private String firstName;
@@ -86,7 +86,7 @@ public class User implements Serializable {
     private CardNumber cardNumber;
 
     public User(String firstName, String lastName, String username, String email, String gender, String cccd,
-                LocalDate birth, String password) {
+            LocalDate birth, String password, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -95,10 +95,11 @@ public class User implements Serializable {
         this.cccd = cccd;
         this.birth = birth;
         this.password = password;
+        this.phone = phone;
     }
 
     public User(String firstName, String lastName, String username, String email, String gender, String cccd,
-                String phone, LocalDate birth, String avatarUrl) {
+            String phone, LocalDate birth, String avatarUrl) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;

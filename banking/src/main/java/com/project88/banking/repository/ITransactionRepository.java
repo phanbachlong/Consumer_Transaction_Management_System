@@ -1,6 +1,6 @@
 package com.project88.banking.repository;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +14,9 @@ import com.project88.banking.entity.TransactionHistory;
 public interface ITransactionRepository extends JpaRepository<TransactionHistory, Long> {
         @Query("SELECT new com.project88.banking.dto.TransactionHistoryDTO(t.createDate, t.transType, t.content, t.fee, t.endBalance) "
                         + "FROM TransactionHistory t WHERE t.user.userID = :userID AND (:startDate IS NULL OR t.createDate >= :startDate) "
-                        + "AND (:endDate IS NULL OR t.createDate <= :endDate) ORDER BY t.createDate DESC")
+                        + "AND (:endDate IS NULL OR t.createDate <= :endDate) AND (:name IS NULL OR t.content LIKE CONCAT('%', :name, '%'))")
         public Page<TransactionHistoryDTO> findByUserID(@Param("userID") long userID,
-                        @Param("startDate") LocalDate startDate,
-                        @Param("endDate") LocalDate endDate, Pageable pageable);
+                        @Param("startDate") LocalDateTime startDate,
+                        @Param("endDate") LocalDateTime endDate,
+                        @Param("name") String name, Pageable pageable);
 }

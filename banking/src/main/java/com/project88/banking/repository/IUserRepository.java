@@ -23,7 +23,7 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     @Query("UPDATE User u SET u.balance = u.balance + :amount WHERE u.cccd = :cccd")
     int updateBalanceByCCCD(String cccd, int amount);
 
-    @Query("SELECT new com.project88.banking.dto.ProfileDTO(u.firstName, u.lastName,u.username, u.email, u.birth, u.avatarUrl, u.cccd, u.phone, u.gender) FROM User u WHERE u.userID = :userID")
+    @Query("SELECT new com.project88.banking.dto.ProfileDTO(u.firstName, u.lastName,u.username, u.email, u.birth, u.avatarUrl, u.cccd, u.phone, u.gender, c.cardNumber) FROM User u JOIN u.cardNumber c WHERE u.userID = :userID")
     ProfileDTO findByID(@Param("userID") Long userID);
 
     @Query("SELECT u FROM User u WHERE u.username = :username")

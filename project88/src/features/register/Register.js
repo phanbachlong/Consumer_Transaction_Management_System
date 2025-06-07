@@ -9,13 +9,14 @@ const Register = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const initialValues = { username: '', firstName: '', lastName: '', email: '', birth: '2000-01-01', cccd: '', gender: '', password: '', confirmPassword: '' };
+    const initialValues = { username: '', firstName: '', lastName: '', email: '', birth: '', cccd: '', gender: '', phone: '', password: '', confirmPassword: '' };
 
 
     const onSubmit = (dataForm) => {
         dispatch(register(dataForm)).then((rs) => {
             if (rs.payload) {
                 alert("dk thanh cong")
+                navigate('/login');
             }
         })
         // console.log(dataForm)

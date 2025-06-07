@@ -41,10 +41,9 @@ public class UserController {
 
     @PostMapping()
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
-        User user = userDTO.toEntity();
         userService.registerUser(userDTO.toEntity());
 
-        return new ResponseEntity<>("Register successfully!!", HttpStatus.OK);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     @GetMapping("/all")
@@ -74,7 +73,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile() {
-        ProfileDTO profileDTO = userService.getProfile(1L);
+        ProfileDTO profileDTO = userService.getProfile(2L);
         return new ResponseEntity<>(profileDTO, HttpStatus.OK);
     }
 
@@ -109,7 +108,6 @@ public class UserController {
 
     }
 
-
     @PostMapping("/top-up")
     public ResponseEntity<String> topUpBalance(@RequestBody TopUpDTO dto) {
         try {
@@ -121,8 +119,5 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-
-
 
 }
