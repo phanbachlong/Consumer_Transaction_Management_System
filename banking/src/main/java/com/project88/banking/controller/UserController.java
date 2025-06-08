@@ -107,6 +107,12 @@ public class UserController {
         depositService.createDeposit(form, userId);
 
     }
+    
+    @GetMapping("/{id}/balance")
+    public ResponseEntity<Integer> getUserBalance(@PathVariable(name = "id") short id) {
+        User user = userService.findUserById(id);
+        return new ResponseEntity<>(user.getBalance(), HttpStatus.OK);
+    }
 
     @PostMapping("/top-up")
     public ResponseEntity<String> topUpBalance(@RequestBody TopUpDTO dto) {

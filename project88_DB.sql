@@ -39,13 +39,13 @@ CREATE TABLE IF NOT EXISTS `Registration_User_Token` (
 
 -- Create table Transaction History(Lịch sử giao dịch)
 CREATE TABLE IF NOT EXISTS `transaction_history`(
-	trans_id 		TINYINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    transType 		ENUM('CK','HD','NT') NOT NULL, -- CK: Chuyển khoản, HD: Hóa đơn, NT: Nạp tiền 
-    createDate 		DATETIME DEFAULT CURRENT_TIMESTAMP,
-    content 		VARCHAR(800),
-    user_id 		TINYINT NOT NULL,
-    fee 			INT NOT NULL,
-    end_balance 	INT NOT NULL DEFAULT(0),
+	trans_id TINYINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    transType ENUM('CK','HD','NT','TT') NOT NULL, -- CK: Chuyển khoản, HD: Hóa đơn, NT: Nạp tiền, TT: Tiết kiệm
+    createDate DATE default(CURRENT_DATE),
+    content VARCHAR(800),
+    user_id TINYINT NOT NULL,
+    fee INT NOT NULL,
+    end_balance INT NOT NULL DEFAULT(0),
     CONSTRAINT fk_trans_user FOREIGN KEY (user_id) REFERENCES `user` (user_id)
 );
 
@@ -57,6 +57,19 @@ CREATE TABLE IF NOT EXISTS `bill`(
     bill_amount INT NOT NULL,
     FOREIGN KEY		(user_id) REFERENCES `user` (user_id)
 )AUTO_INCREMENT = 985321;
+
+CREATE TABLE IF NOT EXISTS `deposit` (
+    deposit_Id 		INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    deposit_name 	VARCHAR(100) NOT NULL,
+    createDate 		DATE NOT NULL DEFAULT(CURRENT_DATE),
+    interest_rate 	FLOAT NOT NULL,
+    term_months 	INT NOT NULL,
+    transaction_id	VARCHAR(50) UNIQUE KEY,
+    user_id 		TINYINT NOT NULL,
+    deposit_amount 	INT NOT NULL,
+    `status` 		ENUM('ACTIVE', 'REDEEMED', 'MATURED') NOT NULL DEFAULT 'ACTIVE', -- ACTIVE: Đang hoạt động, REDEEMED: Đã tất toán, MATURED: Đã đáo hạn
+    FOREIGN KEY (user_id) REFERENCES `user` (user_id)
+);
  
 
 
@@ -65,8 +78,8 @@ insert into `user`(firstName, lastName, username, email, gender, phone, cccd, bi
 insert into `user`(firstName, lastName, username, email, gender, phone, cccd, birth, `password`, avatarUrl, `role`, `status`,balance) values(" Tran Huu Viet", "Van", "vantran195", "tran1951999@gmail.com", "Male", "0932006977", "01234455675","1990-01-01", "$2a$10$vEu9ah/1CLe.T9Oob/q4E.vgEEGYLiiCkNjaLCNa71P5lDVYZ5sam", "b",'Admin',1,2000000);
 insert into `user`(firstName, lastName, username, email, gender, phone, cccd, birth, `password`, avatarUrl, `role`, `status`,balance) values("Tran Viet","Hoang", "hoangtran","tranhoang001@gmail.com","Male","0932006978","01234455677","1990-02-01","$2a$10$8rscmAyP5l1ijXPe.dNarembt.PgxrbfrK4LrH7K4U4o3cUMBIRG6","c","User",1,5000000);
 -- insert value to Transaction History
-insert into `transaction_history`(transType, content, user_id, fee, end_balance) values("CK", "abc123", 1, -100000,1000000 - 100000);
-insert into `transaction_history`(transType, content, user_id, fee, end_balance) values("CK", "abc123", 3, -100000,1000000 - 100000);
+insert into `transaction_history`(transType, content, user_id, fee) values("CK", "abc123", 1, 100000),
+("TT", "xyz456", 1, 200000);
 
 INSERT INTO `Card_Number` (user_id) values (1);
 INSERT INTO `Card_Number` (user_id) values (2);
@@ -76,19 +89,10 @@ INSERT INTO `bill` (bill_name, createDate, user_id, bill_amount) VALUES
 ('Water Bill', CURRENT_DATE, 1, 300000),
 ('Internet Bill', CURRENT_DATE, 1, 400000),
 ('Rent', CURRENT_DATE, 2, 1500000),
-('Electricity Bill', CURRENT_DATE, 2, 700000),
-('Electricity Bill', CURRENT_DATE, 3, 500000),
-('Water Bill', CURRENT_DATE, 3, 300000),
-('Internet Bill', CURRENT_DATE, 3, 400000)
-;
+('Electricity Bill', CURRENT_DATE, 2, 700000);
 
-CREATE TABLE IF NOT EXISTS `log`(
-`date` 		DATETIME DEFAULT CURRENT_TIMESTAMP,
-content		VARCHAR(100)
-);
-
-CREATE TABLE IF NOT EXISTS jwt_blacklist (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    token VARCHAR(512) NOT NULL,
-    expiry_date DATETIME NOT NULL
-);
+INSERT INTO `deposit` (deposit_name, interest_rate, term_months, user_id, deposit_amount, `status`) VALUES
+('Sổ tiết kiệm 1', 4.20, 3, 1, 200000, 'ACTIVE'),
+('Sổ tiết kiệm 2', 4.80, 6, 1, 300000, 'ACTIVE'),
+('Sổ tiết kiệm 3', 5.20, 12, 2, 100000, 'REDEEMED'),
+('Sổ tiết kiệm 4', 3.80, 1, 2, 1000000, 'MATURED');
