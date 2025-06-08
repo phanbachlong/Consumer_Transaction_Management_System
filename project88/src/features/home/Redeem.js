@@ -11,21 +11,37 @@ const formatCurrency = (amount) => {
 };
 
 // Hàm tính tiền lãi dựa trên thông tin từ API
-const calculateInterest = (depositAmount, interestRate, createDate, termMonths) => {
+const calculateInterest = (depositAmount, interestRate, createDate) => {
     const startDate = new Date(createDate);
     const now = new Date();
+    
+    startDate.setHours(0, 0, 0, 0);
+    now.setHours(0, 0, 0, 0);
+    
     const daysPassed = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
+    const actualDaysPassed = Math.max(0, daysPassed);
     const yearlyInterest = (depositAmount * interestRate) / 100;
     const dailyInterest = yearlyInterest / 365;
-    return Math.floor(dailyInterest * daysPassed);
+    return Math.round(dailyInterest * actualDaysPassed);
 };
 
 // Hàm tính số ngày còn lại
 const calculateDaysLeft = (createDate, termMonths) => {
     const startDate = new Date(createDate);
     const endDate = new Date(startDate);
+    
+    if (!termMonths || termMonths <= 0) {
+        return 0;
+    }
+    
     endDate.setMonth(endDate.getMonth() + termMonths);
+    
     const now = new Date();
+    
+    // Reset time
+    endDate.setHours(23, 59, 59, 999); // End of day
+    now.setHours(0, 0, 0, 0); // Start of day
+    
     const daysLeft = Math.ceil((endDate - now) / (1000 * 60 * 60 * 24));
     return Math.max(0, daysLeft);
 };
@@ -85,25 +101,29 @@ export default function Redeem({ setShowRedeem }) {
                 // Transform data
                 const transformedData = data
                     .filter(deposit => deposit.status === 'ACTIVE') // Chỉ lấy sổ đang hoạt động
-                    .map(deposit => ({
-                        id: deposit.depositId || deposit.id,
-                        name: deposit.depositName || deposit.accountName,
-                        principal: deposit.depositAmount || deposit.amount,
-                        interest: calculateInterest(
-                            deposit.depositAmount || deposit.amount, 
-                            deposit.interestRate, 
-                            deposit.createDate, 
-                            deposit.termMonths || deposit.term
-                        ),
-                        term: deposit.termMonths || deposit.term,
-                        daysLeft: calculateDaysLeft(
-                            deposit.createDate, 
-                            deposit.termMonths || deposit.term
-                        ),
-                        interestRate: deposit.interestRate,
-                        createDate: deposit.createDate,
-                        transactionId: deposit.transactionId
-                    }));
+                    .map(deposit => {
+                        const depositAmount = deposit.depositAmount || deposit.amount || 0;
+                        const interestRate = deposit.interestRate || 0;
+                        const termMonths = deposit.termMonths || deposit.term || 0;
+                        const createDate = deposit.createDate;
+                        
+                        if (!createDate || !depositAmount || !interestRate) {
+                            console.warn('Invalid deposit data:', deposit);
+                        }
+                        
+                        return {
+                            id: deposit.depositId || deposit.id,
+                            name: deposit.depositName || deposit.accountName,
+                            principal: depositAmount,
+                            interest: calculateInterest(depositAmount, interestRate, createDate),
+                            term: termMonths,
+                            daysLeft: calculateDaysLeft(createDate, termMonths),
+                            interestRate: interestRate,
+                            createDate: createDate,
+                            transactionId: deposit.transactionId
+                        };
+                    })
+                    .filter(deposit => deposit.principal > 0 && deposit.interestRate > 0);
 
                 setDeposits(transformedData);
             } catch (err) {
@@ -125,6 +145,12 @@ export default function Redeem({ setShowRedeem }) {
     const handleRedeem = async (deposit) => {
         if (window.confirm(`Bạn có chắc chắn muốn tất toán sổ "${deposit.name}"?`)) {
             try {
+                const currentInterest = calculateInterest(
+                    deposit.principal, 
+                    deposit.interestRate, 
+                    deposit.createDate
+                );
+                
                 const response = await fetch(`http://localhost:8080/api/deposits/${deposit.id}/redeem`, {
                     method: 'PUT',
                     headers: {
@@ -132,13 +158,14 @@ export default function Redeem({ setShowRedeem }) {
                     },
                     body: JSON.stringify({
                         redeemDate: new Date().toISOString().split('T')[0],
-                        interestAmount: deposit.interest,
+                        interestAmount: currentInterest,
                         userId: userId
                     })
                 });
 
                 if (!response.ok) {
-                    throw new Error('Không thể thực hiện tất toán');
+                    const errorData = await response.text();
+                    throw new Error(errorData || 'Không thể thực hiện tất toán');
                 }
 
                 // Cập nhật state để remove sổ đã tất toán
@@ -153,7 +180,7 @@ export default function Redeem({ setShowRedeem }) {
                     setBalance(newBalance);
                 }
                 
-                alert(`Tất toán thành công sổ "${deposit.name}". Tổng tiền nhận được: ${formatCurrency(deposit.principal + deposit.interest)}`);
+                alert(`Tất toán thành công sổ "${deposit.name}". Tổng tiền nhận được: ${formatCurrency(deposit.principal + currentInterest)}`);
             } catch (err) {
                 alert(`Lỗi: ${err.message}`);
                 console.error('Error redeeming deposit:', err);
