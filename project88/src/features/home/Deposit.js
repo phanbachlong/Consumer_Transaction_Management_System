@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const Deposit = ({ setShowDeposit }) => {
-  const userId = localStorage.getItem('userId') || 1;
+const Deposit = ({ setShowDeposit, onDepositSuccess }) => {
+  const userId = localStorage.getItem("userId") || 1;
   // state
   const [accountName, setAccountName] = useState("");
   const [amount, setAmount] = useState("");
@@ -36,8 +36,6 @@ const Deposit = ({ setShowDeposit }) => {
         const response = await axios.get(
           `http://localhost:8080/api/v1/users/${userId}/balance`
         );
-        console.log('Balance response:', response.data); // Debug log
-        // Backend trả về balance trực tiếp, không phải object
         setBalance(response.data);
       } catch (err) {
         console.error("Lỗi khi lấy balance:", err);
@@ -112,7 +110,16 @@ const Deposit = ({ setShowDeposit }) => {
       setSuccess(
         "Gửi tiền thành công! Mã giao dịch: " + response.data.transactionId
       );
-      setTimeout(() => setShowDeposit(false), 2000);
+
+      setTimeout(() => {
+        setShowDeposit(false);
+        if (onDepositSuccess) {
+          onDepositSuccess();
+        }
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
+      }, 2000);
     } catch (err) {
       setError(err.response?.data?.message || "Đã có lỗi xảy ra khi gửi tiền");
     } finally {
