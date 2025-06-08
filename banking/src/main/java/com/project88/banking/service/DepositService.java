@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import com.project88.banking.dto.DepositDTO;
 import com.project88.banking.entity.Deposit;
 import com.project88.banking.entity.DepositStatus;
+import com.project88.banking.entity.TransactionHistory;
 import com.project88.banking.entity.User;
 import com.project88.banking.repository.IDepositRepository;
+import com.project88.banking.repository.ITransactionRepository;
 import com.project88.banking.repository.IUserRepository;
 
 import jakarta.transaction.Transactional;
@@ -26,6 +28,9 @@ public class DepositService implements IDepositService {
 
     @Autowired
     private IUserRepository userRepository;
+    
+    @Autowired
+    private ITransactionRepository transactionRepository;
 
     // Tạo mới deposit
     @Override
@@ -36,6 +41,7 @@ public class DepositService implements IDepositService {
         if (user.getBalance() < dto.getAmount()) {
             throw new RuntimeException("Số dư không đủ để thực hiện giao dịch");
         }
+        
         Deposit deposit = new Deposit(
                 dto.getAccountName(),
                 dto.getInterestRate(),
@@ -43,13 +49,34 @@ public class DepositService implements IDepositService {
                 dto.getAmount(),
                 dto.getTerm()
         );
-        user.setBalance(user.getBalance() - dto.getAmount());
+        
+        // Trừ tiền từ tài khoản
+        int oldBalance = user.getBalance();
+        user.setBalance(oldBalance - dto.getAmount());
+        
+        // Tạo lịch sử giao dịch cho việc gửi tiết kiệm
+        String transType = "TT";
+        String content = String.format("Gửi tiết kiệm sổ : %s số tiền %d - Kỳ hạn %d tháng", 
+                dto.getAccountName(), dto.getAmount(), dto.getTerm());
+        int newBalance = user.getBalance();
+        
+        TransactionHistory depositTransaction = new TransactionHistory(
+                transType, 
+                content, 
+                -dto.getAmount(), // Trừ tiền ra khỏi tài khoản
+                user, 
+                newBalance
+        );
+        
+        // Lưu vào database
         userRepository.save(user);
         Deposit savedDeposit = depositRepository.save(deposit);
+        transactionRepository.save(depositTransaction);
+        
         return new DepositDTO(savedDeposit);
     }
     
- // Lấy danh sách deposits theo userId
+    // Lấy danh sách deposits theo userId
     @Override
     public List<DepositDTO> getDepositsByUserId(long userId) {
         User user = userRepository.findById(userId)
@@ -89,11 +116,30 @@ public class DepositService implements IDepositService {
         
         // Hoàn tiền gốc + lãi vào tài khoản user
         double totalAmount = deposit.getDepositAmount() + actualInterest;
+        int oldBalance = user.getBalance();
         user.setBalance(user.getBalance() + (int) totalAmount);
+        
+        // Tạo lịch sử giao dịch cho việc tất toán tiết kiệm
+        String transType = "TT";
+        String content = String.format("Tất toán tiết kiệm sổ : %s - Tiền góc: %d, Lãi: %.2f, Tổng: %.2f", 
+                deposit.getDepositName(), 
+                deposit.getDepositAmount(), 
+                actualInterest, 
+                totalAmount);
+        int newBalance = user.getBalance();
+        
+        TransactionHistory redeemTransaction = new TransactionHistory(
+                transType, 
+                content, 
+                (int) totalAmount, // Số tiền dương vì đây là tiền vào tài khoản
+                user, 
+                newBalance
+        );
         
         // Save changes
         userRepository.save(user);
         Deposit savedDeposit = depositRepository.save(deposit);
+        transactionRepository.save(redeemTransaction);
         
         return new DepositDTO(savedDeposit);
     }
@@ -155,5 +201,11 @@ public class DepositService implements IDepositService {
         LocalDate currentDate = LocalDate.now();
         
         return ChronoUnit.DAYS.between(currentDate, maturityDate);
+    }
+    
+    // Method tiện ích tạo transaction history (có thể tái sử dụng)
+    private void createTransactionHistory(String transType, String content, int amount, User user, int newBalance) {
+        TransactionHistory transaction = new TransactionHistory(transType, content, amount, user, newBalance);
+        transactionRepository.save(transaction);
     }
 }
