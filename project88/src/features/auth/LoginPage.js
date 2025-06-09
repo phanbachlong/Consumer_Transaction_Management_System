@@ -5,6 +5,7 @@ import { ValidationLogin } from '../../validation/ValidationLogin';
 import AuthAPI from '../../api/AuthAPI';
 
 const LoginPage = () => {
+  localStorage.clear();
   const navigate = useNavigate();
 
   const initialValues = { username: '', password: '', remember: false };

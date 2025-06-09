@@ -33,8 +33,9 @@ FOREIGN KEY			(user_id) REFERENCES `user` (user_id)
 CREATE TABLE IF NOT EXISTS `Registration_User_Token` ( 	
 	id 				INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	`token`	 		CHAR(36) NOT NULL UNIQUE,
-	`user_id` 		SMALLINT UNSIGNED NOT NULL,
-	`expiryDate` 	DATETIME NOT NULL
+	`user_id` 		TINYINT NOT NULL,
+	`expiryDate` 	DATETIME NOT NULL,
+    FOREIGN KEY			(`user_id`) REFERENCES `user` (`user_id`)
 );
 
 -- Create table Transaction History(Lịch sử giao dịch)
@@ -57,19 +58,25 @@ CREATE TABLE IF NOT EXISTS `bill`(
     bill_amount INT NOT NULL,
     FOREIGN KEY		(user_id) REFERENCES `user` (user_id)
 )AUTO_INCREMENT = 985321;
+
+
  
 
 
 -- insert value to user 
 insert into `user`(firstName, lastName, username, email, gender, phone, cccd, birth, `password`, avatarUrl, `role`, `status`,balance) values("Phan Trong", "Vinh", "phtrvinh", "1phantrongvinh98@gmail.com", "Male", "0772661877", "079098009123","1998-01-01", "$2a$10$8rscmAyP5l1ijXPe.dNarembt.PgxrbfrK4LrH7K4U4o3cUMBIRG6", "a",'Admin',1,1000000);
-insert into `user`(firstName, lastName, username, email, gender, phone, cccd, birth, `password`, avatarUrl, `role`, `status`,balance) values(" Tran Huu Viet", "Van", "vantran195", "tran1951999@gmail.com", "Male", "0932006977", "01234455675","1990-01-01", "$2a$10$vEu9ah/1CLe.T9Oob/q4E.vgEEGYLiiCkNjaLCNa71P5lDVYZ5sam", "b",'Admin',1,2000000);
+insert into `user`(firstName, lastName, username, email, gender, phone, cccd, birth, `password`, avatarUrl, `role`, `status`,balance) values("Tran Huu Viet", "Van", "vantran195", "tran1951999@gmail.com", "Male", "0932006977", "01234455675","1990-01-01", "$2a$10$vEu9ah/1CLe.T9Oob/q4E.vgEEGYLiiCkNjaLCNa71P5lDVYZ5sam", "b",'Employee',1,2000000);
 insert into `user`(firstName, lastName, username, email, gender, phone, cccd, birth, `password`, avatarUrl, `role`, `status`,balance) values("Tran Viet","Hoang", "hoangtran","tranhoang001@gmail.com","Male","0932006978","01234455677","1990-02-01","$2a$10$8rscmAyP5l1ijXPe.dNarembt.PgxrbfrK4LrH7K4U4o3cUMBIRG6","c","User",1,5000000);
 -- insert value to Transaction History
 insert into `transaction_history`(transType, content, user_id, fee, end_balance) values("CK", "abc123", 1, -100000,1000000 - 100000);
 insert into `transaction_history`(transType, content, user_id, fee, end_balance) values("CK", "abc123", 3, -100000,1000000 - 100000);
 
+INSERT INTO `Registration_User_Token` (`token`, `user_id`, `expiryDate`) 
+VALUES ('123e4567-e89b-12d3-a456-426614174000', 1, '2025-06-08 12:00:00');
+
 INSERT INTO `Card_Number` (user_id) values (1);
 INSERT INTO `Card_Number` (user_id) values (2);
+INSERT INTO `Card_Number` (user_id) values (3);
 
 INSERT INTO `bill` (bill_name, createDate, user_id, bill_amount) VALUES
 ('Electricity Bill', CURRENT_DATE, 1, 500000),

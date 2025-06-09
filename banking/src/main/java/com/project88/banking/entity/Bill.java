@@ -38,4 +38,11 @@ public class Bill {
 
 	@Column(name = "bill_amount", nullable = false)
 	private int BillAmount;
+
+	public Bill(String billName, LocalDate createDate, User user, int billAmount) {
+		this.billName = billName;
+		this.createDate = createDate;
+		this.user = user;
+		this.BillAmount = billAmount;
+	}
 }

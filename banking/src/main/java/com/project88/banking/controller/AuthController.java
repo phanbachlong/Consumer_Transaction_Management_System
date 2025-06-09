@@ -4,6 +4,7 @@ import com.project88.banking.config.jwt.JwtUtils;
 import com.project88.banking.dto.LoginDTO;
 import com.project88.banking.dto.UserDTO;
 import com.project88.banking.entity.User;
+import com.project88.banking.service.AuthService;
 import com.project88.banking.service.IUserService;
 import com.project88.banking.service.JwtBlacklistService;
 
@@ -30,6 +31,9 @@ public class AuthController {
     private IUserService userService;
 
     @Autowired
+    private AuthService authService;
+
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
@@ -46,7 +50,6 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateToken((UserDetails) authentication.getPrincipal());
 
-        // Lấy userId từ UserDetails
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User user = userService.findUserByUsername(userDetails.getUsername());
 
@@ -60,9 +63,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
-        User user = userDTO.toEntity();
-        userService.registerUser(userDTO.toEntity());
-
+        authService.registerUser(userDTO);
         return new ResponseEntity<>("Register successfully!!", HttpStatus.OK);
     }
 
@@ -74,5 +75,10 @@ public class AuthController {
             jwtBlacklistService.blacklistToken(token, expiry);
         }
         return ResponseEntity.ok("Logged out successfully");
+    }
+
+    @GetMapping("/verify")
+    public void verifyUser(@RequestParam("token") String token) {
+        authService.verifyUser(token);
     }
 }
