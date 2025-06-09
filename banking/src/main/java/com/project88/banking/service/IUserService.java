@@ -1,8 +1,12 @@
 package com.project88.banking.service;
 
 import com.project88.banking.dto.*;
+
+import java.io.IOException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project88.banking.dto.ChangeProfileDTO;
 import com.project88.banking.dto.GetAllUserDTO;
@@ -17,9 +21,9 @@ public interface IUserService extends UserDetailsService {
     //
     // User addBalance(String cccd, int amount);
 
-    ProfileDTO getProfile(long userID);
+    ProfileDTO getProfile(String name);
 
-    void changeUserProfile(String username, ChangeProfileDTO dto);
+    String changeUserProfile(String username, MultipartFile file) throws IOException;
 
     void transfer(TransferDTO form);
 

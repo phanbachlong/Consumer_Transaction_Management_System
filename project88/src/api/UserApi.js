@@ -21,6 +21,14 @@ class UserApi {
         return axiosClient.post("/users/top-up", body);
     };
 
+    updateProfile = (body) => {
+        return axiosClient.put(`${this.url}/profile`, body, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+    }
+
 }
 
 const userApi = new UserApi();
