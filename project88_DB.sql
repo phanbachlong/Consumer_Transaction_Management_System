@@ -70,6 +70,12 @@ CREATE TABLE IF NOT EXISTS `deposit` (
     `status` 		ENUM('ACTIVE', 'REDEEMED', 'MATURED') NOT NULL DEFAULT 'ACTIVE', -- ACTIVE: Đang hoạt động, REDEEMED: Đã tất toán, MATURED: Đã đáo hạn
     FOREIGN KEY (user_id) REFERENCES `user` (user_id)
 );
+
+CREATE TABLE IF NOT EXISTS jwt_blacklist (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    token VARCHAR(512) NOT NULL,
+    expiry_date DATETIME NOT NULL
+);
  
 
 
@@ -80,6 +86,8 @@ insert into `user`(firstName, lastName, username, email, gender, phone, cccd, bi
 -- insert value to Transaction History
 insert into `transaction_history`(transType, content, user_id, fee) values("CK", "abc123", 1, 100000),
 ("TT", "xyz456", 1, 200000);
+insert into `transaction_history`(transType, content, user_id, fee) values("CK", "abc123", 3, 100000),
+("TT", "xyz456", 3, 200000);
 
 INSERT INTO `Card_Number` (user_id) values (1);
 INSERT INTO `Card_Number` (user_id) values (2);
