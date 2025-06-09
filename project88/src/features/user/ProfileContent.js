@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userProfile } from "../../redux/slices/userSlice";
 import { format, set } from "date-fns";
-import EditEmployee from "../Employee/EditEmployee";
+import EditEmployee from "../employee/EditEmployee";
 
 
 

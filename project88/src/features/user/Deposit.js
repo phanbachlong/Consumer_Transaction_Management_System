@@ -93,7 +93,7 @@ const Deposit = ({ setShowDeposit, onDepositSuccess }) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/deposits?userId=${userId}`,
+        `http://localhost:8080/api/v1/deposits?userId=${userId}`,
         {
           accountName,
           amount: parseInt(amount.replace(/[^0-9]/g, "")),

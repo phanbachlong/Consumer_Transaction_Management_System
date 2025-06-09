@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ import com.project88.banking.dto.DepositDTO.RedeemRequestDTO;
 import com.project88.banking.service.IDepositService;
 
 @RestController
-@RequestMapping("/api/deposits")
+@RequestMapping("/api/v1/deposits")
 public class DepositController {
 
     @Autowired
@@ -43,10 +44,12 @@ public class DepositController {
     }
 
     // API lấy danh sách sổ tiết kiệm theo userId
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getDepositsByUserId(@PathVariable long userId) {
+    @GetMapping("/user")
+    public ResponseEntity<?> getDepositsByUsername(Authentication authentication) {
         try {
-            List<DepositDTO> deposits = depositService.getDepositsByUserId(userId);
+            String username = authentication.getName();
+            System.out.println("Username frontend đang gọi: " + username);
+            List<DepositDTO> deposits = depositService.getDepositsByUsername(username);
             return ResponseEntity.ok(deposits);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -121,8 +124,6 @@ public class DepositController {
         }
     }
 
-    
-    
     public static class ErrorResponse {
         private String status;
         private String message;
@@ -132,8 +133,13 @@ public class DepositController {
             this.message = message;
         }
 
-        public String getStatus() { return status; }
-        public String getMessage() { return message; }
+        public String getStatus() {
+            return status;
+        }
+
+        public String getMessage() {
+            return message;
+        }
     }
 
     public static class SuccessResponse {
@@ -147,9 +153,17 @@ public class DepositController {
             this.data = data;
         }
 
-        public String getStatus() { return status; }
-        public String getMessage() { return message; }
-        public Object getData() { return data; }
+        public String getStatus() {
+            return status;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public Object getData() {
+            return data;
+        }
     }
 
     public static class InterestResponse {
@@ -161,7 +175,12 @@ public class DepositController {
             this.currentInterest = currentInterest;
         }
 
-        public String getStatus() { return status; }
-        public Double getCurrentInterest() { return currentInterest; }
+        public String getStatus() {
+            return status;
+        }
+
+        public Double getCurrentInterest() {
+            return currentInterest;
+        }
     }
 }

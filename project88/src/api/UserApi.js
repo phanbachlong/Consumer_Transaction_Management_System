@@ -1,35 +1,36 @@
 import axiosClient from './axiosClient';
 
-class UserApi {
-    constructor() {
-        this.url = '/users'
-    }
+const url = '/users';
 
-    createUser = (body) => {
-        axiosClient.post(this.url, body)
-    }
-
-    getProfile = () => {
-        return axiosClient.get(`${this.url}/profile`);
-    }
-
-    getAllUsers = () => {
-        return axiosClient.get(`${this.url}/all`);
-    }
-
-    topUp = (body) => {
-        return axiosClient.post("/users/top-up", body);
-    };
-
-    updateProfile = (body) => {
-        return axiosClient.put(`${this.url}/profile`, body, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
-    }
-
+const createUser = (body) => {
+    axiosClient.post(url, body);
 }
 
-const userApi = new UserApi();
-export default userApi;
+const getProfile = () => {
+    return axiosClient.get(`${url}/profile`);
+}
+
+const getAllUsers = () => {
+    return axiosClient.get(`${url}/all`);
+}
+
+const topUp = (body) => {
+    return axiosClient.post("/users/top-up", body);
+};
+
+const updateProfile = (body) => {
+    return axiosClient.put(`${url}/profile`, body, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+}
+
+const UserApi = {
+    createUser,
+    getProfile,
+    getAllUsers,
+    topUp,
+    updateProfile
+}
+export default UserApi;

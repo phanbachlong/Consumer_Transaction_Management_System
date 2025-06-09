@@ -11,6 +11,8 @@ public interface IDepositService {
 
     List<DepositDTO> getDepositsByUserId(long userId);
 
+    List<DepositDTO> getDepositsByUsername(String username);
+
     DepositDTO getDepositById(Integer depositId);
 
     DepositDTO redeemDeposit(Integer depositId, RedeemRequestDTO redeemRequest);

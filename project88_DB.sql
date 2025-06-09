@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `Registration_User_Token` (
 CREATE TABLE IF NOT EXISTS `transaction_history`(
 	trans_id TINYINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     transType ENUM('CK','HD','NT','TT') NOT NULL, -- CK: Chuyển khoản, HD: Hóa đơn, NT: Nạp tiền, TT: Tiết kiệm
-    createDate DATE default(CURRENT_DATE),
+    createDate DATETIME DEFAULT(CURRENT_TIMESTAMP()),
     content VARCHAR(800),
     user_id TINYINT NOT NULL,
     fee INT NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `transaction_history`(
 CREATE TABLE IF NOT EXISTS `bill`(
 	bill_Id 		INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     bill_name 		VARCHAR(80) NOT NULL,
-    createDate 		DATE default(CURRENT_DATE),
+    createDate 		DATETIME DEFAULT(CURRENT_TIMESTAMP()),
     user_id 		TINYINT NOT NULL,
     bill_amount INT NOT NULL,
     FOREIGN KEY		(user_id) REFERENCES `user` (user_id)
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `bill`(
 CREATE TABLE IF NOT EXISTS `deposit` (
     deposit_Id 		INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     deposit_name 	VARCHAR(100) NOT NULL,
-    createDate 		DATE NOT NULL DEFAULT(CURRENT_DATE),
+    createDate 		DATETIME NOT NULL DEFAULT(CURRENT_TIMESTAMP()),
     interest_rate 	FLOAT NOT NULL,
     term_months 	INT NOT NULL,
     transaction_id	VARCHAR(50) UNIQUE KEY,
@@ -102,5 +102,5 @@ INSERT INTO `bill` (bill_name, createDate, user_id, bill_amount) VALUES
 INSERT INTO `deposit` (deposit_name, interest_rate, term_months, user_id, deposit_amount, `status`) VALUES
 ('Sổ tiết kiệm 1', 4.20, 3, 1, 200000, 'ACTIVE'),
 ('Sổ tiết kiệm 2', 4.80, 6, 1, 300000, 'ACTIVE'),
-('Sổ tiết kiệm 3', 5.20, 12, 2, 100000, 'REDEEMED'),
-('Sổ tiết kiệm 4', 3.80, 1, 2, 1000000, 'MATURED');
+('Sổ tiết kiệm 3', 5.20, 12, 3, 100000, 'ACTIVE'),
+('Sổ tiết kiệm 4', 3.80, 1, 3, 1000000, 'MATURED');
