@@ -14,7 +14,9 @@ import EmployeeList from "./features/employee/EmployeeList";
 import EditEmployee from "./features/employee/EditEmployee";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import DeletedEmployees from "./features/employee/DeletedEmployees";
+import DeletedEmployees from "./features/Employee/DeletedEmployees";
+import VerifyPage from "./features/auth/VerifyPage";
+
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -41,6 +43,7 @@ function App() {
           <Route path='/list-employees' element={<EmployeeList />} />
           <Route path="/edit-employee/:userId" element={<EditEmployee />} />
           <Route path="/delete-employees" element={<DeletedEmployees />} />
+          <Route path="/verify" element={<VerifyPage />} />
         </Routes>
       </div>
 

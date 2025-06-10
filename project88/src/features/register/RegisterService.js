@@ -1,5 +1,5 @@
 import userApi from "../../api/UserApi";
-
+import AuthAPI from "../../api/AuthAPI";
 
 const RegisterService = {
     createUser: async (values) => {
@@ -15,7 +15,8 @@ const RegisterService = {
             password: values.password
         }
 
-        return await userApi.createUser(userData);
+        // return await userApi.createUser(userData);
+        return await AuthAPI.register(userData);
     }
 }
 
