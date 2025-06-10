@@ -4,6 +4,8 @@ import UsersList from "../user/UsersList";
 import Search from "../../components/Search";
 import Pagination from "../../components/Pagination";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 
 const EmployeeContent = () => {
     // State cho ô tìm kiếm (search)
@@ -17,6 +19,7 @@ const EmployeeContent = () => {
     const [params, setParams] = useState('');
     const [isReset, setIsReset] = useState('false');
     const [page, setPage] = useState(1)
+    const navigate = useNavigate();
 
     const { totalPages, currentPage } = useSelector((state) => state.user);
 
@@ -28,6 +31,10 @@ const EmployeeContent = () => {
     const handleResetTable = () => {
         setIsReset(true);
         setTimeout(() => setIsReset(false), 0);
+    }
+
+    const handleNavigateProfile = () => {
+        navigate('/profile')
     }
 
     // Hàm xử lý xóa khách hàng
@@ -70,7 +77,7 @@ const EmployeeContent = () => {
                     <button className="px-6 py-2 rounded bg-orange-200 text-orange-800 font-semibold border border-orange-400">
                         Quản lý KH
                     </button>
-                    <button className="px-6 py-2 rounded bg-red-100 text-red-600 font-semibold border border-red-200">
+                    <button className="px-6 py-2 rounded bg-red-100 text-red-600 font-semibold border border-red-200" onClick={handleNavigateProfile}>
                         Hồ sơ nhân viên
                     </button>
                 </div>

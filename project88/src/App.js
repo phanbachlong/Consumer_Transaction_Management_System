@@ -10,7 +10,7 @@ import Profile from './features/user/Profile';
 import TransferForm from './features/home/Transfer';
 import Test from './features/Test';
 import CreateEmployee from "./features/employee/CreateEmployee";
-import EmployeeList from "./features/employee/EmployeeList";
+import EmployeeList from "./features/admin/EmployeeList";
 import EditEmployee from "./features/employee/EditEmployee";
 import Header from "./components/Header";
 import Footer from "./components/Footer";

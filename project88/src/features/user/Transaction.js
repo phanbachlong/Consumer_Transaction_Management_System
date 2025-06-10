@@ -14,6 +14,7 @@ const Transaction = ({ params, startDate, endDate, currentPage }) => {
     const { transactions, loading, error } = useSelector((state) => state.transaction);
     const [size, setSize] = useState(5);
 
+
     useEffect(() => {
         // reset về page 1 nếu là tìm kiếm
         currentPage = 1;

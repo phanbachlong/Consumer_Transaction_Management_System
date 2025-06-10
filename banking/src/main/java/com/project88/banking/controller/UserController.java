@@ -58,7 +58,7 @@ public class UserController {
     @GetMapping("/all")
     public ResponseEntity<?> getAllUsers(@RequestParam(name = "size", defaultValue = "10") int size,
             @RequestParam(name = "page", defaultValue = "0") int page, UserFilter filter) {
-        var usersPage = userService.findAllUsers(size, page, filter);
+        Page<GetAllUserDTO> usersPage = userService.findAllUsers(size, page, filter);
         return new ResponseEntity<>(usersPage, HttpStatus.OK);
     }
 

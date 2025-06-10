@@ -1,8 +1,10 @@
 package com.project88.banking.service;
 
 import com.project88.banking.dto.CreateEmployeeDTO;
+import com.project88.banking.dto.GetAllEmployeesDTO;
 import com.project88.banking.dto.UpdateEmployeeDTO;
 import com.project88.banking.dto.UpdateStatusEmployeeDTO;
+import com.project88.banking.dto.filter.EmployeeFilter;
 import com.project88.banking.entity.Status;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,41 +24,39 @@ public class EmployeeService implements IEmployeeService {
 
 	@Autowired
 	private IEmployeeRepository employeeRepository;
-	
+
 	@Override
 	public void topUp(TopUpDTO form) {
 		Long userID = form.getUserID();
 		int money = form.getMoney();
-		User u = employeeRepository.findById((long) userID).orElseThrow(() ->
-			new IllegalArgumentException("User không tồn tại: " + userID)
-				);
+		User u = employeeRepository.findById((long) userID)
+				.orElseThrow(() -> new IllegalArgumentException("User không tồn tại: " + userID));
 		int oldBalance = u.getBalance();
 		u.setBalance(oldBalance + money);
 		employeeRepository.save(u);
 	}
 
-
-	//lay thon tin cac employee (phan minh)
+	// lay thon tin cac employee (phan minh)
 	@Override
-	public Page<User> getAllEmployees(int page, int size) {
-		Pageable pageable = PageRequest.of(page - 1, size); // page - 1 vì Pageable bắt đầu từ 0
-		return employeeRepository.getAllEmployees(pageable);
+	public Page<GetAllEmployeesDTO> getAllEmployees(int page, int size, EmployeeFilter filter) {
+		Pageable pageable = PageRequest.of(page, size); // page - 1 vì Pageable bắt đầu từ 0
+		return employeeRepository.getAllEmployees(pageable, filter.getName());
 	}
 
-	//lay thon tin cac employee da bi xoa (phan minh)
+	// lay thon tin cac employee da bi xoa (phan minh)
 	@Override
 	public Page<User> getDeletedEmployeeList(int page, int size) {
 		Pageable pageable = PageRequest.of(page - 1, size); // page - 1 vì Pageable bắt đầu từ 0
 		return employeeRepository.getDeletedEmployeeList(pageable);
 	}
 
-	//lay thong tin employee theo userId (phan minh)
+	// lay thong tin employee theo userId (phan minh)
 	@Override
 	public User getEmployeeById(Long userId) {
 		return employeeRepository.findEmployeeById(userId);
 	}
 
-	//update employee (phan minh)
+	// update employee (phan minh)
 	@Override
 	public User updateEmployee(Long userId, UpdateEmployeeDTO dto) {
 		Optional<User> optionalUser = employeeRepository.findById(userId);
@@ -81,7 +81,7 @@ public class EmployeeService implements IEmployeeService {
 		return employeeRepository.save(user);
 	}
 
-	//them employee (phan minh)
+	// them employee (phan minh)
 	@Override
 	public User createEmployee(CreateEmployeeDTO dto) {
 		User user = new User();
@@ -104,7 +104,7 @@ public class EmployeeService implements IEmployeeService {
 				.orElseThrow(() -> new EntityNotFoundException("Không tìm thấy người dùng với ID: " + userId));
 
 		user.setStatus(request.getStatus());
-		return employeeRepository .save(user);
+		return employeeRepository.save(user);
 	}
 
 	@Override
