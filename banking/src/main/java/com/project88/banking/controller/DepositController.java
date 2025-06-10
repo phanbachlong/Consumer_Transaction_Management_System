@@ -30,9 +30,10 @@ public class DepositController {
     @PostMapping
     public ResponseEntity<?> createDeposit(
             @RequestBody DepositDTO depositDTO,
-            @RequestParam("userId") long userId) {
+            Authentication authentication) {
         try {
-            DepositDTO createdDeposit = depositService.createDeposit(depositDTO, userId);
+            String username = authentication.getName();
+            DepositDTO createdDeposit = depositService.createDeposit(depositDTO, username);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdDeposit);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -48,7 +49,6 @@ public class DepositController {
     public ResponseEntity<?> getDepositsByUsername(Authentication authentication) {
         try {
             String username = authentication.getName();
-            System.out.println("Username frontend đang gọi: " + username);
             List<DepositDTO> deposits = depositService.getDepositsByUsername(username);
             return ResponseEntity.ok(deposits);
         } catch (RuntimeException e) {

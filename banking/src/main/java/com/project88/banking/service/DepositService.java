@@ -34,9 +34,12 @@ public class DepositService implements IDepositService {
 
         // Tạo mới deposit
         @Override
-        public DepositDTO createDeposit(DepositDTO dto, long userId) {
-                User user = userRepository.findById(userId)
-                                .orElseThrow(() -> new RuntimeException("User không tồn tại"));
+        public DepositDTO createDeposit(DepositDTO dto, String username) {
+                User user = userRepository.findByUsername(username);
+
+                if (user == null) {
+                        return null;
+                }
 
                 if (user.getBalance() < dto.getAmount()) {
                         throw new RuntimeException("Số dư không đủ để thực hiện giao dịch");

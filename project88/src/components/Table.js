@@ -36,7 +36,7 @@ const Table = ({ initialValues, content, onTopUp }) => {
                                 {/* Edit icon */}
                                 <button
                                     type="button"
-                                    className="flex items-center justify-center p-1 rounded-full hover:bg-gray-200 active:bg-gray-300 transition"
+                                    className=" p-1 rounded-full hover:bg-gray-200 active:bg-gray-300 transition"
                                     title="Chỉnh sửa"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
@@ -47,7 +47,7 @@ const Table = ({ initialValues, content, onTopUp }) => {
                                 {/* Top Up icon */}
                                 <button
                                     type="button"
-                                    className="flex items-center justify-center p-1 rounded-full hover:bg-gray-200 active:bg-gray-300 transition"
+                                    className=" p-1 rounded-full hover:bg-gray-200 active:bg-gray-300 transition"
                                     title="Giao dịch"
                                     //onClick={() => setShowTopUp(true)}
                                     onClick={() => onTopUp(row)}
@@ -59,7 +59,7 @@ const Table = ({ initialValues, content, onTopUp }) => {
                                 {/* Delete icon */}
                                 <button
                                     type="button"
-                                    className="flex items-center justify-center p-1 rounded-full hover:bg-red-100 active:bg-red-200 transition text-red-600"
+                                    className=" p-1 rounded-full hover:bg-red-100 active:bg-red-200 transition text-red-600"
                                     title="Xóa tài khoản"
                                 // onClick={() => handleDeleteClick(c)}
                                 >

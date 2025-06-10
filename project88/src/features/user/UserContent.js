@@ -25,11 +25,11 @@ const UserContent = () => {
   });
 
   const [showTransfer, setShowTransfer] = useState(false);
-  const [showDeposit, setShowDeposit] = useState(false);
-  const [showRedeem, setShowRedeem] = useState(false);
+  // const [showDeposit, setShowDeposit] = useState(false);
+  // const [showRedeem, setShowRedeem] = useState(false);
   const [balance, setBalance] = useState(0);
   const [bills, setBills] = useState([]);
-  const [savingsTotal, setSavingsTotal] = useState(0);
+  // const [savingsTotal, setSavingsTotal] = useState(0);
 
   // State để lưu trữ các tham số tìm kiếm
   const [params, setParams] = useState("")
@@ -45,69 +45,9 @@ const UserContent = () => {
   endToday.setHours(23, 59, 59, 999);
 
   // Lấy thông tin tổng số trang, tổng số phần tử và trang hiện tại từ Redux store
-  const { totalPages, totalElements, currentPage } = useSelector((state) => state.transaction);
+  const { totalPages, currentPage } = useSelector((state) => state.transaction);
   const [page, setPage] = useState(1);
 
-  // Hàm format số tiền
-  const formatAmount = (value) => {
-    const cleanValue = value.toString().replace(/[^0-9]/g, "");
-    return cleanValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
-
-  const formatCurrency = (amount) => {
-    return formatAmount(amount.toString()) + " VND";
-  };
-
-  // Hàm tính tiền lãi dựa trên thông tin từ API
-  const calculateInterest = (depositAmount, interestRate, createDate) => {
-    const startDate = new Date(createDate);
-    const now = new Date();
-
-    startDate.setHours(0, 0, 0, 0);
-    now.setHours(0, 0, 0, 0);
-
-    const daysPassed = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
-    const actualDaysPassed = Math.max(0, daysPassed);
-
-    const yearlyInterest = (depositAmount * interestRate) / 100;
-    const dailyInterest = yearlyInterest / 365;
-
-    return Math.round(dailyInterest * actualDaysPassed);
-  };
-
-  // Fetch tổng tiền tiết kiệm
-  // const fetchSavingsTotal = async () => {
-  //   try {
-  //     const response = await fetch(`http://localhost:8080/api/v1/deposits/user`, {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       }
-  //     });
-
-  //     if (response.ok) {
-  //       const data = await response.json();
-
-  //       // Tính tổng tiền gốc và lãi
-  //       const total = data
-  //         .filter(deposit => deposit.status === 'ACTIVE')
-  //         .reduce((sum, deposit) => {
-  //           const principal = deposit.depositAmount || deposit.amount || 0;
-  //           const interest = calculateInterest(
-  //             principal,
-  //             deposit.interestRate || 0,
-  //             deposit.createDate
-  //           );
-  //           return sum + principal + interest;
-  //         }, 0);
-
-  //       setSavingsTotal(total);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching savings total:", error);
-  //     setSavingsTotal(0);
-  //   }
-  // };
 
   const fetchUserById = async () => {
     try {
@@ -228,7 +168,7 @@ const UserContent = () => {
               <div className="flex-1 text-center bg-white p-6 rounded shadow">
                 <div className="text-gray-500 ">Số dư</div>
                 <div className="text-2xl font-bold">
-                  {Number(balance).toLocaleString("de-DE")}
+                  {Number(balance).toLocaleString("de-DE")} VND
                 </div>
                 <div className="flex justify-between space-x-4 mt-2">
                   <button className="w-full px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200"
@@ -237,7 +177,7 @@ const UserContent = () => {
                   </button>
                 </div>
               </div>
-              <SavingTotal />
+              <SavingTotal onAfterDeposit={handleAfterDepositAction} />
             </div>
           </div>
         </div>
@@ -285,29 +225,7 @@ const UserContent = () => {
         </div>
       )}
 
-      {/* Deposit Modal */}
-      {showDeposit && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <div className="w-full p-6">
-            <Deposit
-              setShowDeposit={setShowDeposit}
-              onAfterDeposit={handleAfterDepositAction}
-            />
-          </div>
-        </div>
-      )}
 
-      {/* Redeem Modal */}
-      {showRedeem && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <div className="w-full p-6">
-            <Redeem
-              setShowRedeem={setShowRedeem}
-              onAfterRedeem={handleAfterDepositAction}
-            />
-          </div>
-        </div>
-      )}
     </main>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import TopUp from "./TopUp";
+import TopUp from "../home/TopUp";
 
 const customersLists = [
     {
@@ -43,7 +43,7 @@ const AdminContent = () => {
     // State cho ô tìm kiếm (search)
     const [search, setSearch] = useState("");
     const [showTopUp, setShowTopUp] = useState(false);
-    
+
     const [customers, setCustomers] = useState(customersLists);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [customerToDelete, setCustomerToDelete] = useState(null);
@@ -88,7 +88,7 @@ const AdminContent = () => {
                 {/* NV list */}
                 <div className="bg-white rounded p-6">
                     <div className="flex items-center justify-between mb-4">
-                        <div className="text-lg font-bold">Danh sách khách hàng</div>
+                        <div className="text-lg font-bold">Danh sách nhân viên</div>
                         <div className="flex items-center gap-2">
                             <input
                                 type="text"
@@ -211,7 +211,7 @@ const AdminContent = () => {
                                 <p className="text-sm text-gray-600">Hành động này không thể hoàn tác</p>
                             </div>
                         </div>
-                        
+
                         {customerToDelete && (
                             <div className="mb-6 p-4 bg-gray-50 rounded-lg">
                                 <p className="text-sm font-medium text-gray-700">Thông tin khách hàng:</p>
@@ -224,7 +224,7 @@ const AdminContent = () => {
                         <p className="text-gray-700 mb-6">
                             Bạn có chắc chắn muốn xóa tài khoản khách hàng <strong>{customerToDelete?.name}</strong> không?
                         </p>
-                        
+
                         <div className="flex gap-3">
                             <button
                                 onClick={cancelDelete}
