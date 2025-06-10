@@ -9,13 +9,14 @@ import ChangePassword from './features/auth/ChangePassword';
 import Profile from './features/user/Profile';
 import TransferForm from './features/home/Transfer';
 import Test from './features/Test';
-import CreateEmployee from "./features/Employee/CreateEmployee";
-import EmployeeList from "./features/Employee/EmployeeList";
-import EditEmployee from "./features/Employee/EditEmployee";
+import CreateEmployee from "./features/employee/CreateEmployee";
+import EmployeeList from "./features/employee/EmployeeList";
+import EditEmployee from "./features/employee/EditEmployee";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import DeletedEmployees from "./features/Employee/DeletedEmployees";
 import VerifyPage from "./features/auth/VerifyPage";
+
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -27,7 +28,7 @@ function App() {
   return (
     <Router>
       <Header toggleTheme={toggleTheme} currentTheme={theme} />
-      <div className='mt-16'>
+      <div className='mt-20'>
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -46,7 +47,9 @@ function App() {
         </Routes>
       </div>
 
-      <Footer toggleTheme={toggleTheme} currentTheme={theme} />
+      <div className='mt-8'>
+        <Footer toggleTheme={toggleTheme} currentTheme={theme} />
+      </div>
     </Router>
   );
 }

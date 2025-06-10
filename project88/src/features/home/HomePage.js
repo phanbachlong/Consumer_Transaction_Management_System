@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import UserContent from "./UserContent";
+import UserContent from "../user/UserContent";
 import EmployeeContent from "./EmployeeContent";
-import AdminContent from "./AdminContent";
-import EmployeeList from "../Employee/EmployeeList";
+import AdminContent from "../admin/AdminContent";
+import EmployeeList from "../employee/EmployeeList";
 
 export default function HomePage() {
     const [theme, setTheme] = useState("light");

@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from "react";
-import Transaction from "../user/Transaction";
-import Transfer from "./Transfer";
+import Transaction from "./Transaction";
+import Transfer from "../home/Transfer";
 import Deposit from "./Deposit";
-import Redeem from "./Redeem";
+import Redeem from "../home/Redeem";
 import UserAPIv2 from "../../api/UserAPIv2";
-import Bills from "./Bills";
-import TransactionService from "../user/TransactionService";
-import transactionApi from "../../api/TransactionAPI";
+import Bills from "../home/Bills";
 import { transaction } from "../../redux/slices/transactionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Search from "../../components/Search";
 import MyDatePicker from "../../components/MyDatePicker";
-import { set } from "lodash";
 import Pagination from "../../components/Pagination";
+import SavingTotal from "./SavingTotal";
 
 const UserContent = () => {
   const userID = localStorage.getItem("userId");
   const dispatch = useDispatch();
-
 
   const [user, setUser] = useState({
     firstName: "",
@@ -28,10 +25,28 @@ const UserContent = () => {
   });
 
   const [showTransfer, setShowTransfer] = useState(false);
-  const [showDeposit, setShowDeposit] = useState(false);
-  const [showRedeem, setShowRedeem] = useState(false);
+  // const [showDeposit, setShowDeposit] = useState(false);
+  // const [showRedeem, setShowRedeem] = useState(false);
   const [balance, setBalance] = useState(0);
   const [bills, setBills] = useState([]);
+  // const [savingsTotal, setSavingsTotal] = useState(0);
+
+  // State để lưu trữ các tham số tìm kiếm
+  const [params, setParams] = useState("")
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [isReset, setIsReset] = useState(false);
+
+  // Ngày bắt đầu và kết thúc cho ngày hôm nay
+  const today = new Date();
+  const startToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+  const endToday = new Date(today);
+  endToday.setHours(23, 59, 59, 999);
+
+  // Lấy thông tin tổng số trang, tổng số phần tử và trang hiện tại từ Redux store
+  const { totalPages, currentPage } = useSelector((state) => state.transaction);
+  const [page, setPage] = useState(1);
 
 
   const fetchUserById = async () => {
@@ -62,7 +77,6 @@ const UserContent = () => {
     }
   }
 
-
   const fetchBills = async () => {
     try {
       const response = await UserAPIv2.GetBillsByUserId(userID);
@@ -72,7 +86,6 @@ const UserContent = () => {
       }
     } catch (error) {
       console.error("Error fetching bills:", error);
-
     }
   }
 
@@ -93,7 +106,7 @@ const UserContent = () => {
 
   const fetchTransaction = async () => {
     try {
-      const response = await dispatch(transaction(userID));
+      const response = await dispatch(transaction({ page: currentPage, size: 5, filter: { startDate: startDate, endDate: endDate, name: params } }));
       if (response && response.data) {
         console.log("Transactions fetched successfully:", response.data);
       }
@@ -107,23 +120,20 @@ const UserContent = () => {
     fetchUserBalance();
   };
 
+  // Callback sau khi gửi tiết kiệm hoặc tất toán
+  const handleAfterDepositAction = () => {
+    fetchUserBalance();
+    fetchTransaction();
+  };
+
   useEffect(() => {
     fetchUserById();
     fetchUserBalance();
     fetchBills();
     fetchTransaction();
-  }, []);
+  }, [balance]);
 
-  const [params, setParams] = useState("")
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [isReset, setIsReset] = useState(false);
 
-  const today = new Date();
-  const startToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
-  const endToday = new Date(today);
-  endToday.setHours(23, 59, 59, 999);
 
   const handleResetTable = () => {
     setIsReset(true);
@@ -133,8 +143,7 @@ const UserContent = () => {
     setTimeout(() => setIsReset(false), 0);
   }
 
-  const { totalPages, totalElements, currentPage } = useSelector((state) => state.transaction);
-  const [page, setPage] = useState(1);
+
 
   const onPageChange = (currentPage) => {
     setPage(currentPage);
@@ -159,7 +168,7 @@ const UserContent = () => {
               <div className="flex-1 text-center bg-white p-6 rounded shadow">
                 <div className="text-gray-500 ">Số dư</div>
                 <div className="text-2xl font-bold">
-                  {Number(balance).toLocaleString("de-DE")}
+                  {Number(balance).toLocaleString("de-DE")} VND
                 </div>
                 <div className="flex justify-between space-x-4 mt-2">
                   <button className="w-full px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200"
@@ -168,20 +177,7 @@ const UserContent = () => {
                   </button>
                 </div>
               </div>
-              <div className="flex-1 text-center bg-white p-6 rounded shadow">
-                <div className="text-gray-500 ">Tiết kiệm</div>
-                <div className="text-2xl font-bold">1.000.000.000 VND</div>
-                <div className="flex justify-between space-x-4 mt-2">
-                  <button className="w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis"
-                    onClick={() => setShowDeposit(true)}>
-                    Gửi
-                  </button>
-                  <button className=" w-1/2 h-12 px-4 py-2 bg-red-100 text-red-600 rounded hover:bg-red-200 overflow-hidden whitespace-nowrap text-ellipsis"
-                    onClick={() => setShowRedeem(true)}>
-                    Rút
-                  </button>
-                </div>
-              </div>
+              <SavingTotal onAfterDeposit={handleAfterDepositAction} />
             </div>
           </div>
         </div>
@@ -229,27 +225,7 @@ const UserContent = () => {
         </div>
       )}
 
-      {/* Deposit Modal */}
-      {showDeposit && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <div className="w-full p-6">
-            <Deposit
-              setShowDeposit={setShowDeposit}
-            />
-          </div>
-        </div>
-      )}
 
-      {/* Redeem Modal */}
-      {showRedeem && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <div className="w-full p-6">
-            <Redeem
-              setShowRedeem={setShowRedeem}
-            />
-          </div>
-        </div>
-      )}
     </main>
   );
 };

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userProfile } from "../../redux/slices/userSlice";
-import { format } from "date-fns";
-import EditEmployee from "../Employee/EditEmployee";
+import { format, set } from "date-fns";
+import EditEmployee from "../employee/EditEmployee";
 
 
 
@@ -10,6 +10,18 @@ const ProfileContent = () => {
     const dispatch = useDispatch();
     const { profile, loading } = useSelector((state) => state.profile);
     const [showForm, setShowForm] = useState(false);
+
+    const [file, setFile] = useState(null);
+    const [preview, setPreview] = useState(null);
+    const [imgUrl, setImgUrl] = useState("/download.jpg");
+
+    const handleFileChange = (e) => {
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);
+        setPreview(URL.createObjectURL(selectedFile));
+    }
+
+
 
     const handleShowForm = () => {
         setShowForm(!showForm);
@@ -33,7 +45,7 @@ const ProfileContent = () => {
                     {profile ? (
                         <div className="flex items-center m-8 w-400 min-w-[430px]">
                             <div className="flex-none w-1/3 flex flex-col items-center text-center border-r border-gray-400">
-                                <img src="/download.jpg" className="w-40 h-40 rounded-full object-cover" />
+                                <img src={`./${profile.profile.avatarUrl}`} className="w-40 h-40 rounded-full object-cover" />
                                 <div className="mt-8 font-bold text-xl">
                                     <p>{profile.profile.firstName} {profile.profile.lastName} </p>
                                 </div>

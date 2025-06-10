@@ -12,11 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.project88.banking.dto.ChangeProfileDTO;
-import com.project88.banking.dto.GetAllUserDTO;
-import com.project88.banking.dto.ProfileDTO;
-import com.project88.banking.dto.TransferDTO;
 import com.project88.banking.entity.CardNumber;
 import com.project88.banking.entity.TransactionHistory;
 import com.project88.banking.entity.User;
@@ -26,7 +23,13 @@ import com.project88.banking.repository.IUserRepository;
 
 import jakarta.transaction.Transactional;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @Transactional
@@ -122,19 +125,36 @@ public class UserService implements IUserService {
 	// return null;
 	// }
 
-	public ProfileDTO getProfile(long userID) {
-		return userRepository.findByID(userID);
+	public ProfileDTO getProfile(String name) {
+		return userRepository.findByUserName(name);
 	}
 
-	@Override
-	public void changeUserProfile(String username, ChangeProfileDTO dto) {
+	public String changeUserProfile(String username, MultipartFile file) throws IOException {
+
 		User user = userRepository.findByUsername(username);
 		if (user == null) {
-			throw new UsernameNotFoundException("User not found: " + username);
+			throw new UsernameNotFoundException("User not found");
 		}
 
-		user.setAvatarUrl(dto.getAvatarUrl());
+		// 1. Xóa ảnh cũ nếu có
+		String oldAvatar = user.getAvatarUrl();
+		if (oldAvatar != null) {
+			Path oldFile = Paths.get("uploads").resolve(Paths.get(oldAvatar).getFileName());
+			Files.deleteIfExists(oldFile);
+		}
+		String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+		Path path = Paths.get("uploads");
+
+		Files.createDirectories(path);
+
+		Path filePath = path.resolve(fileName);
+		Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+		String newAvatarUrl = "/uploads/" + fileName;
+		user.setAvatarUrl(newAvatarUrl);
 		userRepository.save(user);
+
+		return "/uploads/" + fileName;
 
 	}
 

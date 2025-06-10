@@ -1,7 +1,9 @@
 package com.project88.banking.repository;
 
 import jakarta.transaction.Transactional;
+import lombok.Builder.Default;
 
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,8 +25,8 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     @Query("UPDATE User u SET u.balance = u.balance + :amount WHERE u.cccd = :cccd")
     int updateBalanceByCCCD(String cccd, int amount);
 
-    @Query("SELECT new com.project88.banking.dto.ProfileDTO(u.firstName, u.lastName,u.username, u.email, u.birth, u.avatarUrl, u.cccd, u.phone, u.gender, c.cardNumber) FROM User u JOIN u.cardNumber c WHERE u.userID = :userID")
-    ProfileDTO findByID(@Param("userID") Long userID);
+    @Query("SELECT new com.project88.banking.dto.ProfileDTO(u.firstName, u.lastName, u.username, u.email, u.birth, u.avatarUrl, u.cccd, u.phone, u.gender, c.cardNumber) FROM User u JOIN u.cardNumber c WHERE u.username = :username")
+    ProfileDTO findByUserName(@Param("username") String username);
 
     @Query("SELECT u FROM User u WHERE u.username = :username")
     User findByUsername(@Param("username") String username);
@@ -32,7 +34,7 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.userID = :userId")
     User getUserById(@Param("userId") Long userId);
 
-    @Query("SELECT new com.project88.banking.dto.GetAllUserDTO(u.userID, CONCAT(u.firstName, ' ', u.lastName), u.email, u.phone, c.cardNumber) FROM User u JOIN u.cardNumber c ")
+    @Query("SELECT new com.project88.banking.dto.GetAllUserDTO(u.userID, CONCAT(u.firstName, ' ', u.lastName), u.email, u.phone, c.cardNumber) FROM User u JOIN u.cardNumber c WHERE u.role = 'User' ")
     Page<GetAllUserDTO> findAllUsers(Pageable pageable);
 
     @Modifying

@@ -22,22 +22,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(value = "/api/v1/transaction")
 public class TransactionController {
 
-    @Autowired
-    private ITransactionService transactionService;
+        @Autowired
+        private ITransactionService transactionService;
 
-    @GetMapping()
-    public ResponseEntity<?> getTransactionHistory(Authentication authentication,
-            @PageableDefault(size = 10, sort = "createDate", direction = Direction.DESC) Pageable pageable,
-            TransactionFilter filter) {
+        @GetMapping()
+        public ResponseEntity<?> getTransactionHistory(Authentication authentication,
+                        @PageableDefault(size = 10, sort = "createDate", direction = Direction.DESC) Pageable pageable,
+                        TransactionFilter filter) {
 
-        String username = authentication.getName();
-        String role = authentication.getAuthorities().stream()
-                .findFirst().orElseThrow(() -> new RuntimeException("Role not found")).getAuthority();
-        System.out.println("Username 1123: " + username);
-        System.out.println("Role 1123: " + role);
-        Page<TransactionHistoryDTO> transactionHistoryDTO = transactionService.getTransaction(username, pageable,
-                filter);
+                String username = authentication.getName();
+                Page<TransactionHistoryDTO> transactionHistoryDTO = transactionService.getTransaction(username,
+                                pageable,
+                                filter);
 
-        return new ResponseEntity<>(transactionHistoryDTO, HttpStatus.OK);
-    }
+                return new ResponseEntity<>(transactionHistoryDTO, HttpStatus.OK);
+        }
 }

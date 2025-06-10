@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project88.banking.entity.Bill;
 import com.project88.banking.entity.Deposit;
@@ -20,8 +21,14 @@ import com.project88.banking.service.IBillService;
 import com.project88.banking.service.IDepositService;
 import com.project88.banking.service.IUserService;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/v1/users")
@@ -72,21 +79,28 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<?> getProfile() {
-        ProfileDTO profileDTO = userService.getProfile(2L);
-        return new ResponseEntity<>(profileDTO, HttpStatus.OK);
+    public ResponseEntity<?> getProfile(Authentication authentication) {
+        String name = authentication.getName();
+        System.out.println("Authentication name: " + name);
+        ProfileDTO profileDTO = userService.getProfile(name);
+        System.out.println("profile: " + profileDTO);
+        return ResponseEntity.ok(profileDTO);
     }
 
     @PutMapping("/profile")
     // validate: check exists, check not expired
-    public ResponseEntity<?> changeUserProfile(@RequestBody ChangeProfileDTO dto) {
+    public ResponseEntity<?> changeUserProfile(@RequestParam("avatarUrl") MultipartFile file,
+            Authentication authentication) {
 
-        // get username from token
-        String username = "phtrvinh";
-
-        userService.changeUserProfile(username, dto);
-
-        return new ResponseEntity<>("Change Profile Successfully!", HttpStatus.OK);
+        try {
+            String usename = authentication.getName();
+            String avatarUrl = userService.changeUserProfile(usename, file);
+            return ResponseEntity.ok(avatarUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi cập nhật thông tin người dùng: " + e.getMessage());
+        }
     }
 
     @GetMapping("/bills")
@@ -102,10 +116,17 @@ public class UserController {
         billService.payBill(billId);
     }
 
-    @PutMapping("/deposit")
-    public void deposit(@RequestBody DepositDTO form, @RequestParam(name = "userId") Long userId) {
-        depositService.createDeposit(form, userId);
+    // @PutMapping("/deposit")
+    // public void deposit(@RequestBody DepositDTO form, @RequestParam(name =
+    // "userId") Long userId) {
+    // depositService.createDeposit(form, userId);
 
+    // }
+
+    @GetMapping("/{id}/balance")
+    public ResponseEntity<Integer> getUserBalance(@PathVariable(name = "id") long id) {
+        User user = userService.findUserById(id);
+        return new ResponseEntity<>(user.getBalance(), HttpStatus.OK);
     }
 
     @PostMapping("/top-up")
