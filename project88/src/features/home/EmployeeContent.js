@@ -87,13 +87,10 @@ const EmployeeContent = () => {
                                 className="flex items-center justify-center p-1 rounded-full hover:bg-gray-300 active:bg-gray-400 transition"
                                 title="Tìm kiếm"
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                </svg>
                             </button>
                         </div>
                     </div>
-                    <UsersList onTopUp={openTopUpModal} currentPage={page} />
+                    <UsersList onTopUp={openTopUpModal} currentPage={page} params={params} />
                     <div className="flex justify-between items-center mt-4">
                         <button className="px-4 py-2 bg-gray-100 bg-red-100 text-red-600 rounded hover:bg-red-200" onClick={handleResetTable}>
                             Tải lại

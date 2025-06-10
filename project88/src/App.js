@@ -14,7 +14,7 @@ import EmployeeList from "./features/employee/EmployeeList";
 import EditEmployee from "./features/employee/EditEmployee";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import DeletedEmployees from "./features/Employee/DeletedEmployees";
+import DeletedEmployees from "./features/employee/DeletedEmployees";
 import VerifyPage from "./features/auth/VerifyPage";
 
 
