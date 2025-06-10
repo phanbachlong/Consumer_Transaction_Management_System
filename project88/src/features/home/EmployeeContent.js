@@ -1,64 +1,42 @@
 import React, { useState } from "react";
 import TopUp from "./TopUp";
 import UsersList from "../user/UsersList";
-
-const customersLists = [
-    {
-        id: "HA10022",
-        date: "04/05/2025",
-        name: "Bùi Quang Huy",
-        account: "1234********",
-        address: "Thanh Chì, Hà Nội",
-    },
-    {
-        id: "HA10023",
-        date: "04/05/2025",
-        name: "Nguyễn Văn A",
-        account: "1234********",
-        address: "Thanh Chì, Hà Nội",
-    },
-    {
-        id: "HA10024",
-        date: "04/05/2025",
-        name: "Trần Văn B",
-        account: "1234********",
-        address: "Thanh Chì, Hà Nội",
-    },
-    {
-        id: "HA10025",
-        date: "04/05/2025",
-        name: "Nguyễn Thị C",
-        account: "1234********",
-        address: "Thanh Chì, Hà Nội",
-    },
-    {
-        id: "HA10026",
-        date: "04/05/2025",
-        name: "Đặng thị D",
-        account: "1234********",
-        address: "Thanh Chì, Hà Nội",
-    },
-];
+import Search from "../../components/Search";
+import Pagination from "../../components/Pagination";
+import { useSelector } from "react-redux";
 
 const EmployeeContent = () => {
     // State cho ô tìm kiếm (search)
     const [search, setSearch] = useState("");
     const [showTopUp, setShowTopUp] = useState(false);
 
-    const [customers, setCustomers] = useState(customersLists);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [customerToDelete, setCustomerToDelete] = useState(null);
     const [selectedUser, setSelectedUser] = useState(null);
 
+    const [params, setParams] = useState('');
+    const [isReset, setIsReset] = useState('false');
+    const [page, setPage] = useState(1)
+
+    const { totalPages, currentPage } = useSelector((state) => state.user);
+
+
+    const onChangePage = (currentPage) => {
+        setPage(currentPage)
+    }
+
+    const handleResetTable = () => {
+        setIsReset(true);
+        setTimeout(() => setIsReset(false), 0);
+    }
+
     // Hàm xử lý xóa khách hàng
     const handleDeleteClick = (customer) => {
-        setCustomerToDelete(customer);
         setShowDeleteConfirm(true);
     };
 
     const confirmDelete = () => {
         if (customerToDelete) {
-            setCustomers(customers.filter(c => c.id !== customerToDelete.id));
             setShowDeleteConfirm(false);
             setCustomerToDelete(null);
             alert("Đã xóa thành công!");
@@ -102,13 +80,7 @@ const EmployeeContent = () => {
                     <div className="flex items-center justify-between mb-4">
                         <div className="text-lg font-bold">Danh sách khách hàng</div>
                         <div className="flex items-center gap-2">
-                            <input
-                                type="text"
-                                placeholder="Tìm kiếm khách hàng..."
-                                className="w-64 h-8 px-3 rounded-full bg-gray-200 focus:outline-none"
-                                value={search}
-                                onChange={e => setSearch(e.target.value)}
-                            />
+                            <Search onChangeSearch={setParams} isReset={isReset} />
                             {/* Search icon */}
                             <button
                                 type="button"
@@ -121,28 +93,16 @@ const EmployeeContent = () => {
                             </button>
                         </div>
                     </div>
-                    <UsersList onTopUp={openTopUpModal} />
-
-
-                    {/* Page */}
-                    <div className="text-right mt-4">
-                        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
-                            First
+                    <UsersList onTopUp={openTopUpModal} currentPage={page} />
+                    <div className="flex justify-between items-center mt-4">
+                        <button className="px-4 py-2 bg-gray-100 bg-red-100 text-red-600 rounded hover:bg-red-200" onClick={handleResetTable}>
+                            Tải lại
                         </button>
-                        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
-                            1
-                        </button>
-                        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
-                            2
-                        </button>
-                        <span className="px-4 py-2">...</span>
-                        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
-                            5
-                        </button>
-                        <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
-                            Last
-                        </button>
+                        <Pagination totalPages={totalPages} onPageChange={onChangePage}></Pagination>
                     </div>
+
+
+
                 </div>
             </div>
             {/* Top Up Modal */}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import UserAPIv2 from "../../api/UserAPIv2";
 
 const Deposit = ({ setShowDeposit, onDepositSuccess }) => {
   const userId = localStorage.getItem("userId") || 1;
@@ -33,10 +34,8 @@ const Deposit = ({ setShowDeposit, onDepositSuccess }) => {
     const fetchUserBalance = async () => {
       setLoadingBalance(true);
       try {
-        const response = await axios.get(
-          `http://localhost:8080/api/v1/users/${userId}/balance`
-        );
-        setBalance(response.data);
+        const response = await UserAPIv2.FindUserById(userId);
+        setBalance(response.data.balance);
       } catch (err) {
         console.error("Lỗi khi lấy balance:", err);
         setError("Không thể lấy thông tin số dư");
@@ -93,7 +92,7 @@ const Deposit = ({ setShowDeposit, onDepositSuccess }) => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/v1/deposits?userId=${userId}`,
+        `http://localhost:8080/api/v1/deposits`,
         {
           accountName,
           amount: parseInt(amount.replace(/[^0-9]/g, "")),

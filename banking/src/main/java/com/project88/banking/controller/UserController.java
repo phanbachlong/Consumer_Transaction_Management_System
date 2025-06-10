@@ -116,11 +116,12 @@ public class UserController {
         billService.payBill(billId);
     }
 
-    @PutMapping("/deposit")
-    public void deposit(@RequestBody DepositDTO form, @RequestParam(name = "userId") Long userId) {
-        depositService.createDeposit(form, userId);
+    // @PutMapping("/deposit")
+    // public void deposit(@RequestBody DepositDTO form, @RequestParam(name =
+    // "userId") Long userId) {
+    // depositService.createDeposit(form, userId);
 
-    }
+    // }
 
     @GetMapping("/{id}/balance")
     public ResponseEntity<Integer> getUserBalance(@PathVariable(name = "id") long id) {

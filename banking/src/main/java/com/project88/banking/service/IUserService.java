@@ -36,4 +36,5 @@ public interface IUserService extends UserDetailsService {
     void topUpBalance(TopUpDTO dto);
 
     User findUserByUsername(String username);
+
 }

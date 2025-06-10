@@ -10,8 +10,8 @@ const getProfile = () => {
     return axiosClient.get(`${url}/profile`);
 }
 
-const getAllUsers = () => {
-    return axiosClient.get(`${url}/all`);
+const getAllUsers = (page, size) => {
+    return axiosClient.get(`${url}/all`, { page, size });
 }
 
 const topUp = (body) => {
@@ -25,6 +25,7 @@ const updateProfile = (body) => {
         }
     });
 }
+
 
 const UserApi = {
     createUser,
