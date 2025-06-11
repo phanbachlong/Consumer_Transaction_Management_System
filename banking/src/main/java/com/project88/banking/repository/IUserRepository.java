@@ -1,7 +1,9 @@
 package com.project88.banking.repository;
 
 import jakarta.transaction.Transactional;
+import lombok.Builder.Default;
 
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,7 +34,7 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.userID = :userId")
     User getUserById(@Param("userId") Long userId);
 
-    @Query("SELECT new com.project88.banking.dto.GetAllUserDTO(u.userID, CONCAT(u.firstName, ' ', u.lastName), u.email, u.phone, c.cardNumber) FROM User u JOIN u.cardNumber c ")
+    @Query("SELECT new com.project88.banking.dto.GetAllUserDTO(u.userID, CONCAT(u.firstName, ' ', u.lastName), u.email, u.phone, c.cardNumber) FROM User u JOIN u.cardNumber c WHERE u.role = 'User' ")
     Page<GetAllUserDTO> findAllUsers(Pageable pageable);
 
     @Modifying

@@ -37,31 +37,31 @@ export default function TopUp({ user, onClose }) {
         </div>
       </div>
 
-        <div className="mb-6">
-          <input
-            type="number"
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-400 text-base"
-            placeholder="Nhập số tiền cần nạp"
-            value={amount}
-            onChange={e => setAmount(e.target.value)}
-          />
-        </div>
-        <div className="flex gap-4">
-          <button
-            type="button"
-            className="w-1/2 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
-            onClick={() => onClose(false)}
-          >
-            Hủy
-          </button>
-          <button
-            type="button"
-            className="w-1/2 bg-red-500 hover:bg-red-400 text-white font-bold text-lg rounded py-2 transition"
-            onClick={handleTopUp}
-          >
-            Nạp tiền
-          </button>
-        </div>
+      <div className="mb-6">
+        <input
+          type="number"
+          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-400 text-base"
+          placeholder="Nhập số tiền cần nạp"
+          value={amount}
+          onChange={e => setAmount(e.target.value)}
+        />
+      </div>
+      <div className="flex gap-4">
+        <button
+          type="button"
+          className="w-1/2 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+          onClick={() => onClose(false)}
+        >
+          Hủy
+        </button>
+        <button
+          type="button"
+          className="w-1/2 bg-red-500 hover:bg-red-400 text-white font-bold text-lg rounded py-2 transition"
+          onClick={handleTopUp}
+        >
+          Nạp tiền
+        </button>
+      </div>
     </div>
   );
 }

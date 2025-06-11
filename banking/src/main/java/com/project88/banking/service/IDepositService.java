@@ -7,7 +7,7 @@ import com.project88.banking.dto.DepositDTO.RedeemRequestDTO;
 public interface IDepositService {
 
     // Tạo mới deposit
-    DepositDTO createDeposit(DepositDTO dto, long userId);
+    DepositDTO createDeposit(DepositDTO dto, String username);
 
     List<DepositDTO> getDepositsByUserId(long userId);
 

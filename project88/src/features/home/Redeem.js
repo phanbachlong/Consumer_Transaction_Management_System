@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import UserAPIv2 from "../../api/UserAPIv2";
+import DepositAPI from "../../api/DepositAPI";
 
 // Hàm format số tiền
 const formatAmount = (value) => {
@@ -60,12 +62,12 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
     const fetchUserBalance = async () => {
       setLoadingBalance(true);
       try {
-        const response = await fetch(
-          `http://localhost:8080/api/v1/users/${userId}/balance`
-        );
-        if (!response.ok) throw new Error("Không thể lấy thông tin số dư");
-        const data = await response.json();
-        setBalance(data);
+        const response = await UserAPIv2.FindUserById(userId);
+        console.log(response.data.balance);
+
+        if (response && response.data) {
+          setBalance(response.data.balance);
+        }
       } catch (err) {
         console.error("Lỗi khi lấy balance:", err);
         setError("Không thể lấy thông tin số dư");
@@ -85,25 +87,18 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
     const fetchDeposits = async () => {
       try {
         setLoading(true);
-        const response = await fetch(
-          `http://localhost:8080/api/deposits/user/${userId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await DepositAPI.getDeposit();
+        console.log(response.data);
 
-        if (!response.ok) {
+
+        if (!response) {
           throw new Error("Không thể tải dữ liệu sổ tiết kiệm");
         }
 
-        const data = await response.json();
+        const rs = response.data;
 
         // Transform data
-        const transformedData = data
-          .filter((deposit) => deposit.status === "ACTIVE") // Chỉ lấy sổ đang hoạt động
+        const transformedData = rs
           .map((deposit) => {
             const depositAmount = deposit.depositAmount || deposit.amount || 0;
             const interestRate = deposit.interestRate || 0;
@@ -166,7 +161,7 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
         );
 
         const response = await fetch(
-          `http://localhost:8080/api/deposits/${deposit.id}/redeem`,
+          `http://localhost:8080/api/v1/deposits/${deposit.id}/redeem`,
           {
             method: "PUT",
             headers: {
@@ -196,8 +191,7 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
         }
 
         alert(
-          `Tất toán thành công sổ "${
-            deposit.name
+          `Tất toán thành công sổ "${deposit.name
           }". Tổng tiền nhận được: ${formatCurrency(
             deposit.principal + currentInterest
           )}`
@@ -316,15 +310,14 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
                   <td className="py-4 px-2 text-center">{item.term}</td>
                   <td className="py-4 px-2 text-center">
                     <span
-                      className={`px-2 py-1 rounded-full text-sm ${
-                        item.daysLeft <= 0
-                          ? "bg-red-100 text-red-700"
-                          : item.daysLeft <= 5
+                      className={`px-2 py-1 rounded-full text-sm ${item.daysLeft <= 0
+                        ? "bg-red-100 text-red-700"
+                        : item.daysLeft <= 5
                           ? "bg-orange-100 text-orange-700"
                           : item.daysLeft <= 15
-                          ? "bg-yellow-100 text-yellow-700"
-                          : "bg-green-100 text-green-700"
-                      }`}
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-green-100 text-green-700"
+                        }`}
                     >
                       {item.daysLeft <= 0
                         ? "Đã đến hạn"

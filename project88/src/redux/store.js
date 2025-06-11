@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import registerReducer from "./slices/registerSlice"
 import transactionReducer from "./slices/transactionSlice"
-import { profileReducer, userReducer } from "./slices/userSlice"
+import { balanceReducer, profileReducer, userReducer } from "./slices/userSlice"
 import depositReducer from "./slices/depositSlice";
 
 export const store = configureStore({
@@ -10,6 +10,7 @@ export const store = configureStore({
         transaction: transactionReducer,
         profile: profileReducer,
         user: userReducer,
-        deposit: depositReducer
+        deposit: depositReducer,
+        balance: balanceReducer
     }
 })
