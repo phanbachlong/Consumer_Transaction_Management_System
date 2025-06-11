@@ -5,6 +5,7 @@ import com.project88.banking.dto.filter.EmployeeFilter;
 import com.project88.banking.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +26,9 @@ public class EmployeeController {
 	// lay thon tin cac employee (phan minh)
 	@GetMapping()
 	public ResponseEntity<?> getAllEmployees(
-			@RequestParam(name = "page", defaultValue = "0") int page,
-			@RequestParam(name = "size", defaultValue = "10") int size,
+			Pageable page,
 			EmployeeFilter filter) {
-		Page<GetAllEmployeesDTO> employees = employeeService.getAllEmployees(page, size, filter);
+		Page<GetAllEmployeesDTO> employees = employeeService.getAllEmployees(page, filter);
 		return new ResponseEntity<>(employees, HttpStatus.OK);
 	}
 

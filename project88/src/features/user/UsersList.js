@@ -18,7 +18,6 @@ const UserList = ({ onTopUp, params, currentPage }) => {
     };
 
     const { users, loading, error } = useSelector((state) => state.user);
-    console.log(users);
 
 
     useEffect(() => {

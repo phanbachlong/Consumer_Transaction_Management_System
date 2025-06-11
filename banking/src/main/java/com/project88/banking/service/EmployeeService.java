@@ -38,8 +38,7 @@ public class EmployeeService implements IEmployeeService {
 
 	// lay thon tin cac employee (phan minh)
 	@Override
-	public Page<GetAllEmployeesDTO> getAllEmployees(int page, int size, EmployeeFilter filter) {
-		Pageable pageable = PageRequest.of(page, size); // page - 1 vì Pageable bắt đầu từ 0
+	public Page<GetAllEmployeesDTO> getAllEmployees(Pageable pageable, EmployeeFilter filter) {
 		return employeeRepository.getAllEmployees(pageable, filter.getName());
 	}
 

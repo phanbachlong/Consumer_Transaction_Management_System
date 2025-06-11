@@ -6,17 +6,31 @@ import { getAllEmployees } from '../../redux/slices/employeeSlice';
 import { filter } from 'lodash';
 import Table from '../../components/Table';
 
-const EmployeeList = () => {
+const EmployeeList = ({ params, currentPage }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     // const [searchTerm, setSearchTerm] = useState('');
 
     const { employees, loading, error } = useSelector((state) => state.employee);
-    // console.log("employee: " + employees.content);
+
+
 
     useEffect(() => {
-        dispatch(getAllEmployees({ page: 0, size: 5, filter: { name: '' } }))
-    }, [dispatch])
+        // reset về page 1 nếu là tìm kiếm
+        currentPage = 1;
+    }, [params]);
+
+    useEffect(() => {
+        const fetchEmployees = async () => {
+            try {
+                await dispatch(getAllEmployees({ page: 0, size: 5, filter: { name: params } }));
+            } catch (err) {
+                console.error("Failed to fetch employees:", err);
+            } finally {
+            }
+        };
+        fetchEmployees();
+    }, [dispatch, currentPage, params]);
 
     const initialValues = { "Nhân viên": "", "Username": "", "Email": "", "SDT": "", "Số tài khoản": "", "Thao tác": "" }
 
@@ -78,7 +92,7 @@ const EmployeeList = () => {
 
     return (
         <div>
-            {/* <Table initialValues={initialValues} content={employees}></Table> */}
+            <Table initialValues={initialValues} content={employees}></Table>
         </div>
     );
 };

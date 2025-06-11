@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TopUp from "./TopUp";
 import UsersList from "../user/UsersList";
 import Search from "../../components/Search";
 import Pagination from "../../components/Pagination";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { getEmployeeByUsername } from "../../redux/slices/employeeSlice";
 
 
 const EmployeeContent = () => {
@@ -21,7 +22,15 @@ const EmployeeContent = () => {
     const [page, setPage] = useState(1)
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
+
     const { totalPages, currentPage } = useSelector((state) => state.user);
+
+    const { employeeByUsername, loading, error } = useSelector((state) => state.employee);
+
+    useEffect(() => {
+        dispatch(getEmployeeByUsername());
+    }, [dispatch]);
 
 
     const onChangePage = (currentPage) => {
@@ -72,7 +81,7 @@ const EmployeeContent = () => {
                         <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-orange-500 text-2xl font-bold">
                             AVA
                         </div>
-                        <span className="text-lg font-semibold">Tên nhân viên</span>
+                        <span className="text-lg font-semibold">{employeeByUsername.firstName} {employeeByUsername.lastName}</span>
                     </div>
                     <button className="px-6 py-2 rounded bg-orange-200 text-orange-800 font-semibold border border-orange-400">
                         Quản lý KH

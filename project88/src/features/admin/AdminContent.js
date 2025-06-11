@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import TopUp from "../home/TopUp";
 import EmployeeList from "./EmployeeList";
+import Search from "../../components/Search";
+import Pagination from "../../components/Pagination";
+import { useSelector } from "react-redux";
+
 
 
 
@@ -8,6 +12,22 @@ const AdminContent = () => {
     // // State cho ô tìm kiếm (search)
     // const [search, setSearch] = useState("");
     const [showTopUp, setShowTopUp] = useState(false);
+    const [params, setParams] = useState('');
+    const [isReset, setIsReset] = useState(false)
+    const [page, setPage] = useState(1);
+
+    const { totalElements, totalPages, currentPage } = useSelector((state) => state.employee);
+
+
+    const onPageChange = (currentPage) => {
+        setPage(currentPage);
+    }
+
+    const handleResetTable = () => {
+        setIsReset(true);
+        setParams("");
+        setTimeout(() => setIsReset(false), 0);
+    }
 
     // const [customers, setCustomers] = useState(customersLists);
     // const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -55,15 +75,19 @@ const AdminContent = () => {
                     <div className="flex items-center justify-between mb-4">
                         <div className="text-lg font-bold">Danh sách nhân viên</div>
                         <div className="flex items-center gap-2">
-
+                            <Search onChangeSearch={setParams} isReset={isReset}></Search>
                         </div>
                     </div>
-                    <EmployeeList></EmployeeList>
+                    <EmployeeList currentPage={page} params={params}></EmployeeList>
                     {/* Page */}
-
+                    <div className="flex justify-between items-center mt-4">
+                        <button className="px-4 py-2 bg-gray-100 bg-red-100 text-red-600 rounded hover:bg-red-200" onClick={handleResetTable}>
+                            Tải lại
+                        </button>
+                        <Pagination totalPages={totalPages} onPageChange={onPageChange}></Pagination>
+                    </div>
                 </div>
             </div>
-            Top Up Modal
             {showTopUp && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">

@@ -83,9 +83,7 @@ public class UserController {
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(Authentication authentication) {
         String name = authentication.getName();
-        System.out.println("Authentication name: " + name);
         ProfileDTO profileDTO = userService.getProfile(name);
-        System.out.println("profile: " + profileDTO);
         return ResponseEntity.ok(profileDTO);
     }
 
