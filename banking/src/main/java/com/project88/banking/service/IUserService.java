@@ -12,6 +12,7 @@ import com.project88.banking.dto.ChangeProfileDTO;
 import com.project88.banking.dto.GetAllUserDTO;
 import com.project88.banking.dto.ProfileDTO;
 import com.project88.banking.dto.TransferDTO;
+import com.project88.banking.dto.filter.UserFilter;
 import com.project88.banking.entity.User;
 
 public interface IUserService extends UserDetailsService {
@@ -29,7 +30,7 @@ public interface IUserService extends UserDetailsService {
 
     String findUserByCardNumber(int cardNumber);
 
-    Page<GetAllUserDTO> findAllUsers(int size, int page);
+    Page<GetAllUserDTO> findAllUsers(int size, int page, UserFilter filter);
 
     User findUserById(Long id);
 

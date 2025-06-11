@@ -19,16 +19,17 @@ const UserList = ({ onTopUp, params, currentPage }) => {
 
     const { users, loading, error } = useSelector((state) => state.user);
 
+
     useEffect(() => {
-        dispatch(getAllUsers({ page: currentPage, size: size }));
-    }, [dispatch, currentPage, size]);
+        dispatch(getAllUsers({ page: currentPage, size: size, filter: { name: params } }));
+    }, [dispatch, currentPage, size, params]);
 
     return (
         <div>
             <Table
                 initialValues={initialValues}
                 content={users.content || []}
-                onTopUp={onTopUp} //
+                onTopUp={onTopUp}
             />
         </div>
     );

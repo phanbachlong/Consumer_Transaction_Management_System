@@ -2,8 +2,8 @@ import userApi from "../../api/UserApi";
 import { getBalance } from "../../redux/slices/userSlice";
 
 const UserService = {
-    getAllUsers: async (page, size) => {
-        return await userApi.getAllUsers(page, size);
+    getAllUsers: async (page, size, filter) => {
+        return await userApi.getAllUsers(page, size, filter);
     },
 
     getBalance: async () => {

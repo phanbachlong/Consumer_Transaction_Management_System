@@ -18,9 +18,10 @@ export const userProfile = createAsyncThunk('userProfile', async (_, { rejectWit
     }
 });
 
-export const getAllUsers = createAsyncThunk('getAllUsers', async ({ page, size }, { rejectWithValue }) => {
+export const getAllUsers = createAsyncThunk('getAllUsers', async ({ page, size, filter }, { rejectWithValue }) => {
     try {
-        const response = await UserService.getAllUsers(page, size);
+        const params = { name: filter.name };
+        const response = await UserService.getAllUsers(page, size, params);
 
         if (response.status >= 200 && response.status < 300) {
             return {

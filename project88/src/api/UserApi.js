@@ -10,8 +10,8 @@ const getProfile = () => {
     return axiosClient.get(`${url}/profile`);
 }
 
-const getAllUsers = (page, size) => {
-    return axiosClient.get(`${url}/all`, { page, size });
+const getAllUsers = (page, size, filter) => {
+    return axiosClient.get(`${url}/all`, { page, size, params: { ...filter } });
 }
 
 const topUp = (body) => {

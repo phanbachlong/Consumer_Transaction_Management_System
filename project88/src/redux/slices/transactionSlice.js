@@ -17,6 +17,7 @@ export const transaction = createAsyncThunk('transaction/history', async ({ page
         const params = { startDate: formatStartDateTime(filter.startDate) || null, endDate: formatEndDateTime(filter.endDate) || null, name: filter.name || null };
         const res = await TransactionService.getTransaction(page, size, params);
 
+
         return res.data;
     } catch (error) {
         return rejectWithValue("Unexpected response from server.");
@@ -56,6 +57,7 @@ const transactionSlice = createSlice({
                 state.totalPages = action.payload.totalPages;
                 state.totalElements = action.payload.totalElements;
                 state.currentPage = action.payload.number;
+
             })
             .addCase(transaction.rejected, (state, action) => {
                 state.loading = false;

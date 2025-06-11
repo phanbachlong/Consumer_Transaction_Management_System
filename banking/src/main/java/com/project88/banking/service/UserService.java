@@ -1,6 +1,7 @@
 package com.project88.banking.service;
 
 import com.project88.banking.dto.*;
+import com.project88.banking.dto.filter.UserFilter;
 import com.project88.banking.security.CustomUserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,9 +66,9 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public Page<GetAllUserDTO> findAllUsers(int size, int page) {
+	public Page<GetAllUserDTO> findAllUsers(int size, int page, UserFilter filter) {
 		Pageable pageable = PageRequest.of(page, size);
-		return userRepository.findAllUsers(pageable);
+		return userRepository.findAllUsers(pageable, filter.getName());
 	}
 
 	@Override

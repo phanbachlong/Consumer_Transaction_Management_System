@@ -1,6 +1,8 @@
 package com.project88.banking.controller;
 
 import com.project88.banking.dto.*;
+import com.project88.banking.dto.filter.UserFilter;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,8 +57,8 @@ public class UserController {
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllUsers(@RequestParam(name = "size", defaultValue = "10") int size,
-            @RequestParam(name = "page", defaultValue = "0") int page) {
-        var usersPage = userService.findAllUsers(size, page);
+            @RequestParam(name = "page", defaultValue = "0") int page, UserFilter filter) {
+        Page<GetAllUserDTO> usersPage = userService.findAllUsers(size, page, filter);
         return new ResponseEntity<>(usersPage, HttpStatus.OK);
     }
 
@@ -81,9 +83,7 @@ public class UserController {
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(Authentication authentication) {
         String name = authentication.getName();
-        System.out.println("Authentication name: " + name);
         ProfileDTO profileDTO = userService.getProfile(name);
-        System.out.println("profile: " + profileDTO);
         return ResponseEntity.ok(profileDTO);
     }
 

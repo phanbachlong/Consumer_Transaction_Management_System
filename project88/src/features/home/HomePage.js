@@ -4,7 +4,7 @@ import Footer from "../../components/Footer";
 import UserContent from "../user/UserContent";
 import EmployeeContent from "./EmployeeContent";
 import AdminContent from "../admin/AdminContent";
-import EmployeeList from "../employee/EmployeeList";
+import EmployeeList from "../admin/EmployeeList";
 
 export default function HomePage() {
     const [theme, setTheme] = useState("light");
