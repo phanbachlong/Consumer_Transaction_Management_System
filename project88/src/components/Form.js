@@ -13,7 +13,6 @@ const Form = ({ initialValues, onSubmit, btn, validation }) => {
     });
 
     const handleFormSubmit = (data) => {
-        console.log("Form submitted data:", data);
         onSubmit(data);
         reset();
     }

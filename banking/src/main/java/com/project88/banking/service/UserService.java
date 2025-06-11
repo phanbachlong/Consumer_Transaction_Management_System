@@ -66,8 +66,7 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public Page<GetAllUserDTO> findAllUsers(int size, int page, UserFilter filter) {
-		Pageable pageable = PageRequest.of(page, size);
+	public Page<GetAllUserDTO> findAllUsers(Pageable pageable, UserFilter filter) {
 		return userRepository.findAllUsers(pageable, filter.getName());
 	}
 

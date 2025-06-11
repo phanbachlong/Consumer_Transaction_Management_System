@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
-import TopUp from "./TopUp";
+import TopUp from "../home/TopUp";
 import UsersList from "../user/UsersList";
 import Search from "../../components/Search";
 import Pagination from "../../components/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getEmployeeByUsername } from "../../redux/slices/employeeSlice";
+import { set } from "date-fns";
+import EditUserModal from "./EditUserModal";
 
 
 const EmployeeContent = () => {
     // State cho ô tìm kiếm (search)
     const [search, setSearch] = useState("");
     const [showTopUp, setShowTopUp] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
 
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [customerToDelete, setCustomerToDelete] = useState(null);
@@ -39,6 +42,7 @@ const EmployeeContent = () => {
 
     const handleResetTable = () => {
         setIsReset(true);
+        setPage(1);
         setTimeout(() => setIsReset(false), 0);
     }
 
@@ -69,6 +73,11 @@ const EmployeeContent = () => {
         setSelectedUser(user);
         setShowTopUp(true);
     };
+
+    const openEditModal = (user) => {
+        setSelectedUser(user);
+        setShowEdit(true);
+    }
 
 
     return (
@@ -106,7 +115,7 @@ const EmployeeContent = () => {
                             </button>
                         </div>
                     </div>
-                    <UsersList onTopUp={openTopUpModal} currentPage={page} params={params} />
+                    <UsersList onTopUp={openTopUpModal} currentPage={page} params={params} onEditUp={openEditModal} />
                     <div className="flex justify-between items-center mt-4">
                         <button className="px-4 py-2 bg-gray-100 bg-red-100 text-red-600 rounded hover:bg-red-200" onClick={handleResetTable}>
                             Tải lại
@@ -118,6 +127,18 @@ const EmployeeContent = () => {
 
                 </div>
             </div>
+
+            {/* Show edit modal */}
+            {showEdit && (
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+
+                        <EditUserModal user={selectedUser} onClose={() => setShowEdit(false)} />
+
+
+                    </div>
+                </div>
+            )}
             {/* Top Up Modal */}
             {showTopUp && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
@@ -129,6 +150,8 @@ const EmployeeContent = () => {
                     </div>
                 </div>
             )}
+
+
             {/* Delete Confirmation Modal */}
             {showDeleteConfirm && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">

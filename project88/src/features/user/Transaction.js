@@ -20,8 +20,8 @@ const Transaction = ({ params, startDate, endDate, currentPage }) => {
         currentPage = 1;
     }, [params, startDate, endDate]);
 
-    useEffect(async () => {
-        await dispatch(transaction({ page: currentPage, size, filter: { startDate: startDate, endDate: endDate, name: params } }))
+    useEffect(() => {
+        dispatch(transaction({ page: currentPage, size: size, filter: { startDate: startDate, endDate: endDate, name: params } }))
 
     }, [dispatch, startDate, endDate, currentPage, size, params]);
 

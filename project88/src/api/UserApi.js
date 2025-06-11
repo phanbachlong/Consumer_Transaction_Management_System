@@ -11,7 +11,7 @@ const getProfile = () => {
 }
 
 const getAllUsers = (page, size, filter) => {
-    return axiosClient.get(`${url}/all`, { page, size, params: { ...filter } });
+    return axiosClient.get(`${url}/all`, { params: { page, size, ...filter } });
 }
 
 const topUp = (body) => {
