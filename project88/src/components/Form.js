@@ -1,21 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import MyDatePicker from "./MyDatePicker";
 // import { Validation } from "../validation/Validation";
 
-const Form = ({ initialValues, onSubmit, btn, validation }) => {
+const Form = ({ initialValues, onSubmit, btn, validation, onWatchChange }) => {
 
 
-    const { register, handleSubmit, control, formState: { errors }, reset } = useForm({
+    const { register, handleSubmit, control, watch, setError, clearErrors, formState: { errors }, reset } = useForm({
         resolver: zodResolver(validation),
         defaultValues: initialValues
     });
 
-    const handleFormSubmit = (data) => {
-        onSubmit(data);
-        reset();
+    const email = watch("email");
+    const phone = watch("phone");
+
+    useEffect(() => {
+        if (onWatchChange) {
+            onWatchChange({ email, phone, setError, clearErrors });
+        }
+    }, [email, phone])
+
+    const handleFormSubmit = async (data) => {
+        const rs = await onSubmit(data);
+        if (rs?.success) {
+            reset();
+        }
     }
+
 
     const today = new Date();
     const pastDate = new Date(today);

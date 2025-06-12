@@ -39,4 +39,8 @@ public interface IUserService extends UserDetailsService {
 
     User findUserByUsername(String username);
 
+    boolean isEmailExists(String email);
+
+    boolean isPhoneExists(String phone);
+
 }

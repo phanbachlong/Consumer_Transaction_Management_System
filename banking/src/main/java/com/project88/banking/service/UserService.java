@@ -191,4 +191,14 @@ public class UserService implements IUserService {
 		return user;
 	}
 
+	@Override
+	public boolean isEmailExists(String email) {
+		return userRepository.existsByEmail(email);
+
+	}
+
+	@Override
+	public boolean isPhoneExists(String phone) {
+		return userRepository.existsByPhone(phone);
+	}
 }

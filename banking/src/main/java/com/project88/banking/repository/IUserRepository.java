@@ -42,4 +42,8 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE User u SET u.balance = u.balance + :amount WHERE u.userID = :userId")
     void topUp(@Param("userId") Long userId, @Param("amount") Integer amount);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByPhone(String phone);
 }

@@ -26,12 +26,22 @@ const updateProfile = (body) => {
     });
 }
 
+const isExistEmail = (email) => {
+    return axiosClient.get(`${url}/check-email`, { params: { email } })
+}
+
+const isExistPhone = (phone) => {
+    return axiosClient.get(`${url}/check-phone`, { params: { phone } })
+}
+
 
 const UserApi = {
     createUser,
     getProfile,
     getAllUsers,
     topUp,
-    updateProfile
+    updateProfile,
+    isExistEmail,
+    isExistPhone
 }
 export default UserApi;

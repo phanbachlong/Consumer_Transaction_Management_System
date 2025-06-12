@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import TopUp from "../home/TopUp";
 import UsersList from "../user/UsersList";
 import Search from "../../components/Search";
@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { getEmployeeByUsername } from "../../redux/slices/employeeSlice";
 import { set } from "date-fns";
 import EditUserModal from "./EditUserModal";
+import debounce from "lodash.debounce";
+import UserApi from "../../api/UserApi";
 
 
 const EmployeeContent = () => {
@@ -51,22 +53,22 @@ const EmployeeContent = () => {
     }
 
     // Hàm xử lý xóa khách hàng
-    const handleDeleteClick = (customer) => {
-        setShowDeleteConfirm(true);
-    };
+    // const handleDeleteClick = (customer) => {
+    //     setShowDeleteConfirm(true);
+    // };
 
-    const confirmDelete = () => {
-        if (customerToDelete) {
-            setShowDeleteConfirm(false);
-            setCustomerToDelete(null);
-            alert("Đã xóa thành công!");
-        }
-    };
+    // const confirmDelete = () => {
+    //     if (customerToDelete) {
+    //         setShowDeleteConfirm(false);
+    //         setCustomerToDelete(null);
+    //         alert("Đã xóa thành công!");
+    //     }
+    // };
 
-    const cancelDelete = () => {
-        setShowDeleteConfirm(false);
-        setCustomerToDelete(null);
-    };
+    // const cancelDelete = () => {
+    //     setShowDeleteConfirm(false);
+    //     setCustomerToDelete(null);
+    // };
 
 
     const openTopUpModal = (user) => {
@@ -153,7 +155,7 @@ const EmployeeContent = () => {
 
 
             {/* Delete Confirmation Modal */}
-            {showDeleteConfirm && (
+            {/* {showDeleteConfirm && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
                         <div className="flex items-center mb-4">
@@ -197,7 +199,7 @@ const EmployeeContent = () => {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     );
 };

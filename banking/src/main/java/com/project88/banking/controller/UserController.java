@@ -143,4 +143,16 @@ public class UserController {
         }
     }
 
+    @GetMapping("/check-email")
+    public ResponseEntity<Boolean> isEmailExists(@RequestParam String email) {
+        boolean isExists = userService.isEmailExists(email);
+        return ResponseEntity.ok(isExists);
+    }
+
+    @GetMapping("/check-phone")
+    public ResponseEntity<Boolean> isPhoneExists(@RequestParam String phone) {
+        boolean isExists = userService.isPhoneExists(phone);
+        return ResponseEntity.ok(isExists);
+    }
+
 }
