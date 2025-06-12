@@ -59,7 +59,6 @@ CREATE TABLE IF NOT EXISTS `bill`(
     FOREIGN KEY		(user_id) REFERENCES `user` (user_id)
 )AUTO_INCREMENT = 985321;
 
-
 CREATE TABLE IF NOT EXISTS `deposit` (
     deposit_Id 		INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     deposit_name 	VARCHAR(100) NOT NULL,
