@@ -66,8 +66,7 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public Page<GetAllUserDTO> findAllUsers(int size, int page, UserFilter filter) {
-		Pageable pageable = PageRequest.of(page, size);
+	public Page<GetAllUserDTO> findAllUsers(Pageable pageable, UserFilter filter) {
 		return userRepository.findAllUsers(pageable, filter.getName());
 	}
 
@@ -192,4 +191,14 @@ public class UserService implements IUserService {
 		return user;
 	}
 
+	@Override
+	public boolean isEmailExists(String email) {
+		return userRepository.existsByEmail(email);
+
+	}
+
+	@Override
+	public boolean isPhoneExists(String phone) {
+		return userRepository.existsByPhone(phone);
+	}
 }

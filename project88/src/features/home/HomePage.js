@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import UserContent from "../user/UserContent";
-import EmployeeContent from "./EmployeeContent";
+import EmployeeContent from "../employee/EmployeeContent";
 import AdminContent from "../admin/AdminContent";
 import EmployeeList from "../admin/EmployeeList";
 

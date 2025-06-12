@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -56,9 +59,8 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllUsers(@RequestParam(name = "size", defaultValue = "10") int size,
-            @RequestParam(name = "page", defaultValue = "0") int page, UserFilter filter) {
-        Page<GetAllUserDTO> usersPage = userService.findAllUsers(size, page, filter);
+    public ResponseEntity<?> getAllUsers(@PageableDefault(size = 5) Pageable pageable, UserFilter filter) {
+        Page<GetAllUserDTO> usersPage = userService.findAllUsers(pageable, filter);
         return new ResponseEntity<>(usersPage, HttpStatus.OK);
     }
 
@@ -139,6 +141,18 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("/check-email")
+    public ResponseEntity<Boolean> isEmailExists(@RequestParam String email) {
+        boolean isExists = userService.isEmailExists(email);
+        return ResponseEntity.ok(isExists);
+    }
+
+    @GetMapping("/check-phone")
+    public ResponseEntity<Boolean> isPhoneExists(@RequestParam String phone) {
+        boolean isExists = userService.isPhoneExists(phone);
+        return ResponseEntity.ok(isExists);
     }
 
 }

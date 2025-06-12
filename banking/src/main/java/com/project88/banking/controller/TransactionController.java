@@ -27,14 +27,11 @@ public class TransactionController {
 
         @GetMapping()
         public ResponseEntity<?> getTransactionHistory(Authentication authentication,
-                        @PageableDefault(size = 10, sort = "createDate", direction = Direction.DESC) Pageable pageable,
+                        @PageableDefault(size = 5, sort = "createDate", direction = Direction.DESC) Pageable pageable,
                         TransactionFilter filter) {
-
                 String username = authentication.getName();
                 Page<TransactionHistoryDTO> transactionHistoryDTO = transactionService.getTransaction(username,
-                                pageable,
-                                filter);
-
+                                pageable, filter);
                 return new ResponseEntity<>(transactionHistoryDTO, HttpStatus.OK);
         }
 }
