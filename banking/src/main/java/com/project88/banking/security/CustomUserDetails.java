@@ -29,7 +29,6 @@ public class CustomUserDetails implements UserDetails {
         return Collections.singleton(new SimpleGrantedAuthority(role));
     }
 
-    // Implement các method còn lại của UserDetails
     @Override
     public String getPassword() {
         return user.getPassword();

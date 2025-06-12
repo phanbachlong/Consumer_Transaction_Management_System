@@ -55,6 +55,7 @@ public class WebSecurityConfiguration {
                 .requestMatchers("/api/v1/users/**")
                 .hasAnyAuthority("ROLE_ADMIN", "ROLE_USER", "ROLE_EMPLOYEE")
                 .requestMatchers("/api/v1/employees/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
+                .requestMatchers("/api/v1/deposits/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE","ROLE_USER")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
