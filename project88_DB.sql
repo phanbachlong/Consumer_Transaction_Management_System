@@ -77,6 +77,14 @@ CREATE TABLE IF NOT EXISTS jwt_blacklist (
     token VARCHAR(512) NOT NULL,
     expiry_date DATETIME NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS password_reset_token (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    token CHAR(36) NOT NULL UNIQUE,
+    user_id TINYINT NOT NULL,
+    expiry_date DATETIME NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
+);
  
 
 

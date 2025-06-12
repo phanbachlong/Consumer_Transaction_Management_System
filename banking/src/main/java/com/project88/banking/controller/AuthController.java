@@ -4,6 +4,8 @@ import com.project88.banking.config.jwt.JwtUtils;
 import com.project88.banking.dto.LoginDTO;
 import com.project88.banking.dto.UserDTO;
 import com.project88.banking.entity.User;
+import com.project88.banking.repository.PasswordResetTokenRepository;
+import com.project88.banking.entity.PasswordResetToken;
 import com.project88.banking.service.AuthService;
 import com.project88.banking.service.IUserService;
 import com.project88.banking.service.JwtBlacklistService;
@@ -22,6 +24,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/v1/auth")
@@ -41,6 +44,9 @@ public class AuthController {
 
     @Autowired
     private JwtBlacklistService jwtBlacklistService;
+
+    @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginRequest) {
@@ -80,5 +86,18 @@ public class AuthController {
     @GetMapping("/verify")
     public void verifyUser(@RequestParam("token") String token) {
         authService.verifyUser(token);
+    }
+
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestParam String email) {
+        return authService.forgotPassword(email);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> body) {
+        String token = body.get("token");
+        String newPassword = body.get("newPassword");
+        return authService.resetPassword(token, newPassword);
     }
 }

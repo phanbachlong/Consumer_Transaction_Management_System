@@ -14,8 +14,10 @@ import EmployeeList from "./features/employee/EmployeeList";
 import EditEmployee from "./features/employee/EditEmployee";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import DeletedEmployees from "./features/Employee/DeletedEmployees";
+import DeletedEmployees from "./features/employee/DeletedEmployees";
 import VerifyPage from "./features/auth/VerifyPage";
+import UserContent from './features/user/UserContent';
+import EmployeeContent from './features/home/EmployeeContent';
 
 
 function App() {
@@ -32,11 +34,11 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/fogotPassword" element={<FogotPassword />} />
+          <Route path="/fogot-password" element={<FogotPassword />} />
           <Route path='/register' element={<Register />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/homepage' element={<HomePage />} />
-          <Route path='/changePassword' element={<ChangePassword />} />
+          <Route path='/reset-password' element={<ChangePassword />} />
           <Route path='/Transfer' element={<TransferForm />} />
           <Route path='/test' element={<Test />} />
           <Route path='/create-employee' element={<CreateEmployee />} />

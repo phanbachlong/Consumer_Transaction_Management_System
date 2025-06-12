@@ -1,22 +1,37 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Form from "../../components/Form";
 import { ValidationChangePassword } from "../../validation/ValidationChangePassword";
-import { useNavigate } from "react-router-dom";
+import AuthAPI from "../../api/AuthAPI";
 
 const ChangePassword = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token");
 
-    const navigate = useNavigate();
   const initialValues = {
     password: "",
     confirmPassword: "",
   };
 
-  const onSubmit = (data) => {
-    console.log("Password Change Data:", data);
-    alert("Đổi mật khẩu thành công!");
-    navigate('/login')
+  const resetPassword = async (data) => {
+    try {
+      const response = await AuthAPI.resetPassword({
+        token: token,
+        newPassword: data.confirmPassword,
+      });
+      if (response.status === 200) {
+        alert("Đổi mật khẩu thành công!");
+        navigate('/login');
+      }
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      alert("Đổi mật khẩu thất bại. Vui lòng thử lại: " + (error.response?.data || error.message));
+    }
+  };
 
+  const onSubmit = (data) => {
+    resetPassword(data);
   };
 
   return (
