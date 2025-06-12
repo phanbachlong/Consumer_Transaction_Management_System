@@ -10,8 +10,8 @@ const getProfile = () => {
     return axiosClient.get(`${url}/profile`);
 }
 
-const getAllUsers = (page, size) => {
-    return axiosClient.get(`${url}/all`, { page, size });
+const getAllUsers = (page, size, filter) => {
+    return axiosClient.get(`${url}/all`, { params: { page, size, ...filter } });
 }
 
 const topUp = (body) => {
@@ -26,12 +26,22 @@ const updateProfile = (body) => {
     });
 }
 
+const isExistEmail = (email) => {
+    return axiosClient.get(`${url}/check-email`, { params: { email } })
+}
+
+const isExistPhone = (phone) => {
+    return axiosClient.get(`${url}/check-phone`, { params: { phone } })
+}
+
 
 const UserApi = {
     createUser,
     getProfile,
     getAllUsers,
     topUp,
-    updateProfile
+    updateProfile,
+    isExistEmail,
+    isExistPhone
 }
 export default UserApi;

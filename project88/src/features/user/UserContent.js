@@ -194,7 +194,7 @@ const UserContent = () => {
             </div>
             <Search onChangeSearch={setParams} isReset={isReset}></Search>
           </div>
-          <Transaction userID={userID} params={params} startDate={startDate} endDate={endDate} currentPage={page}></Transaction>
+          <Transaction params={params} startDate={startDate} endDate={endDate} currentPage={page}></Transaction>
 
           {/* Page */}
           <div className="flex justify-between items-center mt-4">

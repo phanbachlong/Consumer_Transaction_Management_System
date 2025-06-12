@@ -1,5 +1,6 @@
 package com.project88.banking.repository;
 
+import com.project88.banking.dto.GetAllEmployeesDTO;
 import com.project88.banking.dto.ProfileDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,15 +15,19 @@ import com.project88.banking.entity.User;
 @Repository
 public interface IEmployeeRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
-    //lay thon tin cac employee (phan minh)
-    @Query("SELECT u FROM User u WHERE u.role = 'Employee' AND (u.status = 0 OR u.status = 1)")
-    Page<User> getAllEmployees(Pageable pageable);
+    // lay thon tin cac employee (phan minh)
+    // @Query("SELECT u FROM User u WHERE u.role = 'Employee' AND (u.status = 0 OR
+    // u.status = 1)")
+    @Query("SELECT new com.project88.banking.dto.GetAllEmployeesDTO(CONCAT(u.firstName, ' ', u.lastName), u.username, u.email, u.phone, c.cardNumber) FROM User u JOIN u.cardNumber c "
+            +
+            "WHERE u.role = 'Employee' AND (:name IS NULL OR u.firstName LIKE CONCAT('%', :name, '%') or u.lastName LIKE CONCAT('%', :name, '%')) ")
+    Page<GetAllEmployeesDTO> getAllEmployees(Pageable pageable, String name);
 
-    //lay thong tin employee theo userId (phan minh)
+    // lay thong tin employee theo userId (phan minh)
     @Query("FROM User u WHERE u.userID = :userId AND u.role = 'Employee'")
     User findEmployeeById(@Param("userId") Long userId);
 
-    //lay thon tin cac employee da bi xoa (phan minh)
+    // lay thon tin cac employee da bi xoa (phan minh)
     @Query("SELECT u FROM User u WHERE u.role = 'Employee' AND u.status=2")
     Page<User> getDeletedEmployeeList(Pageable pageable);
 }
