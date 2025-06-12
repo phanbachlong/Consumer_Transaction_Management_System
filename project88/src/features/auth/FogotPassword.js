@@ -1,14 +1,28 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import AuthAPI from '../../api/AuthAPI';
 
 const FogotPassword = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
+  const FogotPassword = async (email) => {
+    try {
+      // Gọi API để gửi email reset mật khẩu
+      const response = await AuthAPI.forgotPassword(email);
+      console.log('Email sent to:', email);
+      // Hiển thị thông báo thành công
+      alert(response.data)
+    } catch (error) {
+      console.error('Error sending email:', error);
+      alert('Đã xảy ra lỗi khi gửi email. Vui lòng thử lại sau.');
+    }
+  }
+
+  const onSubmit = async (data) => {
     console.log('Email Submitted:', data.email);
-    alert('Email đã được gửi đến địa chỉ của bạn!');
+    await FogotPassword(data.email);
     navigate('/login')
     // sau khi gửi email thành công => popup thông báo => chuyển hướng đến trang login
   };
