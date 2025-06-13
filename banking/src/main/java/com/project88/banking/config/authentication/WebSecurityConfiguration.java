@@ -22,57 +22,46 @@ import com.project88.banking.service.IUserService;
 @EnableWebSecurity
 public class WebSecurityConfiguration {
 
-    @Autowired
-    private IUserService service;
+	@Autowired
+	private IUserService service;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+	@Autowired
+	private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Bean
-    AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(service)
-                .passwordEncoder(passwordEncoder)
-                .and()
-                .build();
-    }
+	@Bean
+	AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+		return http.getSharedObject(AuthenticationManagerBuilder.class).userDetailsService(service)
+				.passwordEncoder(passwordEncoder).and().build();
+	}
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .cors()
-                .and()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeHttpRequests()
-                .requestMatchers("/uploads/**").permitAll()
-                .requestMatchers("/api/v1/auth/**").permitAll()
-                .requestMatchers("/api/v1/admin/**").hasAuthority("ROLE_ADMIN")
-                .requestMatchers("/api/v1/users/**")
-                .hasAnyAuthority("ROLE_ADMIN", "ROLE_USER", "ROLE_EMPLOYEE")
-                .requestMatchers("/api/v1/employees/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
-                .requestMatchers("/api/v1/deposits/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE","ROLE_USER")
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http.cors().and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and().authorizeHttpRequests().requestMatchers("/uploads/**").permitAll()
+				.requestMatchers("/api/v1/auth/**").permitAll().requestMatchers("/api/v1/admin/**")
+				.hasAuthority("ROLE_ADMIN").requestMatchers("/api/v1/users/**")
+				.hasAnyAuthority("ROLE_ADMIN", "ROLE_USER", "ROLE_EMPLOYEE").requestMatchers("/api/v1/employees/**")
+				.hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
+				.requestMatchers("/api/v1/deposits").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE", "ROLE_USER")
+				.anyRequest().authenticated().and()
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+		return http.build();
+	}
 
-    @Bean
-    public CorsFilter corsFilter() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOriginPattern("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+	@Bean
+	public CorsFilter corsFilter() {
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowCredentials(true);
+		config.addAllowedOriginPattern("*");
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", config);
+		return new CorsFilter(source);
+	}
 }

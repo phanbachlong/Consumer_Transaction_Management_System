@@ -17,7 +17,9 @@ import Footer from "./components/Footer";
 import DeletedEmployees from "./features/employee/DeletedEmployees";
 import VerifyPage from "./features/auth/VerifyPage";
 import UserContent from './features/user/UserContent';
-import EmployeeContent from './features/home/EmployeeContent';
+import AdminContent from './features/admin/AdminContent';
+import EmployeeContent from './features/employee/EmployeeContent';
+
 
 
 function App() {
@@ -46,12 +48,14 @@ function App() {
           <Route path="/edit-employee/:userId" element={<EditEmployee />} />
           <Route path="/delete-employees" element={<DeletedEmployees />} />
           <Route path="/verify" element={<VerifyPage />} />
+          <Route path="/user" element={<UserContent />} />
+          <Route path="/admin" element={<AdminContent />} />
+          <Route path="/employees" element={<EmployeeContent />} />
+
         </Routes>
       </div>
 
-      <div className='mt-8'>
         <Footer toggleTheme={toggleTheme} currentTheme={theme} />
-      </div>
     </Router>
   );
 }

@@ -26,7 +26,7 @@ const UserList = ({ onTopUp, params, currentPage, onEditUp }) => {
 
 
     useEffect(() => {
-        dispatch(getAllUsers({ page: currentPage, size: 1, filter: { name: params } }));
+        dispatch(getAllUsers({ page: currentPage, size: 5, filter: { name: params } }));
     }, [dispatch, currentPage, size, params]);
 
     return (

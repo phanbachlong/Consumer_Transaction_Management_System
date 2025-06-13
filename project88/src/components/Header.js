@@ -93,7 +93,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
                     </button>
                     <button
                         className="text-left px-4 py-2 hover:bg-gray-100 rounded"
-                        onClick={() => handleNavigate("/list-employees")}
+                        onClick={() => handleNavigate("/employees")}
                     >
                         Employee
                     </button>

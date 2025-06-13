@@ -3,7 +3,7 @@ import api from "./axiosClient";
 const url = '/employees';
 
 const getAllEmployees = (page, size, filter) => {
-    return api.get(url, {
+    return api.get('/admin', {
         params: {
             page,
             size,
@@ -20,5 +20,7 @@ const employeeAPI = {
     getAllEmployees,
     getEmployeeByUsername
 }
+
+
 
 export default employeeAPI;
