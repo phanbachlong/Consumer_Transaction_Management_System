@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUsers } from "../../redux/slices/userSlice";
 import Table from "../../components/Table";
 
 
-const UserList = ({ onTopUp, params, currentPage }) => {
+const UserList = ({ onTopUp, params, currentPage, onEditUp }) => {
     const dispatch = useDispatch();
-    const [size, setSize] = useState(5);
+    const [size, setSize] = useState(1);
 
     const initialValues = {
         "ID": "",
@@ -20,15 +20,22 @@ const UserList = ({ onTopUp, params, currentPage }) => {
     const { users, loading, error } = useSelector((state) => state.user);
 
     useEffect(() => {
-        dispatch(getAllUsers({ page: currentPage, size: size }));
-    }, [dispatch, currentPage, size]);
+        // Reset về page 1 nếu là tìm kiếm
+        currentPage = 1;
+    }, [params]);
+
+
+    useEffect(() => {
+        dispatch(getAllUsers({ page: currentPage, size: 1, filter: { name: params } }));
+    }, [dispatch, currentPage, size, params]);
 
     return (
         <div>
             <Table
                 initialValues={initialValues}
                 content={users.content || []}
-                onTopUp={onTopUp} //
+                onTopUp={onTopUp}
+                onEditUp={onEditUp}
             />
         </div>
     );

@@ -1,14 +1,22 @@
-import React, { useState } from "react";
-import TopUp from "./TopUp";
+import React, { useCallback, useEffect, useState } from "react";
+import TopUp from "../home/TopUp";
 import UsersList from "../user/UsersList";
 import Search from "../../components/Search";
 import Pagination from "../../components/Pagination";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { getEmployeeByUsername } from "../../redux/slices/employeeSlice";
+import { set } from "date-fns";
+import EditUserModal from "./EditUserModal";
+import debounce from "lodash.debounce";
+import UserApi from "../../api/UserApi";
+
 
 const EmployeeContent = () => {
     // State cho ô tìm kiếm (search)
     const [search, setSearch] = useState("");
     const [showTopUp, setShowTopUp] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
 
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [customerToDelete, setCustomerToDelete] = useState(null);
@@ -17,8 +25,17 @@ const EmployeeContent = () => {
     const [params, setParams] = useState('');
     const [isReset, setIsReset] = useState('false');
     const [page, setPage] = useState(1)
+    const navigate = useNavigate();
+
+    const dispatch = useDispatch();
 
     const { totalPages, currentPage } = useSelector((state) => state.user);
+
+    const { employeeByUsername, loading, error } = useSelector((state) => state.employee);
+
+    useEffect(() => {
+        dispatch(getEmployeeByUsername());
+    }, [dispatch]);
 
 
     const onChangePage = (currentPage) => {
@@ -27,32 +44,42 @@ const EmployeeContent = () => {
 
     const handleResetTable = () => {
         setIsReset(true);
+        setPage(1);
         setTimeout(() => setIsReset(false), 0);
     }
 
+    const handleNavigateProfile = () => {
+        navigate('/profile')
+    }
+
     // Hàm xử lý xóa khách hàng
-    const handleDeleteClick = (customer) => {
-        setShowDeleteConfirm(true);
-    };
+    // const handleDeleteClick = (customer) => {
+    //     setShowDeleteConfirm(true);
+    // };
 
-    const confirmDelete = () => {
-        if (customerToDelete) {
-            setShowDeleteConfirm(false);
-            setCustomerToDelete(null);
-            alert("Đã xóa thành công!");
-        }
-    };
+    // const confirmDelete = () => {
+    //     if (customerToDelete) {
+    //         setShowDeleteConfirm(false);
+    //         setCustomerToDelete(null);
+    //         alert("Đã xóa thành công!");
+    //     }
+    // };
 
-    const cancelDelete = () => {
-        setShowDeleteConfirm(false);
-        setCustomerToDelete(null);
-    };
+    // const cancelDelete = () => {
+    //     setShowDeleteConfirm(false);
+    //     setCustomerToDelete(null);
+    // };
 
 
     const openTopUpModal = (user) => {
         setSelectedUser(user);
         setShowTopUp(true);
     };
+
+    const openEditModal = (user) => {
+        setSelectedUser(user);
+        setShowEdit(true);
+    }
 
 
     return (
@@ -65,12 +92,12 @@ const EmployeeContent = () => {
                         <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-orange-500 text-2xl font-bold">
                             AVA
                         </div>
-                        <span className="text-lg font-semibold">Tên nhân viên</span>
+                        <span className="text-lg font-semibold">{employeeByUsername.firstName} {employeeByUsername.lastName}</span>
                     </div>
                     <button className="px-6 py-2 rounded bg-orange-200 text-orange-800 font-semibold border border-orange-400">
                         Quản lý KH
                     </button>
-                    <button className="px-6 py-2 rounded bg-red-100 text-red-600 font-semibold border border-red-200">
+                    <button className="px-6 py-2 rounded bg-red-100 text-red-600 font-semibold border border-red-200" onClick={handleNavigateProfile}>
                         Hồ sơ nhân viên
                     </button>
                 </div>
@@ -87,13 +114,10 @@ const EmployeeContent = () => {
                                 className="flex items-center justify-center p-1 rounded-full hover:bg-gray-300 active:bg-gray-400 transition"
                                 title="Tìm kiếm"
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                </svg>
                             </button>
                         </div>
                     </div>
-                    <UsersList onTopUp={openTopUpModal} currentPage={page} />
+                    <UsersList onTopUp={openTopUpModal} currentPage={page} params={params} onEditUp={openEditModal} />
                     <div className="flex justify-between items-center mt-4">
                         <button className="px-4 py-2 bg-gray-100 bg-red-100 text-red-600 rounded hover:bg-red-200" onClick={handleResetTable}>
                             Tải lại
@@ -105,6 +129,18 @@ const EmployeeContent = () => {
 
                 </div>
             </div>
+
+            {/* Show edit modal */}
+            {showEdit && (
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+
+                        <EditUserModal user={selectedUser} onClose={() => setShowEdit(false)} />
+
+
+                    </div>
+                </div>
+            )}
             {/* Top Up Modal */}
             {showTopUp && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
@@ -116,8 +152,10 @@ const EmployeeContent = () => {
                     </div>
                 </div>
             )}
+
+
             {/* Delete Confirmation Modal */}
-            {showDeleteConfirm && (
+            {/* {showDeleteConfirm && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
                         <div className="flex items-center mb-4">
@@ -161,7 +199,7 @@ const EmployeeContent = () => {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     );
 };

@@ -14,13 +14,14 @@ const Transaction = ({ params, startDate, endDate, currentPage }) => {
     const { transactions, loading, error } = useSelector((state) => state.transaction);
     const [size, setSize] = useState(5);
 
+
     useEffect(() => {
         // reset về page 1 nếu là tìm kiếm
         currentPage = 1;
     }, [params, startDate, endDate]);
 
     useEffect(() => {
-        dispatch(transaction({ page: currentPage, size, filter: { startDate: startDate, endDate: endDate, name: params } }))
+        dispatch(transaction({ page: currentPage, size: size, filter: { startDate: startDate, endDate: endDate, name: params } }))
 
     }, [dispatch, startDate, endDate, currentPage, size, params]);
 

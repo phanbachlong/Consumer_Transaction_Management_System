@@ -5,6 +5,7 @@ import com.project88.banking.dto.*;
 import java.io.IOException;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,6 +13,7 @@ import com.project88.banking.dto.ChangeProfileDTO;
 import com.project88.banking.dto.GetAllUserDTO;
 import com.project88.banking.dto.ProfileDTO;
 import com.project88.banking.dto.TransferDTO;
+import com.project88.banking.dto.filter.UserFilter;
 import com.project88.banking.entity.User;
 
 public interface IUserService extends UserDetailsService {
@@ -29,12 +31,16 @@ public interface IUserService extends UserDetailsService {
 
     String findUserByCardNumber(int cardNumber);
 
-    Page<GetAllUserDTO> findAllUsers(int size, int page);
+    Page<GetAllUserDTO> findAllUsers(Pageable pageable, UserFilter filter);
 
     User findUserById(Long id);
 
     void topUpBalance(TopUpDTO dto);
 
     User findUserByUsername(String username);
+
+    boolean isEmailExists(String email);
+
+    boolean isPhoneExists(String phone);
 
 }

@@ -1,6 +1,7 @@
 package com.project88.banking.service;
 
 import com.project88.banking.dto.*;
+import com.project88.banking.dto.filter.UserFilter;
 import com.project88.banking.security.CustomUserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,9 +66,8 @@ public class UserService implements IUserService {
 	}
 
 	@Override
-	public Page<GetAllUserDTO> findAllUsers(int size, int page) {
-		Pageable pageable = PageRequest.of(page, size);
-		return userRepository.findAllUsers(pageable);
+	public Page<GetAllUserDTO> findAllUsers(Pageable pageable, UserFilter filter) {
+		return userRepository.findAllUsers(pageable, filter.getName());
 	}
 
 	@Override
@@ -191,4 +191,14 @@ public class UserService implements IUserService {
 		return user;
 	}
 
+	@Override
+	public boolean isEmailExists(String email) {
+		return userRepository.existsByEmail(email);
+
+	}
+
+	@Override
+	public boolean isPhoneExists(String phone) {
+		return userRepository.existsByPhone(phone);
+	}
 }
