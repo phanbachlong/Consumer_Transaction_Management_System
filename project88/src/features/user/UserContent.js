@@ -133,6 +133,11 @@ const UserContent = () => {
     fetchTransaction();
   }, [balance]);
 
+  // về trang 1 khi thay đổi tham số tìm kiếm
+  useEffect(() => {
+    setPage(1);
+  }, [params, startDate, endDate]);
+
 
 
   const handleResetTable = () => {
@@ -140,6 +145,7 @@ const UserContent = () => {
     setParams("");
     setStartDate(null);
     setEndDate(null);
+    setPage(1);
     setTimeout(() => setIsReset(false), 0);
   }
 
