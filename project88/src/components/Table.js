@@ -12,7 +12,7 @@ const Table = ({ initialValues, content, onTopUp, onEditUp }) => {
     const hasActionsColumn = Object.keys(initialValues).includes("Thao tác");
 
     return (
-        <table className=" w-full" initialValues={initialValues} content={content}>
+        <table className="min-w-full" style={{ minHeight: "240px" }} initialValues={initialValues} content={content}>
             <thead>
                 <tr className="bg-gray-50">
 
@@ -70,6 +70,12 @@ const Table = ({ initialValues, content, onTopUp, onEditUp }) => {
                                 </button>
                             </td>
                         )}
+                    </tr>
+                ))}
+                {/* Thêm dòng trống nếu thiếu */}
+                {Array.from({ length: 5 - content.length }).map((_, idx) => (
+                    <tr key={`empty-${idx}`}>
+                        <td colSpan={Object.keys(initialValues).length} className="h-12"></td>
                     </tr>
                 ))}
             </tbody>
