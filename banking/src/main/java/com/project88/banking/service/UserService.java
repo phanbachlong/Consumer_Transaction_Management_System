@@ -165,12 +165,22 @@ public class UserService implements IUserService {
 		}
 
 		if (dto.getMoney() == null || dto.getMoney() <= 0) {
-			throw new IllegalArgumentException("Số tiền phải >0");
+			throw new IllegalArgumentException("Số tiền phải > 0");
 		}
 
 		userRepository.topUp(dto.getUserID(), dto.getMoney());
+		
+		TransactionHistory trans = TransactionHistory.builder()
+			.transType("NT")
+			.content("Nạp tiền vào tài khoản")
+			.fee(dto.getMoney())
+			.endBalance(userOptional.get().getBalance() + dto.getMoney())
+			.user(userOptional.get())
+			.build();
+		
+		transactionRepository.save(trans);
 	}
-
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByUsername(username);
