@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import Form from "../../components/Form";
-import { EditUserValidation } from "../../validation/EditUserValidatiion";
-import UserApi from "../../api/UserApi";
+import Form from "./Form";
+import { EditUserValidation } from "../validation/EditUserValidatiion";
+import UserApi from "../api/UserApi";
 import { debounce } from "lodash";
-import { editUserByEmployee, getAllUsers } from "../../redux/slices/userSlice";
+import { editUserByEmployee, getAllUsers } from "../redux/slices/userSlice";
 import { useDispatch } from "react-redux";
+import { getAllEmployees } from "../redux/slices/employeeSlice";
 
 
 const EditUserModal = ({ user, onClose, onSave }) => {
@@ -65,8 +66,10 @@ const EditUserModal = ({ user, onClose, onSave }) => {
                     return { success: false };
                 }
             }
-            dispatch(editUserByEmployee({ userID: user?.userID, body: dataForm }));
-            dispatch(getAllUsers({ page: 1, size: 5, filter: { name: "" } }));
+            await dispatch(editUserByEmployee({ userID: user?.userID, body: dataForm }));
+            await dispatch(getAllUsers({ page: 1, size: 5, filter: { name: "" } }));
+            await dispatch(getAllEmployees({ page: 1, size: 5, filter: { name: "" } }));
+
             onClose(false);
             return { success: false };
         } catch (error) {

@@ -18,7 +18,7 @@ public interface IEmployeeRepository extends JpaRepository<User, Long>, JpaSpeci
     // lay thon tin cac employee (phan minh)
     // @Query("SELECT u FROM User u WHERE u.role = 'Employee' AND (u.status = 0 OR
     // u.status = 1)")
-    @Query("SELECT new com.project88.banking.dto.GetAllEmployeesDTO(CONCAT(u.firstName, ' ', u.lastName), u.username, u.email, u.phone, c.cardNumber) FROM User u JOIN u.cardNumber c "
+    @Query("SELECT new com.project88.banking.dto.GetAllEmployeesDTO(u.userID, CONCAT(u.firstName, ' ', u.lastName), u.username, u.email, u.phone, c.cardNumber) FROM User u JOIN u.cardNumber c "
             +
             "WHERE u.role = 'Employee' AND (:name IS NULL OR u.firstName LIKE CONCAT('%', :name, '%') or u.lastName LIKE CONCAT('%', :name, '%')) ")
     Page<GetAllEmployeesDTO> getAllEmployees(Pageable pageable, String name);
