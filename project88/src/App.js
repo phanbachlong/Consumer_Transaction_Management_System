@@ -17,7 +17,7 @@ import Footer from "./components/Footer";
 import DeletedEmployees from "./features/employee/DeletedEmployees";
 import VerifyPage from "./features/auth/VerifyPage";
 import UserContent from './features/user/UserContent';
-import EmployeeContent from './features/home/EmployeeContent';
+import EmployeeContent from './features/employee/EmployeeContent';
 
 
 function App() {

@@ -43,4 +43,6 @@ public interface IUserService extends UserDetailsService {
 
     boolean isPhoneExists(String phone);
 
+    void editUserByEmployee(long userID, EditUserDTO dto);
+
 }

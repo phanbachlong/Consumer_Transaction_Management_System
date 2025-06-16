@@ -6,7 +6,7 @@ import Table from "../../components/Table";
 
 const UserList = ({ onTopUp, params, currentPage, onEditUp }) => {
     const dispatch = useDispatch();
-    const [size, setSize] = useState(1);
+    const [size, setSize] = useState(5);
 
     const initialValues = {
         "ID": "",
@@ -26,7 +26,7 @@ const UserList = ({ onTopUp, params, currentPage, onEditUp }) => {
 
 
     useEffect(() => {
-        dispatch(getAllUsers({ page: currentPage, size: 1, filter: { name: params } }));
+        dispatch(getAllUsers({ page: currentPage, size: size, filter: { name: params } }));
     }, [dispatch, currentPage, size, params]);
 
     return (
