@@ -3,11 +3,15 @@ import Form from "../../components/Form";
 import { EditUserValidation } from "../../validation/EditUserValidatiion";
 import UserApi from "../../api/UserApi";
 import { debounce } from "lodash";
+import { editUserByEmployee, getAllUsers } from "../../redux/slices/userSlice";
+import { useDispatch } from "react-redux";
 
 
 const EditUserModal = ({ user, onClose, onSave }) => {
 
     const initialValues = { email: user?.email || "", phone: user?.phone || "" };
+
+    const dispatch = useDispatch();
 
 
     const handleWatchChange = React.useCallback(
@@ -52,24 +56,22 @@ const EditUserModal = ({ user, onClose, onSave }) => {
             if (dataForm.email !== user?.email) {
                 const res = await UserApi.isExistEmail(dataForm.email);
                 if (res.data === true) {
-                    // setError được gọi ở Form rồi → không cần ở đây nữa
                     return { success: false };
                 }
             }
             if (dataForm.phone !== user?.phone) {
                 const res = await UserApi.isExistPhone(dataForm.phone);
                 if (res.data === true) {
-                    // setError được gọi ở Form rồi → không cần ở đây nữa
                     return { success: false };
                 }
             }
-
-            console.log("SUBMIT:", dataForm);
+            dispatch(editUserByEmployee({ userID: user?.userID, body: dataForm }));
+            dispatch(getAllUsers({ page: 1, size: 5, filter: { name: "" } }));
             onClose(false);
-            return { sucess: true }
+            return { success: false };
         } catch (error) {
             console.error("Lỗi khi submit:", error);
-            return { sucess: false }
+            return { success: false }
         }
     }
 

@@ -34,6 +34,10 @@ const isExistPhone = (phone) => {
     return axiosClient.get(`${url}/check-phone`, { params: { phone } })
 }
 
+const editUserByEmployee = (userID, body) => {
+    return axiosClient.put(`${url}/edit`, body, { params: { userID } });
+}
+
 
 const UserApi = {
     createUser,
@@ -42,6 +46,7 @@ const UserApi = {
     topUp,
     updateProfile,
     isExistEmail,
-    isExistPhone
+    isExistPhone,
+    editUserByEmployee
 }
 export default UserApi;

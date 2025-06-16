@@ -211,4 +211,21 @@ public class UserService implements IUserService {
 	public boolean isPhoneExists(String phone) {
 		return userRepository.existsByPhone(phone);
 	}
+
+	@Override
+	public void editUserByEmployee(long userID, EditUserDTO dto) {
+		User user = userRepository.findByUserID(userID);
+		if (user == null) {
+			throw new UsernameNotFoundException("User not found with username: " + userID);
+		}
+
+		if (dto.getEmail() != null && !dto.getEmail().isEmpty()) {
+			user.setEmail(dto.getEmail());
+		}
+		if (dto.getPhone() != null && !dto.getPhone().isEmpty()) {
+			user.setPhone(dto.getPhone());
+		}
+
+		userRepository.save(user);
+	}
 }

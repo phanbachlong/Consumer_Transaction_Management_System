@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import TopUp from "../home/TopUp";
 import UsersList from "../user/UsersList";
 import Search from "../../components/Search";
@@ -6,10 +6,7 @@ import Pagination from "../../components/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getEmployeeByUsername } from "../../redux/slices/employeeSlice";
-import { set } from "date-fns";
 import EditUserModal from "./EditUserModal";
-import debounce from "lodash.debounce";
-import UserApi from "../../api/UserApi";
 
 
 const EmployeeContent = () => {
@@ -35,6 +32,8 @@ const EmployeeContent = () => {
 
     useEffect(() => {
         dispatch(getEmployeeByUsername());
+        console.log(employeeByUsername);
+
     }, [dispatch]);
 
 
@@ -51,25 +50,6 @@ const EmployeeContent = () => {
     const handleNavigateProfile = () => {
         navigate('/profile')
     }
-
-    // Hàm xử lý xóa khách hàng
-    // const handleDeleteClick = (customer) => {
-    //     setShowDeleteConfirm(true);
-    // };
-
-    // const confirmDelete = () => {
-    //     if (customerToDelete) {
-    //         setShowDeleteConfirm(false);
-    //         setCustomerToDelete(null);
-    //         alert("Đã xóa thành công!");
-    //     }
-    // };
-
-    // const cancelDelete = () => {
-    //     setShowDeleteConfirm(false);
-    //     setCustomerToDelete(null);
-    // };
-
 
     const openTopUpModal = (user) => {
         setSelectedUser(user);
@@ -90,7 +70,7 @@ const EmployeeContent = () => {
                 <div className="flex items-center bg-white rounded p-6 mb-8 gap-8">
                     <div className="flex items-center gap-4 flex-1">
                         <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-orange-500 text-2xl font-bold">
-                            AVA
+                            <img src={employeeByUsername.avatarUrl} alt="Avatar" className="w-full h-full rounded-full object-cover" />
                         </div>
                         <span className="text-lg font-semibold">{employeeByUsername.firstName} {employeeByUsername.lastName}</span>
                     </div>
@@ -134,10 +114,7 @@ const EmployeeContent = () => {
             {showEdit && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-
                         <EditUserModal user={selectedUser} onClose={() => setShowEdit(false)} />
-
-
                     </div>
                 </div>
             )}
@@ -147,8 +124,6 @@ const EmployeeContent = () => {
                     <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
 
                         <TopUp user={selectedUser} onClose={() => setShowTopUp(false)} />
-
-
                     </div>
                 </div>
             )}
