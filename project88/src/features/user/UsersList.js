@@ -20,7 +20,6 @@ const UserList = ({ onTopUp, params, currentPage, onEditUp }) => {
     const { users, loading, error } = useSelector((state) => state.user);
 
     useEffect(() => {
-        // Reset về page 1 nếu là tìm kiếm
         currentPage = 1;
     }, [params]);
 

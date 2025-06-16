@@ -6,7 +6,7 @@ import { getAllEmployees } from '../../redux/slices/employeeSlice';
 import { filter } from 'lodash';
 import Table from '../../components/Table';
 
-const EmployeeList = ({ params, currentPage }) => {
+const EmployeeList = ({ params, currentPage, onTopUp, onEditUp }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     // const [searchTerm, setSearchTerm] = useState('');
@@ -21,18 +21,10 @@ const EmployeeList = ({ params, currentPage }) => {
     }, [params]);
 
     useEffect(() => {
-        const fetchEmployees = async () => {
-            try {
-                await dispatch(getAllEmployees({ page: 0, size: 5, filter: { name: params } }));
-            } catch (err) {
-                console.error("Failed to fetch employees:", err);
-            } finally {
-            }
-        };
-        fetchEmployees();
+        dispatch(getAllEmployees({ page: currentPage, size: 5, filter: { name: params } }));
     }, [dispatch, currentPage, params]);
 
-    const initialValues = { "Nhân viên": "", "Username": "", "Email": "", "SDT": "", "Số tài khoản": "", "Thao tác": "" }
+    const initialValues = { "Mã NV": "", "Nhân viên": "", "Username": "", "Email": "", "SDT": "", "Số tài khoản": "", "Thao tác": "" }
 
     // const handleCreateNew = () => {
     //     navigate('/create-employee');
@@ -92,7 +84,7 @@ const EmployeeList = ({ params, currentPage }) => {
 
     return (
         <div>
-            <Table initialValues={initialValues} content={employees}></Table>
+            <Table initialValues={initialValues} content={employees} onTopUp={onTopUp} onEditUp={onEditUp}></Table>
         </div>
     );
 };
