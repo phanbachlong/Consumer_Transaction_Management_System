@@ -18,6 +18,7 @@ import DeletedEmployees from "./features/employee/DeletedEmployees";
 import VerifyPage from "./features/auth/VerifyPage";
 import UserContent from './features/user/UserContent';
 import EmployeeContent from './features/employee/EmployeeContent';
+import AdminContent from './features/admin/AdminContent';
 
 
 function App() {
@@ -49,12 +50,12 @@ function App() {
           <Route path="/user" element={<UserContent />} />
           <Route path="/admin" element={<AdminContent />} />
           <Route path="/employees" element={<EmployeeContent />} />
-
         </Routes>
       </div>
 
         <Footer toggleTheme={toggleTheme} currentTheme={theme} />
     </Router>
+
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Transaction from "./Transaction";
 import Transfer from "../home/Transfer";
 import Deposit from "./Deposit";
@@ -11,10 +11,16 @@ import Search from "../../components/Search";
 import MyDatePicker from "../../components/MyDatePicker";
 import Pagination from "../../components/Pagination";
 import SavingTotal from "./SavingTotal";
+import { useNavigate } from "react-router-dom";
 
 const UserContent = () => {
   const userID = localStorage.getItem("userId");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleNameClick = () => {
+    navigate("/profile"); 
+  };
 
   const [user, setUser] = useState({
     firstName: "",
@@ -166,7 +172,10 @@ const UserContent = () => {
               AVA
             </div>
             <div>
-              <h2 className="text-xl font-bold">{user.fullname}</h2>
+              <h2 className="text-xl font-bold cursor-pointer hover:text-red-600"
+              onClick={handleNameClick}>
+                {user.fullname}
+              </h2>
             </div>
           </div>
           <div className="flex items-center justify-between">

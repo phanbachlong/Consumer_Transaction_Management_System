@@ -13,8 +13,8 @@ import java.util.Date;
 @Component
 public class JwtUtils {
     private final String JWT_SECRET = "e3f846876e8e50adb192a17f35369e08f29757dec3c9a9c7ae09822cc55a04ed602efd248959f0bd539f71f7890224eba2305203ea09ff01c53953c3361096a888c3b204d4df03222e1ce9ad8545ab6288278491002039670dbae556cc851e9701681272b86ec4f5b872ce44f048ba342f4f0a71599b0d4e43068596778cb782eb99b665d5b090a41eb1d9dcff250cd0985d484a06641493ac5b5668824e3e202349d080f93ccbe420f0bea7c09784cd7ee9ba379861c5891bbdedc7cccd7932226ca8830be7d46ef094d874a840d8b71428b61d2b4ea5c8ea90212df5a3e0adc091c409a263a3f74fb06e2f1579ecea5693fe42333ee1d470670d8a5031dd45";
-    // private final long JWT_EXPIRATION = 900000L; // 15 phút
-    private final long JWT_EXPIRATION = 60000L; // 1 phút để test
+     private final long JWT_EXPIRATION = 900000L; // 15 phút
+//    private final long JWT_EXPIRATION = 60000L; // 1 phút để test
 
     public String generateToken(UserDetails userDetails) {
         Date now = new Date();
