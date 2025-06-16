@@ -76,6 +76,17 @@ public class UserController {
         userService.transfer(form);
     }
 
+    @PutMapping("/edit")
+    public void editUser(@RequestBody EditUserDTO editUserDTO, @RequestParam(name = "userID") long userID) {
+        try {
+            userService.editUserByEmployee(userID, editUserDTO);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Không tìm thấy người dùng với username: " + userID);
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi khi cập nhật thông tin người dùng: " + e.getMessage());
+        }
+    }
+
     @GetMapping()
     public String findUserByCardNumber(@RequestParam(name = "cardNumber") int cardNumber) {
         String userName = userService.findUserByCardNumber(cardNumber);

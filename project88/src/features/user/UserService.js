@@ -8,7 +8,12 @@ const UserService = {
 
     getBalance: async () => {
         return await userApi.getBalance();
+    },
+
+    editUserByEmployee: async (userID, body) => {
+        return await userApi.editUserByEmployee(userID, body);
     }
+
 };
 
 export default UserService;

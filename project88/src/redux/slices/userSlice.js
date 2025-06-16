@@ -51,6 +51,22 @@ export const getBalance = createAsyncThunk('getBalance', async (_, { rejectWithV
     }
 })
 
+export const editUserByEmployee = createAsyncThunk('editUserByEmployee', async ({ userID, body }, { rejectWithValue }) => {
+    try {
+        const response = await UserService.editUserByEmployee(userID, body);
+
+        if (response.status >= 200 && response.status < 300) {
+            return {
+                message: response.data || "User edited successfully",
+            };
+        } else {
+            return rejectWithValue("Unexpected response from server.");
+        }
+    } catch (error) {
+        return rejectWithValue(error.response.data);
+    }
+})
+
 const profileSlice = createSlice({
     name: 'profile',
     initialState: {
@@ -104,7 +120,20 @@ const userSlice = createSlice({
             .addCase(getAllUsers.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            })
+            .addCase(editUserByEmployee.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(editUserByEmployee.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(editUserByEmployee.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             });
+
     }
 })
 
