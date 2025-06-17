@@ -99,6 +99,7 @@ public class UserController {
     public ResponseEntity<?> getProfile(Authentication authentication) {
         String name = authentication.getName();
         ProfileDTO profileDTO = userService.getProfile(name);
+        // System.out.println(profileDTO);
         return ResponseEntity.ok(profileDTO);
     }
 

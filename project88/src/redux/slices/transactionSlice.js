@@ -99,6 +99,8 @@ const transactionByUserID = createSlice({
     name: 'transactionsByUserID',
     initialState: {
         transactionsByUserID: [],
+        totalPages: 0,
+        currentPage: 0,
         loading: false,
         error: null
     },
@@ -118,8 +120,8 @@ const transactionByUserID = createSlice({
             .addCase(getTransactionByUserID.fulfilled, (state, action) => {
                 state.loading = false;
                 state.transactionsByUserID = action.payload.transactions;
-
-
+                state.totalPages = action.payload.transactions.totalPages;
+                state.currentPage = action.payload.transactions.number;
             })
             .addCase(getTransactionByUserID.rejected, (state, action) => {
                 state.loading = false;

@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import TopUp from "../home/TopUp";
 import EmployeeList from "./EmployeeList";
 import Search from "../../components/Search";
 import Pagination from "../../components/Pagination";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EditUserModal from "../../components/EditUserModal";
+import adminAPI from "../../api/AdminAPI";
+import { getAllEmployees } from "../../redux/slices/employeeSlice";
 
 
 
@@ -19,10 +21,9 @@ const AdminContent = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [showEdit, setShowEdit] = useState(false);
 
-
+    const dispatch = useDispatch();
 
     const { totalElements, totalPages, currentPage } = useSelector((state) => state.employee);
-
 
     const onPageChange = (currentPage) => {
         setPage(currentPage);
@@ -34,35 +35,16 @@ const AdminContent = () => {
         setTimeout(() => setIsReset(false), 0);
     }
 
-    const isActive = (user) => {
+    const isActive = useCallback(async (user) => {
+        const newStatus = user.status === "ACTIVE" ? "NOT_ACTIVE" : "ACTIVE";
+        try {
+            await adminAPI.activeUser(user.userID, newStatus);
+            await dispatch(getAllEmployees({ page: page, size: 5, filter: { name: params } }));
 
-        console.log(user);
-    }
-
-
-    // const [customers, setCustomers] = useState(customersLists);
-    // const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-    // const [customerToDelete, setCustomerToDelete] = useState(null);
-
-    // // Hàm xử lý xóa nhân viên
-    // const handleDeleteClick = (customer) => {
-    //     setCustomerToDelete(customer);
-    //     setShowDeleteConfirm(true);
-    // };
-
-    // const confirmDelete = () => {
-    //     if (customerToDelete) {
-    //         setCustomers(customers.filter(c => c.id !== customerToDelete.id));
-    //         setShowDeleteConfirm(false);
-    //         setCustomerToDelete(null);
-    //         alert("Đã xóa thành công!");
-    //     }
-    // };
-
-    // const cancelDelete = () => {
-    //     setShowDeleteConfirm(false);
-    //     setCustomerToDelete(null);
-    // };
+        } catch (error) {
+            console.error("Error updating user status:", error);
+        }
+    }, [dispatch, page, params])
 
     return (
         <div className="min-h-screen bg-[#fafafa]">
@@ -72,12 +54,15 @@ const AdminContent = () => {
                 <div className="flex items-center bg-white rounded p-6 mb-8 gap-8">
                     <div className="flex items-center gap-4 flex-1">
                         <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-orange-500 text-2xl font-bold">
-                            AVA
+                            {/* <img src alt="Avatar" className="w-full h-full rounded-full object-cover" /> */}
                         </div>
-                        <span className="text-lg font-semibold">Admin</span>
+                        <span className="text-lg font-semibold">Admin: </span>
                     </div>
                     <button className="px-6 py-2 rounded bg-orange-200 text-orange-800 font-semibold border border-orange-400">
                         Quản lý NV
+                    </button>
+                    <button className="px-6 py-2 rounded bg-orange-400 text-black-300 font-semibold border border-orange-400">
+                        Nhân viên mới +
                     </button>
                 </div>
 
@@ -101,6 +86,6 @@ const AdminContent = () => {
             </div>
         </div>
     );
-};
+}
 
 export default AdminContent;
