@@ -59,8 +59,10 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllUsers(@PageableDefault(size = 5) Pageable pageable, UserFilter filter) {
-        Page<GetAllUserDTO> usersPage = userService.findAllUsers(pageable, filter);
+    public ResponseEntity<?> getAllUsers(@PageableDefault(size = 5) Pageable pageable, UserFilter filter,
+            Authentication authentication) {
+        String username = authentication.getName();
+        Page<GetAllUserDTO> usersPage = userService.findAllUsers(pageable, filter, username);
         return new ResponseEntity<>(usersPage, HttpStatus.OK);
     }
 

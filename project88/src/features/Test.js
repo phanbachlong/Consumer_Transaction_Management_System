@@ -1,49 +1,24 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import userApi from "../api/UserApi";
-import { useDispatch, useSelector } from "react-redux";
-import { deposit } from "../redux/slices/depositSlice";
-import SavingTotal from "./user/SavingTotal";
+import React, { useEffect } from "react";
+
 
 function Test() {
-    const [file, setFile] = useState(null);
-    const [preview, setPreview] = useState(null);
-    const [imageUrl, setImageUrl] = useState("");
 
-    const handleFileChange = e => {
-        const selected = e.target.files[0];
-        setFile(selected);
-        setPreview(URL.createObjectURL(selected)); // tạo URL tạm để preview
-    };
+    const [isActive, setIsActive] = React.useState(false);
 
-    const handleUpload = async () => {
-        const formData = new FormData();
-        formData.append("avatarUrl", file);
+    const handleToggle = () => {
+        setIsActive(!isActive);
+    }
 
-        const res = await userApi.updateProfile(formData);
-        console.log(res);
+    useEffect(() => {
+        console.log(isActive);
 
-        setImageUrl(res.data); // đường dẫn từ server
-    };
+    }, [isActive])
 
     return (
-        <div>
-            <input type="file" onChange={handleFileChange} />
-            {preview && (
-                <div>
-                    <p>Xem trước:</p>
-                    <img src={preview} alt="preview" width="200" />
-                </div>
-            )}
-            <button onClick={handleUpload}>Upload</button>
-
-            {imageUrl && (
-                <div>
-                    <p>Đã upload:</p>
-                    <img src={`./${imageUrl}`} alt="uploaded" width="200" />
-                </div>
-            )}
-        </div>
+        <label class="inline-flex items-center me-5 cursor-pointer">
+            <input type="checkbox" value="" class="sr-only peer" onChange={handleToggle} />
+            <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-white-900 peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-500 dark:peer-checked:bg-orange-500"></div>
+        </label>
     );
 
 

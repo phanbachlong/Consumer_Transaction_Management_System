@@ -6,7 +6,7 @@ import { getAllEmployees } from '../../redux/slices/employeeSlice';
 import { filter } from 'lodash';
 import Table from '../../components/Table';
 
-const EmployeeList = ({ params, currentPage, onTopUp, onEditUp }) => {
+const EmployeeList = ({ params, currentPage, isActive }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     // const [searchTerm, setSearchTerm] = useState('');
@@ -24,7 +24,7 @@ const EmployeeList = ({ params, currentPage, onTopUp, onEditUp }) => {
         dispatch(getAllEmployees({ page: currentPage, size: 5, filter: { name: params } }));
     }, [dispatch, currentPage, params]);
 
-    const initialValues = { "Mã NV": "", "Nhân viên": "", "Username": "", "Email": "", "SDT": "", "Số tài khoản": "", "Thao tác": "" }
+    const initialValues = { "Mã NV": "", "Nhân viên": "", "Username": "", "Email": "", "SDT": "", "Số tài khoản": "", "Active": "" }
 
     // const handleCreateNew = () => {
     //     navigate('/create-employee');
@@ -84,7 +84,7 @@ const EmployeeList = ({ params, currentPage, onTopUp, onEditUp }) => {
 
     return (
         <div>
-            <Table initialValues={initialValues} content={employees} onTopUp={onTopUp} onEditUp={onEditUp}></Table>
+            <Table initialValues={initialValues} content={employees} isActive={isActive} ></Table>
         </div>
     );
 };

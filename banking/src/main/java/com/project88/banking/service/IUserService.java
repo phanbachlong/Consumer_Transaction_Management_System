@@ -31,7 +31,7 @@ public interface IUserService extends UserDetailsService {
 
     String findUserByCardNumber(int cardNumber);
 
-    Page<GetAllUserDTO> findAllUsers(Pageable pageable, UserFilter filter);
+    Page<GetAllUserDTO> findAllUsers(Pageable pageable, UserFilter filter, String username);
 
     User findUserById(Long id);
 

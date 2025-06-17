@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import React from "react";
 
-const Table = ({ initialValues, content, onTopUp, onEditUp }) => {
+const Table = ({ initialValues, content, onTopUp, onEditUp, onTransactionUp, isActive }) => {
 
     const formatDate = (value) => {
         const date = new Date(value);
@@ -10,22 +10,25 @@ const Table = ({ initialValues, content, onTopUp, onEditUp }) => {
     };
 
     const hasActionsColumn = Object.keys(initialValues).includes("Thao tác");
+    const hasActionAdminColumn = Object.keys(initialValues).includes("Active");
+
 
     return (
         <table className="min-w-full" style={{ minHeight: "240px" }} initialValues={initialValues} content={content}>
             <thead>
                 <tr className="bg-gray-50">
-
-                    {Object.keys(initialValues).filter(filed => filed != "Thao tác").map((field, index) => (
+                    {Object.keys(initialValues).filter(filed => filed !== "Thao tác").map((field, index) => (
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" key={index}>{field}</th>
                     ))}
                     {hasActionsColumn && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thao tác</th>}
+
                 </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
                 {content.map((row, index) => (
+
                     <tr key={index} className="hover:bg-gray-50">
-                        {Object.entries(row).map(([key, value], i) => (
+                        {Object.entries(row).filter(([key]) => key !== "status").map(([key, value], i) => (
                             <td key={i} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 truncate overflow-hidden whitespace-nowrap">
                                 {key === "createDate" ? formatDate(value) : key === "endBalance" || key === "balance" || key === "fee" ? Number(value).toLocaleString("de-DE") : value}
                             </td>
@@ -57,6 +60,29 @@ const Table = ({ initialValues, content, onTopUp, onEditUp }) => {
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                     </svg>
                                 </button>
+
+                                {/* Transaction icon */}
+                                <button
+                                    type="button"
+                                    className=" p-1 rounded-full hover:bg-gray-200 active:bg-gray-300 transition"
+                                    title="Lịch sử giao dịchdịch"
+                                    //onClick={() => setShowTopUp(true)}
+                                    onClick={() => onTransactionUp(row)}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                </button>
+                            </td>
+                        )}
+
+                        {hasActionAdminColumn && (
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
+
+                                <label class="inline-flex items-center me-5 cursor-pointer">
+                                    <input type="checkbox" value="" class="sr-only peer" onChange={() => isActive(row)} />
+                                    <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-white-900 peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-500 dark:peer-checked:bg-orange-500"></div>
+                                </label>
                             </td>
                         )}
                     </tr>

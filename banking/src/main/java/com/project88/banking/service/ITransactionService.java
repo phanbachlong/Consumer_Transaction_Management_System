@@ -9,4 +9,6 @@ import com.project88.banking.dto.filter.TransactionFilter;
 public interface ITransactionService {
 
     Page<TransactionHistoryDTO> getTransaction(String username, Pageable pageable, TransactionFilter filter);
+
+    Page<TransactionHistoryDTO> getTransactionByUserID(long userID, Pageable pageable, TransactionFilter filter);
 }

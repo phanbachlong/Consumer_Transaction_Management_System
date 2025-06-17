@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getEmployeeByUsername } from "../../redux/slices/employeeSlice";
 import EditUserModal from "../../components/EditUserModal";
+import TransactionModal from "../../components/TransactionModal";
 
 
 const EmployeeContent = () => {
@@ -14,6 +15,7 @@ const EmployeeContent = () => {
     const [search, setSearch] = useState("");
     const [showTopUp, setShowTopUp] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
+    const [showTransactionUp, setShowTransactionUp] = useState(false);
 
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const [customerToDelete, setCustomerToDelete] = useState(null);
@@ -59,6 +61,11 @@ const EmployeeContent = () => {
         setShowEdit(true);
     }
 
+    const openTransactionModal = (user) => {
+        setSelectedUser(user);
+        setShowTransactionUp(true);
+    }
+
 
     return (
         <div className="min-h-screen bg-[#fafafa]">
@@ -95,7 +102,7 @@ const EmployeeContent = () => {
                             </button>
                         </div>
                     </div>
-                    <UsersList onTopUp={openTopUpModal} currentPage={page} params={params} onEditUp={openEditModal} />
+                    <UsersList onTopUp={openTopUpModal} currentPage={page} params={params} onEditUp={openEditModal} openTransactionModal={openTransactionModal} />
                     <div className="flex justify-between items-center mt-4">
                         <button className="px-4 py-2 bg-gray-100 bg-red-100 text-red-600 rounded hover:bg-red-200" onClick={handleResetTable}>
                             Tải lại
@@ -122,6 +129,15 @@ const EmployeeContent = () => {
                     <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
 
                         <TopUp user={selectedUser} onClose={() => setShowTopUp(false)} />
+                    </div>
+                </div>
+            )}
+
+            {/* Transaction modal */}
+            {showTransactionUp && (
+                <div className="fixed mt-12 inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-[70%] ">
+                        <TransactionModal user={selectedUser} onClose={() => setShowTransactionUp(false)} />
                     </div>
                 </div>
             )}
