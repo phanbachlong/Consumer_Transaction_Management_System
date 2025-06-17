@@ -100,7 +100,7 @@ const EmployeeContent = () => {
                         <button className="px-4 py-2 bg-gray-100 bg-red-100 text-red-600 rounded hover:bg-red-200" onClick={handleResetTable}>
                             Tải lại
                         </button>
-                        <Pagination totalPages={totalPages} onPageChange={onChangePage}></Pagination>
+                        <Pagination totalPages={totalPages} currentPage={page} onPageChange={onChangePage}></Pagination>
                     </div>
 
 

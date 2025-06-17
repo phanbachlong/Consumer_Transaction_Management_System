@@ -18,7 +18,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
             {Array.from({ length: totalPages }, (_, index) => (
                 <button
                     key={index + 1}
-                    className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-700'} rounded hover:bg-gray-200`}
+                    className={`px-4 py-2 ${currentPage === index + 1 ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700'} rounded hover:bg-gray-200`}
                     onClick={() => handlePageChange(index + 1)}
                 >
                     {index + 1}

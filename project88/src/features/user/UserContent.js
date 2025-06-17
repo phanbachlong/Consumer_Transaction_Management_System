@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Transaction from "./Transaction";
 import Transfer from "../home/Transfer";
 import Deposit from "./Deposit";
@@ -11,10 +11,16 @@ import Search from "../../components/Search";
 import MyDatePicker from "../../components/MyDatePicker";
 import Pagination from "../../components/Pagination";
 import SavingTotal from "./SavingTotal";
+import { useNavigate } from "react-router-dom";
 
 const UserContent = () => {
   const userID = localStorage.getItem("userId");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleNameClick = () => {
+    navigate("/profile"); 
+  };
 
   const [user, setUser] = useState({
     firstName: "",
@@ -133,6 +139,11 @@ const UserContent = () => {
     fetchTransaction();
   }, [balance]);
 
+  // về trang 1 khi thay đổi tham số tìm kiếm
+  useEffect(() => {
+    setPage(1);
+  }, [params, startDate, endDate]);
+
 
 
   const handleResetTable = () => {
@@ -140,6 +151,7 @@ const UserContent = () => {
     setParams("");
     setStartDate(null);
     setEndDate(null);
+    setPage(1);
     setTimeout(() => setIsReset(false), 0);
   }
 
@@ -160,7 +172,10 @@ const UserContent = () => {
               AVA
             </div>
             <div>
-              <h2 className="text-xl font-bold">{user.fullname}</h2>
+              <h2 className="text-xl font-bold cursor-pointer hover:text-red-600"
+              onClick={handleNameClick}>
+                {user.fullname}
+              </h2>
             </div>
           </div>
           <div className="flex items-center justify-between">
@@ -201,7 +216,7 @@ const UserContent = () => {
             <button className="px-4 py-2 bg-gray-100 bg-red-100 text-red-600 rounded hover:bg-red-200" onClick={handleResetTable}>
               Tải lại
             </button>
-            <Pagination totalPages={totalPages} onPageChange={onPageChange}></Pagination>
+            <Pagination totalPages={totalPages} currentPage={page} onPageChange={onPageChange} />
           </div>
         </div>
       </div>

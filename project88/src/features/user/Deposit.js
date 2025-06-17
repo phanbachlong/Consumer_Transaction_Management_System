@@ -3,7 +3,7 @@ import axios from "axios";
 import UserAPIv2 from "../../api/UserAPIv2";
 
 const Deposit = ({ setShowDeposit, onDepositSuccess }) => {
-  const userId = localStorage.getItem("userId") || 1;
+  const userId = localStorage.getItem("userId");
   // state
   const [accountName, setAccountName] = useState("");
   const [amount, setAmount] = useState("");
@@ -91,6 +91,7 @@ const Deposit = ({ setShowDeposit, onDepositSuccess }) => {
     setSuccess(null);
 
     try {
+       const token = localStorage.getItem("token");
       const response = await axios.post(
         `http://localhost:8080/api/v1/deposits`,
         {
@@ -102,6 +103,7 @@ const Deposit = ({ setShowDeposit, onDepositSuccess }) => {
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

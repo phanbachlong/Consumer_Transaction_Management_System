@@ -49,7 +49,8 @@ const calculateDaysLeft = (createDate, termMonths) => {
 };
 
 export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
-  const userId = localStorage.getItem("userId") || 1;
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
 
   const [deposits, setDeposits] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -166,6 +167,7 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
               redeemDate: new Date().toISOString().split("T")[0],
@@ -183,7 +185,13 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
         setDeposits((prev) => prev.filter((d) => d.id !== deposit.id));
 
         const balanceResponse = await fetch(
-          `http://localhost:8080/api/v1/users/${userId}/balance`
+          `http://localhost:8080/api/v1/users/${userId}/balance`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
         );
         if (balanceResponse.ok) {
           const newBalance = await balanceResponse.json();

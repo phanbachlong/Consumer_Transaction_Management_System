@@ -27,9 +27,10 @@ axiosClient.interceptors.request.use(
 axiosClient.interceptors.response.use(
     response => response,
     error => {
-        if (error.response && error.response.status === 401) {
+        if (error.response && error.response.status === 401 || error.response.status === 403) {
             localStorage.removeItem("token");
             window.location.href = "/login";
+            alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
         }
         return Promise.reject(error);
     }
