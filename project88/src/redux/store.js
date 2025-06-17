@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import registerReducer from "./slices/registerSlice"
-import transactionReducer from "./slices/transactionSlice"
+import { transactionReducer, transactionByUserIDReducer } from "./slices/transactionSlice"
 import { balanceReducer, profileReducer, userReducer } from "./slices/userSlice"
 import depositReducer from "./slices/depositSlice";
 import employeeReducer from "./slices/employeeSlice";
@@ -13,6 +13,7 @@ export const store = configureStore({
         user: userReducer,
         deposit: depositReducer,
         balance: balanceReducer,
-        employee: employeeReducer
+        employee: employeeReducer,
+        transactionsByUserID: transactionByUserIDReducer
     }
 })

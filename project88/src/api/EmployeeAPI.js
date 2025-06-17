@@ -21,6 +21,4 @@ const employeeAPI = {
     getEmployeeByUsername
 }
 
-
-
 export default employeeAPI;

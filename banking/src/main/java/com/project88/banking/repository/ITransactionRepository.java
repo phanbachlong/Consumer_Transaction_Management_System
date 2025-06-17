@@ -15,7 +15,15 @@ public interface ITransactionRepository extends JpaRepository<TransactionHistory
         @Query("SELECT new com.project88.banking.dto.TransactionHistoryDTO(t.createDate, t.transType, t.content, t.fee, t.endBalance) "
                         + "FROM TransactionHistory t WHERE t.user.username = :username AND (:startDate IS NULL OR t.createDate >= :startDate) "
                         + "AND (:endDate IS NULL OR t.createDate <= :endDate) AND (:name IS NULL OR t.content LIKE CONCAT('%', :name, '%'))")
-        public Page<TransactionHistoryDTO> findByUsername(@Param("username") String username,
+        Page<TransactionHistoryDTO> findByUsername(@Param("username") String username,
+                        @Param("startDate") LocalDateTime startDate,
+                        @Param("endDate") LocalDateTime endDate,
+                        @Param("name") String name, Pageable pageable);
+
+        @Query("SELECT new com.project88.banking.dto.TransactionHistoryDTO(t.createDate, t.transType, t.content, t.fee, t.endBalance) "
+                        + "FROM TransactionHistory t WHERE t.user.id = :userID AND (:startDate IS NULL OR t.createDate >= :startDate) "
+                        + "AND (:endDate IS NULL OR t.createDate <= :endDate) AND (:name IS NULL OR t.content LIKE CONCAT('%', :name, '%'))")
+        Page<TransactionHistoryDTO> findTransactionByUserID(@Param("userID") long userID,
                         @Param("startDate") LocalDateTime startDate,
                         @Param("endDate") LocalDateTime endDate,
                         @Param("name") String name, Pageable pageable);

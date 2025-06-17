@@ -23,4 +23,13 @@ public class TransactionService implements ITransactionService {
         return transactionHistoryDTO;
     }
 
+    @Override
+    public Page<TransactionHistoryDTO> getTransactionByUserID(long userID, Pageable pageable,
+            TransactionFilter filter) {
+        Page<TransactionHistoryDTO> transactionHistoryDTO = transactionRepository
+                .findTransactionByUserID(userID, filter.getStartDate(), filter.getEndDate(), filter.getName(),
+                        pageable);
+        return transactionHistoryDTO;
+    }
+
 }

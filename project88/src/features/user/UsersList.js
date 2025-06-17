@@ -4,7 +4,7 @@ import { getAllUsers } from "../../redux/slices/userSlice";
 import Table from "../../components/Table";
 
 
-const UserList = ({ onTopUp, params, currentPage, onEditUp }) => {
+const UserList = ({ onTopUp, params, currentPage, onEditUp, openTransactionModal }) => {
     const dispatch = useDispatch();
     const [size, setSize] = useState(5);
 
@@ -35,6 +35,7 @@ const UserList = ({ onTopUp, params, currentPage, onEditUp }) => {
                 content={users.content || []}
                 onTopUp={onTopUp}
                 onEditUp={onEditUp}
+                onTransactionUp={openTransactionModal}
             />
         </div>
     );

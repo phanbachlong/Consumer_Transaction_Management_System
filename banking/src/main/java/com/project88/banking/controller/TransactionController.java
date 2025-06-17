@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping(value = "/api/v1/transaction")
@@ -32,6 +33,15 @@ public class TransactionController {
                 String username = authentication.getName();
                 Page<TransactionHistoryDTO> transactionHistoryDTO = transactionService.getTransaction(username,
                                 pageable, filter);
+                return new ResponseEntity<>(transactionHistoryDTO, HttpStatus.OK);
+        }
+
+        @GetMapping("/user")
+        public ResponseEntity<?> getTransactionByUserID(@RequestParam long userID,
+                        @PageableDefault(size = 5, sort = "createDate", direction = Direction.DESC) Pageable pageable,
+                        TransactionFilter filter) {
+                Page<TransactionHistoryDTO> transactionHistoryDTO = transactionService
+                                .getTransactionByUserID(userID, pageable, filter);
                 return new ResponseEntity<>(transactionHistoryDTO, HttpStatus.OK);
         }
 }

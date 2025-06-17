@@ -1,5 +1,7 @@
 package com.project88.banking.dto;
 
+import com.project88.banking.entity.Status;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,5 +16,6 @@ public class GetAllEmployeesDTO {
     private String email;
     private String phone;
     private int cardNumber;
+    private Status status;
 
 }

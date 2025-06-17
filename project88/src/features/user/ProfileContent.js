@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userProfile } from "../../redux/slices/userSlice";
 import { format, set } from "date-fns";
 import EditEmployee from "../employee/EditEmployee";
-import { format } from "date-fns";
 import UserApi from "../../api/UserApi";
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +15,7 @@ const ProfileContent = () => {
     const navigate = useNavigate();
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState(null);
-   const [imageUrl, setImageUrl] = useState("");
+    const [imageUrl, setImageUrl] = useState("");
     const fileInputRef = useRef(null);
 
     const handleButtonClick = () => {
@@ -33,7 +31,7 @@ const ProfileContent = () => {
 
 
 
-    const handleShowForm =  () => {
+    const handleShowForm = () => {
         setShowForm(!showForm);
     };
 
