@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import TopUp from "../home/TopUp";
 import EmployeeList from "./EmployeeList";
 import Search from "../../components/Search";
@@ -6,7 +6,7 @@ import Pagination from "../../components/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import EditUserModal from "../../components/EditUserModal";
 import adminAPI from "../../api/AdminAPI";
-import { getAllEmployees } from "../../redux/slices/employeeSlice";
+import { getAllEmployees, getEmployeeByUsername } from "../../redux/slices/employeeSlice";
 
 
 
@@ -46,6 +46,12 @@ const AdminContent = () => {
         }
     }, [dispatch, page, params])
 
+    useEffect(() => {
+        dispatch(getEmployeeByUsername());
+    }, [dispatch])
+
+    const { employeeByUsername } = useSelector((state) => state.employee);
+
     return (
         <div className="min-h-screen bg-[#fafafa]">
             {/* Main content */}
@@ -54,7 +60,7 @@ const AdminContent = () => {
                 <div className="flex items-center bg-white rounded p-6 mb-8 gap-8">
                     <div className="flex items-center gap-4 flex-1">
                         <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-orange-500 text-2xl font-bold">
-                            {/* <img src alt="Avatar" className="w-full h-full rounded-full object-cover" /> */}
+                            <img src={employeeByUsername.avatarUrl} alt="Avatar" className="w-full h-full rounded-full object-cover" />
                         </div>
                         <span className="text-lg font-semibold">Admin: </span>
                     </div>
