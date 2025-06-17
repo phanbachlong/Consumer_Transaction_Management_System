@@ -5,6 +5,7 @@ import UserService from "../../features/user/UserService";
 export const userProfile = createAsyncThunk('userProfile', async (_, { rejectWithValue }) => {
     try {
         const response = await ProfileService.getProfile();
+        console.log(response.data);
 
         if (response.status >= 200 && response.status < 300) {
             return {
@@ -84,7 +85,6 @@ const profileSlice = createSlice({
             .addCase(userProfile.fulfilled, (state, action) => {
                 state.profile = action.payload;
                 state.loading = false;
-
             })
             .addCase(userProfile.rejected, (state, action) => {
                 state.loading = false;

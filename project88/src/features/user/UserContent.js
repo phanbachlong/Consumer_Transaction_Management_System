@@ -12,6 +12,8 @@ import MyDatePicker from "../../components/MyDatePicker";
 import Pagination from "../../components/Pagination";
 import SavingTotal from "./SavingTotal";
 import { useNavigate } from "react-router-dom";
+import { userProfile } from "../../redux/slices/userSlice";
+import { getEmployeeByUsername } from "../../redux/slices/employeeSlice";
 
 const UserContent = () => {
   const userID = localStorage.getItem("userId");
@@ -19,7 +21,7 @@ const UserContent = () => {
   const navigate = useNavigate();
 
   const handleNameClick = () => {
-    navigate("/profile"); 
+    navigate("/profile");
   };
 
   const [user, setUser] = useState({
@@ -53,6 +55,12 @@ const UserContent = () => {
   // Lấy thông tin tổng số trang, tổng số phần tử và trang hiện tại từ Redux store
   const { totalPages, currentPage } = useSelector((state) => state.transaction);
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    dispatch(getEmployeeByUsername());
+  }, [dispatch])
+
+  const { employeeByUsername } = useSelector((state) => state.employee);
 
 
   const fetchUserById = async () => {
@@ -169,11 +177,11 @@ const UserContent = () => {
         <div className="bg-white p-6 rounded shadow">
           <div className="flex items-center space-x-4 ">
             <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center text-xl font-bold text-red-600">
-              AVA
+              <img src={employeeByUsername.avatarUrl} alt="Avatar" className="w-full h-full rounded-full object-cover" />
             </div>
             <div>
               <h2 className="text-xl font-bold cursor-pointer hover:text-red-600"
-              onClick={handleNameClick}>
+                onClick={handleNameClick}>
                 {user.fullname}
               </h2>
             </div>
