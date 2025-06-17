@@ -36,7 +36,7 @@ public interface IUserRepository extends JpaRepository<User, Long> {
 
         @Query("SELECT new com.project88.banking.dto.GetAllUserDTO(u.userID, CONCAT(u.firstName, ' ', u.lastName), u.email, u.phone, c.cardNumber) FROM User u JOIN u.cardNumber c "
                         +
-                        "WHERE u.role <> 'Admin' AND u.username <> :username AND (:name IS NULL OR u.firstName LIKE CONCAT('%', :name, '%') or u.lastName LIKE CONCAT('%', :name, '%')) AND u.status = Status.ACTIVE ")
+                        "WHERE u.username <> :username AND (:name IS NULL OR u.firstName LIKE CONCAT('%', :name, '%') or u.lastName LIKE CONCAT('%', :name, '%')) AND u.status = Status.ACTIVE ")
         Page<GetAllUserDTO> findAllUsers(Pageable pageable, String name, String username);
 
         @Modifying

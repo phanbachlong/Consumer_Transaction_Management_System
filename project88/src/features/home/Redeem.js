@@ -64,7 +64,6 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
       setLoadingBalance(true);
       try {
         const response = await UserAPIv2.FindUserById(userId);
-        console.log(response.data.balance);
 
         if (response && response.data) {
           setBalance(response.data.balance);
@@ -89,7 +88,6 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
       try {
         setLoading(true);
         const response = await DepositAPI.getDeposit();
-        console.log(response.data);
 
 
         if (!response) {

@@ -9,12 +9,9 @@ import ChangePassword from './features/auth/ChangePassword';
 import Profile from './features/user/Profile';
 import TransferForm from './features/home/Transfer';
 import Test from './features/Test';
-import CreateEmployee from "./features/employee/CreateEmployee";
 import EmployeeList from "./features/admin/EmployeeList";
-import EditEmployee from "./features/employee/EditEmployee";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import DeletedEmployees from "./features/employee/DeletedEmployees";
 import VerifyPage from "./features/auth/VerifyPage";
 import UserContent from './features/user/UserContent';
 import EmployeeContent from './features/employee/EmployeeContent';
@@ -42,10 +39,7 @@ function App() {
           <Route path='/reset-password' element={<ChangePassword />} />
           <Route path='/Transfer' element={<TransferForm />} />
           <Route path='/test' element={<Test />} />
-          <Route path='/create-employee' element={<CreateEmployee />} />
           <Route path='/list-employees' element={<EmployeeList />} />
-          <Route path="/edit-employee/:userId" element={<EditEmployee />} />
-          <Route path="/delete-employees" element={<DeletedEmployees />} />
           <Route path="/verify" element={<VerifyPage />} />
           <Route path="/user" element={<UserContent />} />
           <Route path="/admin" element={<AdminContent />} />

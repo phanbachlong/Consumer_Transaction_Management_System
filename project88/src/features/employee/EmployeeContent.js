@@ -79,9 +79,9 @@ const EmployeeContent = () => {
                         </div>
                         <span className="text-lg font-semibold">{employeeByUsername.firstName} {employeeByUsername.lastName}</span>
                     </div>
-                    <button className="px-6 py-2 rounded bg-orange-200 text-orange-800 font-semibold border border-orange-400">
+                    {/* <button className="px-6 py-2 rounded bg-orange-200 text-orange-800 font-semibold border border-orange-400">
                         Quản lý KH
-                    </button>
+                    </button> */}
                     <button className="px-6 py-2 rounded bg-red-100 text-red-600 font-semibold border border-red-200" onClick={handleNavigateProfile}>
                         Hồ sơ nhân viên
                     </button>

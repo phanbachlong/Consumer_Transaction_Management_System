@@ -105,12 +105,6 @@ const Header = ({ toggleTheme, currentTheme }) => {
                     </button>
                     <button
                         className="text-left px-4 py-2 hover:bg-gray-100 rounded"
-                        onClick={() => handleNavigate("/delete-employees")}
-                    >
-                        Employee đã xóa
-                    </button>
-                    <button
-                        className="text-left px-4 py-2 hover:bg-gray-100 rounded"
                         onClick={handleLogout}
                     >
                         Logout

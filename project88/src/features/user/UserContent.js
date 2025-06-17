@@ -96,7 +96,6 @@ const UserContent = () => {
       const response = await UserAPIv2.GetBillsByUserId(userID);
       if (response && response.data) {
         setBills(response.data);
-        console.log("Bills fetched successfully:", response.data);
       }
     } catch (error) {
       console.error("Error fetching bills:", error);
@@ -107,7 +106,6 @@ const UserContent = () => {
     try {
       const response = await UserAPIv2.PayBill(billId);
       alert("Thanh toán thành công!");
-      console.log("Bill paid successfully:", response.data);
       fetchBills();
       fetchUserBalance();
       fetchTransaction();
@@ -122,7 +120,6 @@ const UserContent = () => {
     try {
       const response = await dispatch(transaction({ page: currentPage, size: 5, filter: { startDate: startDate, endDate: endDate, name: params } }));
       if (response && response.data) {
-        console.log("Transactions fetched successfully:", response.data);
       }
     } catch (error) {
       console.error("Error fetching transactions:", error);
