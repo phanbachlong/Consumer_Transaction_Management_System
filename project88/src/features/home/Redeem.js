@@ -35,9 +35,7 @@ const calculateDaysLeft = (createDate, termMonths) => {
   if (!termMonths || termMonths <= 0) {
     return 0;
   }
-
   endDate.setMonth(endDate.getMonth() + termMonths);
-
   const now = new Date();
 
   // Reset time
@@ -53,10 +51,12 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
   const token = localStorage.getItem("token");
 
   const [deposits, setDeposits] = useState([]);
+  const [sortedDeposits, setSortedDeposits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [balance, setBalance] = useState(null);
   const [loadingBalance, setLoadingBalance] = useState(true);
+  const [sortOrder, setSortOrder] = useState(null);
 
   // Fetch balance
   useEffect(() => {
@@ -65,7 +65,6 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
       try {
         const response = await UserAPIv2.FindUserById(userId);
         console.log(response.data.balance);
-
         if (response && response.data) {
           setBalance(response.data.balance);
         }
@@ -91,11 +90,9 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
         const response = await DepositAPI.getDeposit();
         console.log(response.data);
 
-
         if (!response) {
           throw new Error("Không thể tải dữ liệu sổ tiết kiệm");
         }
-
         const rs = response.data;
 
         // Transform data
@@ -131,6 +128,7 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
           );
 
         setDeposits(transformedData);
+        setSortedDeposits(transformedData);
       } catch (err) {
         setError(err.message);
         console.error("Error fetching deposits:", err);
@@ -143,6 +141,25 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
       fetchDeposits();
     }
   }, [userId]);
+
+  // Sắp xếp theo số ngày còn lại
+  const sortByDaysLeft = () => {
+    let newSortOrder;
+    if (sortOrder === null || sortOrder === 'desc') {
+      newSortOrder = 'asc';
+    } else {
+      newSortOrder = 'desc';
+    }
+    setSortOrder(newSortOrder);
+    const sorted = [...deposits].sort((a, b) => {
+      if (newSortOrder === 'asc') {
+        return a.daysLeft - b.daysLeft;
+      } else {
+        return b.daysLeft - a.daysLeft;
+      }
+    });
+    setSortedDeposits(sorted);
+  };
 
   // Tính tổng tiền gốc và lãi
   const totalAmount = deposits.reduce(
@@ -181,8 +198,10 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
           const errorData = await response.text();
           throw new Error(errorData || "Không thể thực hiện tất toán");
         }
-
-        setDeposits((prev) => prev.filter((d) => d.id !== deposit.id));
+        
+        const updatedDeposits = deposits.filter((d) => d.id !== deposit.id);
+        setDeposits(updatedDeposits);
+        setSortedDeposits(updatedDeposits);
 
         const balanceResponse = await fetch(
           `http://localhost:8080/api/v1/users/${userId}/balance`,
@@ -197,14 +216,12 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
           const newBalance = await balanceResponse.json();
           setBalance(newBalance);
         }
-
         alert(
           `Tất toán thành công sổ "${deposit.name
           }". Tổng tiền nhận được: ${formatCurrency(
             deposit.principal + currentInterest
           )}`
         );
-
         if (onRedeemSuccess) {
           onRedeemSuccess();
         }
@@ -264,7 +281,6 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
         Tổng tiền gốc và lãi:{" "}
         <span className="text-blue-600">{formatCurrency(totalAmount)}</span>
       </div>
-
       {deposits.length === 0 ? (
         <div className="px-6 py-8 text-center text-gray-500">
           Bạn chưa có sổ tiết kiệm nào đang hoạt động
@@ -272,9 +288,10 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
       ) : (
         /* Table Container với responsive scroll */
         <div className="px-2 sm:px-6 py-2 bg-white overflow-x-auto">
+          <div className="max-h-[500px] overflow-y-auto">
           <table className="w-full text-left min-w-[900px]">
             <thead>
-              <tr className="text-gray-500 border-b bg-gray-50">
+            <tr className="text-gray-500 border-b bg-gray-50 sticky top-0 z-10">
                 <th className="py-3 px-2 font-medium">Tên sổ tiết kiệm</th>
                 <th className="py-3 px-2 font-medium text-right">Tiền gốc</th>
                 <th className="py-3 px-2 font-medium text-right">
@@ -286,14 +303,25 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
                 <th className="py-3 px-2 font-medium text-center">
                   Kỳ hạn (Tháng)
                 </th>
-                <th className="py-3 px-2 font-medium text-center">
-                  Số ngày còn lại
-                </th>
+                <th 
+                    className="py-3 px-2 font-medium text-center cursor-pointer hover:bg-gray-100 transition-colors"
+                    onClick={sortByDaysLeft}
+                  >
+                    <div className="flex items-center justify-center">
+                      Số ngày còn lại
+                      {sortOrder === 'asc' && (
+                        <span className="ml-1">↑</span>
+                      )}
+                      {sortOrder === 'desc' && (
+                        <span className="ml-1">↓</span>
+                      )}
+                    </div>
+                  </th>
                 <th className="py-3 px-2 font-medium text-center">Thao tác</th>
               </tr>
             </thead>
             <tbody>
-              {deposits.map((item) => (
+            {sortedDeposits.map((item) => (
                 <tr
                   key={item.id}
                   className="border-b last:border-b-0 hover:bg-gray-50 transition-colors"
@@ -345,8 +373,8 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
             </tbody>
           </table>
         </div>
+        </div>
       )}
-
       {/* Footer */}
       <div className="px-6 py-4 bg-gray-50 text-center">
         <button
