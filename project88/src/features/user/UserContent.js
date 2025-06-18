@@ -116,9 +116,13 @@ const UserContent = () => {
     }
   }
 
-  const fetchTransaction = async () => {
+  const fetchTransaction = async (pageNumber = page) => {
     try {
-      const response = await dispatch(transaction({ page: currentPage, size: 5, filter: { startDate: startDate, endDate: endDate, name: params } }));
+      const response = await dispatch(transaction({
+        page: pageNumber,
+        size: 5,
+        filter: { startDate, endDate, name: params }
+      }));
       if (response && response.data) {
       }
     } catch (error) {
@@ -147,6 +151,7 @@ const UserContent = () => {
   // về trang 1 khi thay đổi tham số tìm kiếm
   useEffect(() => {
     setPage(1);
+    fetchTransaction(1); // Gọi luôn trang 1 khi đổi params, startDate, endDate
   }, [params, startDate, endDate]);
 
 
@@ -167,7 +172,7 @@ const UserContent = () => {
   }
 
   return (
-    <main className="flex-1 p-8 flex flex-col lg:flex-row gap-8 bg-gray-100">
+    <main className="flex-1 p-8 flex flex-col lg:flex-row gap-8 bg-gray-100 h-screen">
       {/* Left Section */}
       <div className="flex-1 space-y-8">
         {/* User Info */}

@@ -4,7 +4,7 @@ const Bills = (props) => {
     const [showModal, setShowModal] = useState(false);
     const [selectedBill, setSelectedBill] = useState([]);
     return (
-        <div className="w-full lg:w-1/5 space-y-4">
+        <div className="w-full lg:w-1/5 space-y-4 overflow-y-auto h-[920px]">
             {props.data.map((bill) => (
                 <div className="p-4 bg-white shadow rounded" key={bill.billId}>
                     <div className="text-lg font-bold">{bill.billName}</div>
