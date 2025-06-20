@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import UserAPIv2 from "../../api/UserAPIv2";
+import { getUserId } from "../../utils/auth"; 
 
 const Deposit = ({ setShowDeposit, onDepositSuccess }) => {
-  const userId = localStorage.getItem("userId");
+  const userID = getUserId();
   // state
   const [accountName, setAccountName] = useState("");
   const [amount, setAmount] = useState("");
@@ -34,7 +35,7 @@ const Deposit = ({ setShowDeposit, onDepositSuccess }) => {
     const fetchUserBalance = async () => {
       setLoadingBalance(true);
       try {
-        const response = await UserAPIv2.FindUserById(userId);
+        const response = await UserAPIv2.FindUserById(userID);
         setBalance(response.data.balance);
       } catch (err) {
         console.error("Lỗi khi lấy balance:", err);
@@ -45,10 +46,10 @@ const Deposit = ({ setShowDeposit, onDepositSuccess }) => {
       }
     };
 
-    if (userId) {
+    if (userID) {
       fetchUserBalance();
     }
-  }, [userId]);
+  }, [userID]);
 
   // format số tiền
   const formatAmount = (value) => {

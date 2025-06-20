@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthAPI from "../api/AuthAPI";
+import { getUserRole } from "../utils/auth";
 
 const Header = ({ toggleTheme, currentTheme }) => {
     const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
+    const role = getUserRole();
 
     // Hàm xử lý logout
     const handleLogout = async () => {
@@ -14,8 +16,8 @@ const Header = ({ toggleTheme, currentTheme }) => {
             // Có thể log lỗi nếu cần
         }
         localStorage.removeItem('token');
-        localStorage.removeItem('userId');
-        localStorage.removeItem('role');
+        // localStorage.removeItem('userId');
+        // localStorage.removeItem('role');
         setMenuOpen(false);
         navigate('/login');
     };
@@ -74,9 +76,8 @@ const Header = ({ toggleTheme, currentTheme }) => {
 
             {/* Sidebar trượt ngang */}
             <div
-                className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 z-50 ${
-                    menuOpen ? "translate-x-0" : "translate-x-full"
-                }`}
+                className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 z-50 ${menuOpen ? "translate-x-0" : "translate-x-full"
+                    }`}
             >
                 <div className="p-4 border-b flex justify-between items-center">
                     <h2 className="text-lg font-semibold">Menu</h2>
@@ -84,32 +85,45 @@ const Header = ({ toggleTheme, currentTheme }) => {
                         ✕
                     </button>
                 </div>
-                <nav className="flex flex-col p-4 space-y-2">
-                    <button
-                        className="text-left px-4 py-2 hover:bg-gray-100 rounded"
-                        onClick={() => handleNavigate("/admin")}
-                    >
-                        Admin
-                    </button>
-                    <button
-                        className="text-left px-4 py-2 hover:bg-gray-100 rounded"
-                        onClick={() => handleNavigate("/employees")}
-                    >
-                        Employee
-                    </button>
-                    <button
-                        className="text-left px-4 py-2 hover:bg-gray-100 rounded"
-                        onClick={() => handleNavigate("/user")}
-                    >
-                        User
-                    </button>
-                    <button
-                        className="text-left px-4 py-2 hover:bg-gray-100 rounded"
-                        onClick={handleLogout}
-                    >
-                        Logout
-                    </button>
-                </nav>
+
+                
+                    <nav className="flex flex-col p-4 space-y-2">
+                        {role === 'ROLE_ADMIN' && (
+                            <button
+                                className="text-left px-4 py-2 hover:bg-gray-100 rounded"
+                                onClick={() => handleNavigate("/admin")}
+                            >
+                                Admin
+                            </button>
+                        )}
+
+                        {(role === 'ROLE_EMPLOYEE' || role === 'ROLE_ADMIN') && (
+                            <button
+                                className="text-left px-4 py-2 hover:bg-gray-100 rounded"
+                                onClick={() => handleNavigate("/employees")}
+                            >
+                                Employee
+                            </button>
+                        )}
+
+                        {(role === 'ROLE_USER' || role === 'ROLE_EMPLOYEE' || role === 'ROLE_ADMIN') && (
+                            <button
+                                className="text-left px-4 py-2 hover:bg-gray-100 rounded"
+                                onClick={() => handleNavigate("/user")}
+                            >
+                                User
+                            </button>
+                        )}
+
+                        <button
+                            className="text-left px-4 py-2 hover:bg-gray-100 rounded"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </button>
+                    </nav>
+
+
             </div>
         </>
     );

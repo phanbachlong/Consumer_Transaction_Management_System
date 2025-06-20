@@ -61,9 +61,6 @@ public class AuthController {
 
         Map<String, Object> response = new HashMap<>();
         response.put("token", jwt);
-        response.put("userId", user.getUserID());
-        response.put("role", user.getRole());
-        response.put("username", user.getUsername());
         return ResponseEntity.ok(response);
     }
 

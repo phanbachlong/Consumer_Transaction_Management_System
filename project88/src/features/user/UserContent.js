@@ -14,9 +14,10 @@ import SavingTotal from "./SavingTotal";
 import { useNavigate } from "react-router-dom";
 import { userProfile } from "../../redux/slices/userSlice";
 import { getEmployeeByUsername } from "../../redux/slices/employeeSlice";
+import { getUserId } from "../../utils/auth";
 
 const UserContent = () => {
-  const userID = localStorage.getItem("userId");
+  const userID = getUserId();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

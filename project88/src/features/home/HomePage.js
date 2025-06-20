@@ -4,11 +4,15 @@ import Footer from "../../components/Footer";
 import UserContent from "../user/UserContent";
 import EmployeeContent from "../employee/EmployeeContent";
 import AdminContent from "../admin/AdminContent";
-import EmployeeList from "../admin/EmployeeList";
+import { getUserRole } from "../../utils/auth";
+
+
 
 export default function HomePage() {
     const [theme, setTheme] = useState("light");
-    const role = localStorage.getItem("role");
+    const role = getUserRole();
+    console.log(role);
+
     useEffect(() => {
         document.body.className = theme === "light" ? "bg-gray-50" : "bg-gray-900 text-white";
     }, [theme]);
@@ -19,13 +23,13 @@ export default function HomePage() {
 
     return (
         <div className="flex flex-col h-screen">
-            {role === 'User' && (
+            {role === 'ROLE_USER' && (
                 <UserContent />)
             }
-            {role === 'Employee' && (
+            {role === 'ROLE_EMPLOYEE' && (
                 <EmployeeContent />)
             }
-            {role === 'Admin' && (
+            {role === 'ROLE_ADMIN' && (
                 <AdminContent />)
             }
         </div>
