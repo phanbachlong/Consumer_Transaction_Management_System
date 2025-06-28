@@ -7,7 +7,11 @@ const EmployeeService = {
     },
     getEmployeeByUsername: async () => {
         return await employeeAPI.getEmployeeByUsername();
+    },
+    createEmployee: async (body) => {
+        return await employeeAPI.createEmployee(body);
     }
+
 }
 
 export default EmployeeService;

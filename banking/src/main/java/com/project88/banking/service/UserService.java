@@ -16,11 +16,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.project88.banking.entity.CardNumber;
+import com.project88.banking.entity.RegistrationUserToken;
+import com.project88.banking.entity.Status;
 import com.project88.banking.entity.TransactionHistory;
 import com.project88.banking.entity.User;
 import com.project88.banking.repository.ICardRepository;
 import com.project88.banking.repository.ITransactionRepository;
 import com.project88.banking.repository.IUserRepository;
+import com.project88.banking.repository.RegistrationUserTokenRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -29,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -46,6 +50,12 @@ public class UserService implements IUserService {
 
 	@Autowired
 	private ICardRepository cardRepository;
+
+	@Autowired
+	private RegistrationUserTokenRepository registrationUserTokenRepository;
+
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	public void registerUser(User user) {
@@ -90,7 +100,8 @@ public class UserService implements IUserService {
 		// Sender
 		sender.setBalance(sender.getBalance() - money);
 		String senderTransType = "CK";
-		String senderContent = String.format("Chuyen Khoan den %s so tien %d", receiver.getFirstName() + " " + receiver.getLastName(), money);
+		String senderContent = String.format("Chuyen Khoan den %s so tien %d",
+				receiver.getFirstName() + " " + receiver.getLastName(), money);
 		int newSenderBalance = sender.getBalance();
 		TransactionHistory senderTrans = new TransactionHistory(senderTransType, senderContent, -money, sender,
 				newSenderBalance);
@@ -98,7 +109,8 @@ public class UserService implements IUserService {
 		// Receiver
 		receiver.setBalance(receiver.getBalance() + money);
 		String receiverTransType = "CK";
-		String receiverContent = String.format("Nhan tien tu %S so tien %d. Noi Dung: %s ", sender.getFirstName() + " " + sender.getLastName(),
+		String receiverContent = String.format("Nhan tien tu %S so tien %d. Noi Dung: %s ",
+				sender.getFirstName() + " " + sender.getLastName(),
 				money, form.getContent());
 		int newReceiverBalance = receiver.getBalance();
 		TransactionHistory receiverTrans = new TransactionHistory(receiverTransType, receiverContent, money, receiver,
@@ -220,12 +232,28 @@ public class UserService implements IUserService {
 		}
 
 		if (dto.getEmail() != null && !dto.getEmail().isEmpty()) {
-			user.setEmail(dto.getEmail());
+			if (user.getEmail() != dto.getEmail()) {
+				user.setEmail(dto.getEmail());
+				user.setStatus(Status.NOT_ACTIVE);
+				String token = UUID.randomUUID().toString();
+				LocalDateTime expiry = LocalDateTime.now().plusHours(24);
+
+				RegistrationUserToken regToken = new RegistrationUserToken();
+				regToken.setToken(token);
+				regToken.setUser(user);
+				regToken.setExpiryDate(expiry);
+				registrationUserTokenRepository.save(regToken);
+
+				String verifyLink = "http://localhost:3000/verify?token=" + token;
+				emailService.send(user.getEmail(), "Xác thực tài khoản",
+						"Vui lòng nhấn vào link sau để kích hoạt tài khoản: " + verifyLink);
+			}
 		}
 		if (dto.getPhone() != null && !dto.getPhone().isEmpty()) {
 			user.setPhone(dto.getPhone());
 		}
 
 		userRepository.save(user);
+
 	}
 }

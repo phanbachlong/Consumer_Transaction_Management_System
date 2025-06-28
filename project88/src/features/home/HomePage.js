@@ -11,7 +11,6 @@ import { getUserRole } from "../../utils/auth";
 export default function HomePage() {
     const [theme, setTheme] = useState("light");
     const role = getUserRole();
-    console.log(role);
 
     useEffect(() => {
         document.body.className = theme === "light" ? "bg-gray-50" : "bg-gray-900 text-white";

@@ -1,5 +1,6 @@
 package com.project88.banking.repository;
 
+import com.project88.banking.dto.CreateEmployeeDTO;
 import com.project88.banking.dto.GetAllEmployeesDTO;
 import com.project88.banking.dto.ProfileDTO;
 import org.springframework.data.domain.Page;
@@ -30,4 +31,5 @@ public interface IEmployeeRepository extends JpaRepository<User, Long>, JpaSpeci
     // lay thon tin cac employee da bi xoa (phan minh)
     @Query("SELECT u FROM User u WHERE u.role = 'Employee' AND u.status=2")
     Page<User> getDeletedEmployeeList(Pageable pageable);
+
 }

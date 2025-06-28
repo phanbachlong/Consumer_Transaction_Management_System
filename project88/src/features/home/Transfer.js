@@ -6,13 +6,14 @@ import TransferUserBalance from "../../components/TranferUserBalance";
 
 const Transfer = ({ setShowTransfer, onAfterTransfer }) => {
 
-  const userID = getUserId();
+  // const userID = getUserId();
+  const userID = localStorage.getItem("userId");
 
   const [transferDTO, settransferDTO] = useState({
     senderID: userID,
     cardNumber: null,
     money: null,
-    content:""
+    content: ""
   }
   );
 
@@ -65,12 +66,12 @@ const Transfer = ({ setShowTransfer, onAfterTransfer }) => {
     catch (error) {
       console.error("Error fetching user by card number:", error);
       setReceiverName("STK không tồn tại!");
-    } 
+    }
   }
 
   const handleInputChange = (e) => {
-    const {name, value} = e.target;
-    settransferDTO( preTransferDTO => ({
+    const { name, value } = e.target;
+    settransferDTO(preTransferDTO => ({
       ...preTransferDTO,
       [name]: value
     }));
@@ -111,16 +112,16 @@ const Transfer = ({ setShowTransfer, onAfterTransfer }) => {
   return (
     <div className="transfer-form">
 
-      <TransferUserBalance userBalance = {userBalance} />
+      <TransferUserBalance userBalance={userBalance} />
 
-      <TransferForm 
-      transferDTO={transferDTO}
-      handleInputChange={handleInputChange}
-      setShowTransfer={setShowTransfer}
-      handleTransfer={handleTransfer}
-      receiverName={receiverName}
+      <TransferForm
+        transferDTO={transferDTO}
+        handleInputChange={handleInputChange}
+        setShowTransfer={setShowTransfer}
+        handleTransfer={handleTransfer}
+        receiverName={receiverName}
       />
-      
+
     </div>
   );
 };

@@ -21,6 +21,16 @@ export const getEmployeeByUsername = createAsyncThunk('employees/getEmployeeByUs
     }
 })
 
+export const createEmployee = createAsyncThunk('employees/createEmployee', async (body, { rejectWithValue }) => {
+    try {
+        const res = await EmployeeService.createEmployee(body);
+        return res.data
+    } catch (error) {
+        return rejectWithValue("Unexpected response from server.");
+
+    }
+})
+
 const employeeSlice = createSlice({
     name: 'employee',
     initialState: {
@@ -29,6 +39,7 @@ const employeeSlice = createSlice({
         totalPages: 0,
         totalElements: 0,
         currentPage: 0,
+        message: null,
         loading: false,
         error: null
     },
@@ -61,7 +72,19 @@ const employeeSlice = createSlice({
             .addCase(getEmployeeByUsername.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-            });
+            })
+            .addCase(createEmployee.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(createEmployee.fulfilled, (state, action) => {
+                state.loading = false;
+                state.message = action.payload;
+            })
+            .addCase(createEmployee.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload
+            })
     }
 })
 

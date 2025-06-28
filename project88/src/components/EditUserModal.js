@@ -6,6 +6,8 @@ import { debounce } from "lodash";
 import { editUserByEmployee, getAllUsers } from "../redux/slices/userSlice";
 import { useDispatch } from "react-redux";
 import { getAllEmployees } from "../redux/slices/employeeSlice";
+import { toast } from "react-toastify";
+
 
 
 const EditUserModal = ({ user, onClose, onSave }) => {
@@ -15,68 +17,37 @@ const EditUserModal = ({ user, onClose, onSave }) => {
     const dispatch = useDispatch();
 
 
-    const handleWatchChange = React.useCallback(
-        debounce(async ({ email, phone, setError, clearErrors }) => {
-            if (!email || email === user?.email) {
-                clearErrors("email");
-                return;
-            }
-            if (!phone || phone === user?.phone) {
-                clearErrors("phone");
-                return;
-            }
-
-            try {
-                const resEmail = await UserApi.isExistEmail(email);
-                const resPhone = await UserApi.isExistPhone(phone);
-                if (resEmail.data === true) {
-                    setError("email", {
-                        type: "manual",
-                        message: "Email đã tồn tại",
-                    });
-                } else {
-                    clearErrors("email");
-                }
-                if (resPhone.data === true) {
-                    setError("phone", {
-                        type: "manual",
-                        message: "Số điện thoại đã tồn tại",
-                    });
-                } else {
-                    clearErrors("phone");
-                }
-            } catch (error) {
-                console.error("Lỗi kiểm tra email:", error);
-            }
-        }, 500),
-        [user?.email, user?.phone]
-    );
-
     const onSubmit = async (dataForm) => {
+        // 1. So sánh và lọc chỉ những trường thay đổi
+        const patchData = {};
+        for (const key in dataForm) {
+            if (dataForm[key] !== initialValues[key]) {
+                patchData[key] = dataForm[key];
+            }
+        }
+
+        // 2. Nếu không có trường nào thay đổi
+        if (Object.keys(patchData).length === 0) {
+            toast.info("Không có thay đổi nào để cập nhật.");
+            return { success: false };
+        }
+
         try {
-            if (dataForm.email !== user?.email) {
-                const res = await UserApi.isExistEmail(dataForm.email);
-                if (res.data === true) {
-                    return { success: false };
-                }
-            }
-            if (dataForm.phone !== user?.phone) {
-                const res = await UserApi.isExistPhone(dataForm.phone);
-                if (res.data === true) {
-                    return { success: false };
-                }
-            }
-            await dispatch(editUserByEmployee({ userID: user?.userID, body: dataForm }));
+            // 3. Gửi chỉ dữ liệu thay đổi
+            await dispatch(editUserByEmployee({ userID: user?.userID, body: patchData }));
+            toast.success("Cập nhật thành công! Kiểm tra email để active nếu có thay đổi email");
+
             await dispatch(getAllUsers({ page: 1, size: 5, filter: { name: "" } }));
             await dispatch(getAllEmployees({ page: 1, size: 5, filter: { name: "" } }));
 
             onClose(false);
-            return { success: false };
+            return { success: true };
         } catch (error) {
             console.error("Lỗi khi submit:", error);
-            return { success: false }
+            toast.error("Cập nhật thất bại!");
+            return { success: false };
         }
-    }
+    };
 
 
 
@@ -92,7 +63,7 @@ const EditUserModal = ({ user, onClose, onSave }) => {
                     <div className="text-gray-600 text-sm">STK: {user?.cardNumber}</div>
                 </div>
             </div>
-            <Form onSubmit={onSubmit} initialValues={initialValues} btn="Cập nhật" validation={EditUserValidation} onWatchChange={handleWatchChange}></Form>
+            <Form onSubmit={onSubmit} initialValues={initialValues} btn="Cập nhật" validation={EditUserValidation(user?.email, user?.phone)} ></Form>
             <button
                 type="button"
                 className="w-full mt-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"

@@ -4,22 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import MyDatePicker from "./MyDatePicker";
 // import { Validation } from "../validation/Validation";
 
-const Form = ({ initialValues, onSubmit, btn, validation, onWatchChange }) => {
+const Form = ({ initialValues, onSubmit, btn, validation }) => {
 
 
-    const { register, handleSubmit, control, watch, setError, clearErrors, formState: { errors }, reset } = useForm({
+    const { register, handleSubmit, control, formState: { errors }, reset } = useForm({
         resolver: zodResolver(validation),
         defaultValues: initialValues
     });
-
-    const email = watch("email");
-    const phone = watch("phone");
-
-    useEffect(() => {
-        if (onWatchChange) {
-            onWatchChange({ email, phone, setError, clearErrors });
-        }
-    }, [email, phone])
 
     const handleFormSubmit = async (data) => {
         const rs = await onSubmit(data);

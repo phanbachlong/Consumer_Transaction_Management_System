@@ -1,6 +1,5 @@
 import api from "./axiosClient";
 
-const url = '/employees';
 
 const getAllEmployees = (page, size, filter) => {
     return api.get('/admin', {
@@ -16,9 +15,14 @@ const getEmployeeByUsername = () => {
     return api.get(`/users/profile`);
 }
 
+const createEmployee = (body) => {
+    return api.post('/admin/create-employee', body);
+}
+
 const employeeAPI = {
     getAllEmployees,
-    getEmployeeByUsername
+    getEmployeeByUsername,
+    createEmployee
 }
 
 export default employeeAPI;

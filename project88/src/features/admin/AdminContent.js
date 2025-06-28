@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import EditUserModal from "../../components/EditUserModal";
 import adminAPI from "../../api/AdminAPI";
 import { getAllEmployees, getEmployeeByUsername } from "../../redux/slices/employeeSlice";
+import CreateEmployee from "./CreateEmployee";
 
 
 
@@ -64,7 +65,7 @@ const AdminContent = () => {
                         </div>
                         <span className="text-lg font-semibold">Admin: {employeeByUsername.firstName} {employeeByUsername.lastName}</span>
                     </div>
-                    <button className="px-6 py-2 rounded bg-orange-400 text-black-300 font-semibold border border-orange-400">
+                    <button className="px-6 py-2 rounded bg-orange-400 text-black-300 font-semibold border border-orange-400" onClick={(e) => setShowTopUp(true)}>
                         Nhân viên mới +
                     </button>
                 </div>
@@ -87,7 +88,17 @@ const AdminContent = () => {
                     </div>
                 </div>
             </div>
+            {showTopUp && (
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                        <CreateEmployee onClose={() => setShowTopUp(false)}></CreateEmployee>
+
+                    </div>
+                </div>
+            )}
         </div>
+
+
     );
 }
 

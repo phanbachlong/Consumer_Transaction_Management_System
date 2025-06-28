@@ -16,6 +16,8 @@ import VerifyPage from "./features/auth/VerifyPage";
 import UserContent from './features/user/UserContent';
 import EmployeeContent from './features/employee/EmployeeContent';
 import AdminContent from './features/admin/AdminContent';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 function App() {
@@ -26,7 +28,9 @@ function App() {
   };
 
   return (
+
     <Router>
+      <ToastContainer position="top-right" autoClose={3000} />
       <Header toggleTheme={toggleTheme} currentTheme={theme} />
       <div className='mt-20'>
         <Routes>
@@ -47,7 +51,7 @@ function App() {
         </Routes>
       </div>
 
-        <Footer toggleTheme={toggleTheme} currentTheme={theme} />
+      <Footer toggleTheme={toggleTheme} currentTheme={theme} />
     </Router>
 
   );
