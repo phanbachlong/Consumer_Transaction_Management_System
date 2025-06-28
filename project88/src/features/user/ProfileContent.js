@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userProfile } from "../../redux/slices/userSlice";
 import { format, set } from "date-fns";
-import EditEmployee from "../employee/EditEmployee";
 import UserApi from "../../api/UserApi";
 import { useNavigate } from "react-router-dom";
 
@@ -45,7 +44,7 @@ const ProfileContent = () => {
         formData.append("avatarUrl", file);
 
         const res = await UserApi.updateProfile(formData);
-        console.log(res);
+
 
         setImageUrl(res.data); // đường dẫn từ server
         alert("Cập nhật thông tin thành công!");

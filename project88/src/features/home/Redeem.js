@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UserAPIv2 from "../../api/UserAPIv2";
 import DepositAPI from "../../api/DepositAPI";
+import { getUserId } from "../../utils/auth";
 
 // Hàm format số tiền
 const formatAmount = (value) => {
@@ -49,7 +50,7 @@ const calculateDaysLeft = (createDate, termMonths) => {
 };
 
 export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
-  const userId = localStorage.getItem("userId");
+  const userID = getUserId();
   const token = localStorage.getItem("token");
 
   const [deposits, setDeposits] = useState([]);
@@ -63,8 +64,7 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
     const fetchUserBalance = async () => {
       setLoadingBalance(true);
       try {
-        const response = await UserAPIv2.FindUserById(userId);
-        console.log(response.data.balance);
+        const response = await UserAPIv2.FindUserById(userID);
 
         if (response && response.data) {
           setBalance(response.data.balance);
@@ -78,10 +78,10 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
       }
     };
 
-    if (userId) {
+    if (userID) {
       fetchUserBalance();
     }
-  }, [userId]);
+  }, [userID]);
 
   // Fetch dữ liệu sổ tiết kiệm
   useEffect(() => {
@@ -89,7 +89,6 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
       try {
         setLoading(true);
         const response = await DepositAPI.getDeposit();
-        console.log(response.data);
 
 
         if (!response) {
@@ -139,10 +138,10 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
       }
     };
 
-    if (userId) {
+    if (userID) {
       fetchDeposits();
     }
-  }, [userId]);
+  }, [userID]);
 
   // Tính tổng tiền gốc và lãi
   const totalAmount = deposits.reduce(
@@ -172,7 +171,7 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
             body: JSON.stringify({
               redeemDate: new Date().toISOString().split("T")[0],
               interestAmount: currentInterest,
-              userId: userId,
+              userId: userID,
             }),
           }
         );
@@ -185,7 +184,7 @@ export default function Redeem({ setShowRedeem, onRedeemSuccess }) {
         setDeposits((prev) => prev.filter((d) => d.id !== deposit.id));
 
         const balanceResponse = await fetch(
-          `http://localhost:8080/api/v1/users/${userId}/balance`,
+          `http://localhost:8080/api/v1/users/${userID}/balance`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -19,7 +19,7 @@ const Register = () => {
                 navigate('/login');
             }
         })
-        // console.log(dataForm)
+
     }
 
 

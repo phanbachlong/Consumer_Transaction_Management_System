@@ -5,7 +5,6 @@ import UserService from "../../features/user/UserService";
 export const userProfile = createAsyncThunk('userProfile', async (_, { rejectWithValue }) => {
     try {
         const response = await ProfileService.getProfile();
-        console.log(response.data);
 
         if (response.status >= 200 && response.status < 300) {
             return {
