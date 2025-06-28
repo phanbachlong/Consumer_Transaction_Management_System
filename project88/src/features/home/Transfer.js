@@ -6,7 +6,7 @@ import TransferUserBalance from "../../components/TranferUserBalance";
 
 const Transfer = ({ setShowTransfer, onAfterTransfer }) => {
 
-  const userID = localStorage.getItem("userId");
+  const userID = getUserId();
 
   const [transferDTO, settransferDTO] = useState({
     senderID: userID,
@@ -46,7 +46,6 @@ const Transfer = ({ setShowTransfer, onAfterTransfer }) => {
     try {
       const response = await UserAPIv2.Transfer(transferDTO);
       alert("Chuyển khoản thành công!");
-      console.log("Transfer successful:", response);
       if (onAfterTransfer) onAfterTransfer();
     } catch (error) {
       alert("Chuyển khoản thất bại! Vui lòng kiểm tra lại thông tin.");
@@ -90,7 +89,6 @@ const Transfer = ({ setShowTransfer, onAfterTransfer }) => {
 
     // Gọi API để thực hiện chuyển khoản
     fetchTransferData();
-    console.log("Transfer initiated with data:", transferDTO);
     // Reset form or close modal after transfer
     setShowTransfer(false);
   };

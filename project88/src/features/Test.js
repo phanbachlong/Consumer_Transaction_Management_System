@@ -10,7 +10,6 @@ function Test() {
     }
 
     useEffect(() => {
-        console.log(isActive);
 
     }, [isActive])
 

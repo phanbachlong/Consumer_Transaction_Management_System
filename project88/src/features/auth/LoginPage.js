@@ -19,9 +19,9 @@ const LoginPage = () => {
       const token = response.data.token;
       const userId = response.data.userId;
       localStorage.setItem('token', token);
-      localStorage.setItem('userId', userId);
-      localStorage.setItem('role', response.data.role);
-      localStorage.setItem('username', response.data.username);
+      // localStorage.setItem('userId', userId);
+      // localStorage.setItem('role', response.data.role);
+      // localStorage.setItem('username', response.data.username);
       alert('Đăng nhập thành công!');
       navigate('/homepage'); // chuyển hướng về homepage
     } catch (error) {

@@ -14,9 +14,10 @@ import SavingTotal from "./SavingTotal";
 import { useNavigate } from "react-router-dom";
 import { userProfile } from "../../redux/slices/userSlice";
 import { getEmployeeByUsername } from "../../redux/slices/employeeSlice";
+import { getUserId } from "../../utils/auth";
 
 const UserContent = () => {
-  const userID = localStorage.getItem("userId");
+  const userID = getUserId();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -96,7 +97,6 @@ const UserContent = () => {
       const response = await UserAPIv2.GetBillsByUserId(userID);
       if (response && response.data) {
         setBills(response.data);
-        console.log("Bills fetched successfully:", response.data);
       }
     } catch (error) {
       console.error("Error fetching bills:", error);
@@ -107,7 +107,6 @@ const UserContent = () => {
     try {
       const response = await UserAPIv2.PayBill(billId);
       alert("Thanh toán thành công!");
-      console.log("Bill paid successfully:", response.data);
       fetchBills();
       fetchUserBalance();
       fetchTransaction();
@@ -118,11 +117,14 @@ const UserContent = () => {
     }
   }
 
-  const fetchTransaction = async () => {
+  const fetchTransaction = async (pageNumber = page) => {
     try {
-      const response = await dispatch(transaction({ page: currentPage, size: 5, filter: { startDate: startDate, endDate: endDate, name: params } }));
+      const response = await dispatch(transaction({
+        page: pageNumber,
+        size: 5,
+        filter: { startDate, endDate, name: params }
+      }));
       if (response && response.data) {
-        console.log("Transactions fetched successfully:", response.data);
       }
     } catch (error) {
       console.error("Error fetching transactions:", error);
@@ -150,6 +152,7 @@ const UserContent = () => {
   // về trang 1 khi thay đổi tham số tìm kiếm
   useEffect(() => {
     setPage(1);
+    fetchTransaction(1); // Gọi luôn trang 1 khi đổi params, startDate, endDate
   }, [params, startDate, endDate]);
 
 
@@ -170,7 +173,7 @@ const UserContent = () => {
   }
 
   return (
-    <main className="flex-1 p-8 flex flex-col lg:flex-row gap-8 bg-gray-100">
+    <main className="flex-1 p-8 flex flex-col lg:flex-row gap-8 bg-gray-100 h-screen">
       {/* Left Section */}
       <div className="flex-1 space-y-8">
         {/* User Info */}

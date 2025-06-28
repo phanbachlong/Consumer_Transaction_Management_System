@@ -62,11 +62,8 @@ const AdminContent = () => {
                         <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-orange-500 text-2xl font-bold">
                             <img src={employeeByUsername.avatarUrl} alt="Avatar" className="w-full h-full rounded-full object-cover" />
                         </div>
-                        <span className="text-lg font-semibold">Admin: </span>
+                        <span className="text-lg font-semibold">Admin: {employeeByUsername.firstName} {employeeByUsername.lastName}</span>
                     </div>
-                    <button className="px-6 py-2 rounded bg-orange-200 text-orange-800 font-semibold border border-orange-400">
-                        Quản lý NV
-                    </button>
                     <button className="px-6 py-2 rounded bg-orange-400 text-black-300 font-semibold border border-orange-400">
                         Nhân viên mới +
                     </button>

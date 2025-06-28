@@ -11,7 +11,6 @@ const FogotPassword = () => {
     try {
       // Gọi API để gửi email reset mật khẩu
       const response = await AuthAPI.forgotPassword(email);
-      console.log('Email sent to:', email);
       // Hiển thị thông báo thành công
       alert(response.data)
     } catch (error) {
@@ -21,7 +20,7 @@ const FogotPassword = () => {
   }
 
   const onSubmit = async (data) => {
-    console.log('Email Submitted:', data.email);
+
     await FogotPassword(data.email);
     navigate('/login')
     // sau khi gửi email thành công => popup thông báo => chuyển hướng đến trang login
