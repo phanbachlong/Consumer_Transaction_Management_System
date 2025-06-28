@@ -57,8 +57,4 @@ public interface IUserRepository extends JpaRepository<User, Long> {
         void editUserByEmployee(@Param("username") long userID, @Param("email") String email,
                         @Param("phone") String phone);
 
-        // @Query("UPDATE User u SET u.status = :status WHERE u.userID = :userID")
-        // @Modifying
-        // void activeUser(@Param("userID") long userID, @Param("status") String
-        // status);
 }

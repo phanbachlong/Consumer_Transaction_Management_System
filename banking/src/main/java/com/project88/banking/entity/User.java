@@ -110,4 +110,18 @@ public class User implements Serializable {
         this.avatarUrl = avatarUrl;
     }
 
+    public User(String firstName, String lastName, String username, String email, String gender, String phone,
+            String cccd, LocalDate birth, String password, String role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.gender = gender;
+        this.phone = phone;
+        this.cccd = cccd;
+        this.birth = birth;
+        this.password = password;
+        this.role = role;
+    }
+
 }

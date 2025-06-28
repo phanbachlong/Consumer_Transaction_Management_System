@@ -1,5 +1,9 @@
 package com.project88.banking.dto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import com.project88.banking.entity.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,8 +29,14 @@ public class CreateEmployeeDTO {
 
     private String cccd;
 
+    private LocalDate birth;
+
     private String password;
 
-    private String role = "Employee";
+    private String role;
+
+    public User toEntity() {
+        return new User(firstName, lastName, username, email, gender, phone, cccd, birth, password, role);
+    }
 
 }

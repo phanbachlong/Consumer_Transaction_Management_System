@@ -1,27 +1,26 @@
-// import { parse } from 'date-fns';
-import { z } from 'zod';
-import UserApi from '../api/UserApi';
+import { z } from "zod";
+import UserApi from "../api/UserApi";
 
-export const Validation = z.object({
-    username: z.string().min(6, "Tên tài khoản phải có ít nhất 6 ký tự"),
+export const CreateEmployeeValidation = z.object({
     firstName: z.string().nonempty("Họ phải bắt buộc"),
     lastName: z.string().nonempty("Tên phải bắt buộc"),
-    email: z.string().nonempty("Email phải bắt buộc").email("Email không hợp lệ")
+    username: z.string().min(6, "Tên tài khoản phải có ít nhất 6 ký tự"),
+    email: z.string().nonempty("Email không được để trống").email("Không đúng định dạng email")
         .refine(async (value) => {
-            const rs = await UserApi.isExistEmail(value);
-            return !rs.data
+            const res = await UserApi.isExistEmail(value);
+            return !res.data;
         }, {
             message: "Email đã tồn tại"
         }),
-    birth: z.string().refine(val => !isNaN(Date.parse(val)), {
-        message: "Ngày không hợp lệ"
-    }),
     cccd: z
         .string()
         .nonempty({ message: "CCCD không được để trống" })
         .regex(/^\d{12}$/, { message: "CCCD phải gồm đúng 12 chữ số" }),
     gender: z.enum(['Male', 'Female', 'Other'], {
         errorMap: () => ({ message: 'Vui lòng chọn giới tính' })
+    }),
+    birth: z.string().refine(val => !isNaN(Date.parse(val)), {
+        message: "Ngày không hợp lệ"
     }),
     phone: z
         .string()
@@ -33,11 +32,4 @@ export const Validation = z.object({
         }, {
             message: "SDT đã tồn tại"
         }),
-    password: z.string().min(6, "Mật khẩu cần ít nhất 6 ký tựtự"),
-    confirmPassword: z
-        .string()
-        .min(6, "Xác nhận mật khẩu ít nhất 6 ký tự"),
-}).refine((data) => data.password === data.confirmPassword, {
-    message: "Mật khẩu không khớp",
-    path: ["confirmPassword"],
 })
