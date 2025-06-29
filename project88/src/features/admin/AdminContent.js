@@ -37,7 +37,7 @@ const AdminContent = () => {
     }
 
     const isActive = useCallback(async (user) => {
-        const newStatus = user.status === "ACTIVE" ? "NOT_ACTIVE" : "ACTIVE";
+        const newStatus = user.status === "ACTIVE" ? "FROZEN" : "ACTIVE";
         try {
             await adminAPI.activeUser(user.userID, newStatus);
             await dispatch(getAllEmployees({ page: page, size: 5, filter: { name: params } }));
