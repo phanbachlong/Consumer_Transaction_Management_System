@@ -18,7 +18,7 @@ CREATE TABLE `user`(
     birth			DATE NOT NULL,
     `password` 		VARCHAR(800) NOT NULL,
     `role` 			ENUM('Admin','Employee','User') DEFAULT 'User',
-	`status`		TINYINT DEFAULT 0, -- 0: Not Active, 1: Active
+	`status`		TINYINT DEFAULT 0, -- 0: Not Active, 1: Active, 2: Frozen
     createdDate		DATETIME DEFAULT CURRENT_TIMESTAMP,
     `avatarUrl`		VARCHAR(500)
 );

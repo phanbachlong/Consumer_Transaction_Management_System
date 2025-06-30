@@ -1,5 +1,7 @@
 package com.project88.banking.service;
 
+import com.project88.banking.config.jwt.JwtUtils;
+import com.project88.banking.dto.LoginDTO;
 import com.project88.banking.dto.UserDTO;
 import com.project88.banking.entity.Bill;
 import com.project88.banking.entity.CardNumber;
@@ -12,13 +14,23 @@ import com.project88.banking.repository.ICardRepository;
 import com.project88.banking.repository.IUserRepository;
 import com.project88.banking.repository.PasswordResetTokenRepository;
 import com.project88.banking.repository.RegistrationUserTokenRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -40,9 +52,59 @@ public class AuthService {
 
     @Autowired
     private ICardRepository cardRepository;
+    
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private PasswordResetTokenRepository passwordResetTokenRepository;
+    
+    @Autowired
+    private JwtUtils jwtUtils;
+    
+    @Autowired
+    private IUserService userService;
+    
+    @Autowired
+    private JwtBlacklistService jwtBlacklistService;
+
+    
+    public ResponseEntity<?> login(LoginDTO loginRequest) {
+        Authentication authentication;
+        try {
+            authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Sai tài khoản hoặc mật khẩu!");
+        }
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User user = userService.findUserByUsername(userDetails.getUsername());
+
+        // Kiểm tra trạng thái tài khoản: nếu NOT_ACTIVE thì gửi lại email xác thực
+        if (user.getStatus() == Status.NOT_ACTIVE) {
+            sendTokenViaEmail(user);
+            return ResponseEntity.status(403).body("Tài khoản chưa kích hoạt. Đã gửi lại link kích hoạt qua email.");
+        } else if (user.getStatus() == Status.FROZEN ) {
+        	return ResponseEntity.status(403).body("Tài khoản đã bị khóa, vui lòng liên hệ ngân hàng.");
+		}
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateToken(userDetails);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", jwt);
+        return ResponseEntity.ok(response);
+    }
+    
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+    	String token = jwtUtils.getJwtFromRequest(request);
+        if (token != null && jwtUtils.validateToken(token)) {
+            LocalDateTime expiry = jwtUtils.getExpiryFromToken(token);
+            jwtBlacklistService.blacklistToken(token, expiry);
+        }
+        return ResponseEntity.ok("Logged out successfully");
+    }
 
     public void registerUser(UserDTO userDTO) {
         User user = userDTO.toEntity();
@@ -60,7 +122,11 @@ public class AuthService {
         billRepository.save(waterBill);
         billRepository.save(phoneBill);
 
-        String token = UUID.randomUUID().toString();
+        sendTokenViaEmail(user);
+    }
+    
+    public void sendTokenViaEmail (User user) {
+    	String token = UUID.randomUUID().toString();
         LocalDateTime expiry = LocalDateTime.now().plusHours(24);
 
         RegistrationUserToken regToken = new RegistrationUserToken();
