@@ -55,7 +55,7 @@ public class User implements Serializable {
     @Column(name = "phone", length = 10, unique = true)
     private String phone;
 
-    @Column(name = "cccd", length = 12, nullable = false)
+    @Column(name = "cccd", length = 12, nullable = false, unique = true)
     private String cccd;
 
     @Column(name = "balance", nullable = false)

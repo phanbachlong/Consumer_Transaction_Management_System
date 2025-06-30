@@ -34,6 +34,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping(value = "/api/v1/users")
@@ -172,6 +174,12 @@ public class UserController {
     @GetMapping("/check-username")
     public ResponseEntity<Boolean> isUsernameExists(@RequestParam String username) {
         boolean isExists = userService.isUsernameExists(username);
+        return ResponseEntity.ok(isExists);
+    }
+
+    @GetMapping("/check-cccd")
+    public ResponseEntity<Boolean> isCccdExists(@RequestParam String cccd) {
+        boolean isExists = userService.isCccdExists(cccd);
         return ResponseEntity.ok(isExists);
     }
 

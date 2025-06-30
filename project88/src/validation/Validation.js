@@ -25,7 +25,13 @@ export const Validation = z.object({
     cccd: z
         .string()
         .nonempty({ message: "CCCD không được để trống" })
-        .regex(/^\d{12}$/, { message: "CCCD phải gồm đúng 12 chữ số" }),
+        .regex(/^\d{12}$/, { message: "CCCD phải gồm đúng 12 chữ số" })
+        .refine(async (value) => {
+            const rs = await UserApi.isExistCccd(value);
+            return !rs.data;
+        }, {
+            message: "CCCD đã tồn tại"
+        }),
     gender: z.enum(['Male', 'Female', 'Other'], {
         errorMap: () => ({ message: 'Vui lòng chọn giới tính' })
     }),

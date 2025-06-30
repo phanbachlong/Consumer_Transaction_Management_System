@@ -38,6 +38,10 @@ const isExistUsername = (username) => {
     return axiosClient.get(`${url}/check-username`, { params: { username } })
 }
 
+const isExistCccd = (cccd) => {
+    return axiosClient.get(`${url}/check-cccd`, { params: { cccd } })
+}
+
 const editUserByEmployee = (userID, body) => {
     return axiosClient.put(`${url}/edit`, body, { params: { userID } });
 }
@@ -52,6 +56,7 @@ const UserApi = {
     isExistEmail,
     isExistPhone,
     isExistUsername,
+    isExistCccd,
     editUserByEmployee
 }
 export default UserApi;
