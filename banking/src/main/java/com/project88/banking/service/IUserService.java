@@ -9,10 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.project88.banking.dto.ChangeProfileDTO;
-import com.project88.banking.dto.GetAllUserDTO;
-import com.project88.banking.dto.ProfileDTO;
-import com.project88.banking.dto.TransferDTO;
 import com.project88.banking.dto.filter.UserFilter;
 import com.project88.banking.entity.User;
 
@@ -42,6 +38,10 @@ public interface IUserService extends UserDetailsService {
     boolean isEmailExists(String email);
 
     boolean isPhoneExists(String phone);
+
+    boolean isUsernameExists(String username);
+
+    boolean isCccdExists(String cccd);
 
     void editUserByEmployee(long userID, EditUserDTO dto);
 

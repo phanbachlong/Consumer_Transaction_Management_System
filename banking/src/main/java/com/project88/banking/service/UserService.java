@@ -225,6 +225,16 @@ public class UserService implements IUserService {
 	}
 
 	@Override
+	public boolean isUsernameExists(String username) {
+		return userRepository.existsByUsername(username);
+	}
+
+	@Override
+	public boolean isCccdExists(String cccd) {
+		return userRepository.existsByCccd(cccd);
+	}
+
+	@Override
 	public void editUserByEmployee(long userID, EditUserDTO dto) {
 		User user = userRepository.findByUserID(userID);
 		if (user == null) {
@@ -256,4 +266,5 @@ public class UserService implements IUserService {
 		userRepository.save(user);
 
 	}
+
 }
