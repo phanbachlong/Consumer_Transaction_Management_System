@@ -50,6 +50,8 @@ public interface IUserRepository extends JpaRepository<User, Long> {
 
         boolean existsByPhone(String phone);
 
+        boolean existsByUsername(String username);
+
         User findByUserID(long userID);
 
         @Query("UPDATE User u SET u.email = :email, u.phone = :phone WHERE u.userID = :userID")

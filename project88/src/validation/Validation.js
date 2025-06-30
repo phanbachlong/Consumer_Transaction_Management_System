@@ -3,13 +3,19 @@ import { z } from 'zod';
 import UserApi from '../api/UserApi';
 
 export const Validation = z.object({
-    username: z.string().min(6, "Tên tài khoản phải có ít nhất 6 ký tự"),
+    username: z.string().min(6, "Tên tài khoản phải có ít nhất 6 ký tự")
+        .refine(async (value) => {
+            const rs = await UserApi.isExistUsername(value);
+            return !rs.data;
+        }, {
+            message: "Username đã tồn tại"
+        }),
     firstName: z.string().nonempty("Họ phải bắt buộc"),
     lastName: z.string().nonempty("Tên phải bắt buộc"),
     email: z.string().nonempty("Email phải bắt buộc").email("Email không hợp lệ")
         .refine(async (value) => {
             const rs = await UserApi.isExistEmail(value);
-            return !rs.data
+            return !rs.data;
         }, {
             message: "Email đã tồn tại"
         }),
@@ -29,7 +35,7 @@ export const Validation = z.object({
         .regex(/^\d{10}$/, { message: "Số điện thoại phải gồm đúng 10 chữ số" })
         .refine(async (value) => {
             const rs = await UserApi.isExistPhone(value);
-            return !rs.data
+            return !rs.data;
         }, {
             message: "SDT đã tồn tại"
         }),

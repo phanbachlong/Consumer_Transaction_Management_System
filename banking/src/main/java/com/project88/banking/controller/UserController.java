@@ -169,4 +169,10 @@ public class UserController {
         return ResponseEntity.ok(isExists);
     }
 
+    @GetMapping("/check-username")
+    public ResponseEntity<Boolean> isUsernameExists(@RequestParam String username) {
+        boolean isExists = userService.isUsernameExists(username);
+        return ResponseEntity.ok(isExists);
+    }
+
 }
