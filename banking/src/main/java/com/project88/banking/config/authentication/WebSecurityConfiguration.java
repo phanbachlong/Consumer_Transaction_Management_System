@@ -46,6 +46,7 @@ public class WebSecurityConfiguration {
 				.requestMatchers("/api/v1/users/check-email").permitAll()
 				.requestMatchers("/api/v1/users/check-phone").permitAll()
 				.requestMatchers("/api/v1/users/check-username").permitAll()
+				.requestMatchers("/api/v1/users/check-cccd").permitAll()
 				.requestMatchers("/api/v1/users/all")
 				.hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
 				.requestMatchers("/api/v1/users/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER", "ROLE_EMPLOYEE")
