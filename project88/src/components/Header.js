@@ -88,12 +88,21 @@ const Header = ({ toggleTheme, currentTheme }) => {
 
                 
                     <nav className="flex flex-col p-4 space-y-2">
+                        {(role === 'ROLE_USER' || role === 'ROLE_EMPLOYEE' || role === 'ROLE_ADMIN') && (
+                            <button
+                                className="text-left px-4 py-2 hover:bg-gray-100 rounded"
+                                onClick={() => handleNavigate("/user")}
+                            >
+                                Trang chủ
+                            </button>
+                        )}
+
                         {role === 'ROLE_ADMIN' && (
                             <button
                                 className="text-left px-4 py-2 hover:bg-gray-100 rounded"
                                 onClick={() => handleNavigate("/admin")}
                             >
-                                Admin
+                                Quản lý nhân viên
                             </button>
                         )}
 
@@ -102,18 +111,11 @@ const Header = ({ toggleTheme, currentTheme }) => {
                                 className="text-left px-4 py-2 hover:bg-gray-100 rounded"
                                 onClick={() => handleNavigate("/employees")}
                             >
-                                Employee
+                                Quản lý khách hàng
                             </button>
                         )}
 
-                        {(role === 'ROLE_USER' || role === 'ROLE_EMPLOYEE' || role === 'ROLE_ADMIN') && (
-                            <button
-                                className="text-left px-4 py-2 hover:bg-gray-100 rounded"
-                                onClick={() => handleNavigate("/user")}
-                            >
-                                User
-                            </button>
-                        )}
+                        
 
                         <button
                             className="text-left px-4 py-2 hover:bg-gray-100 rounded"

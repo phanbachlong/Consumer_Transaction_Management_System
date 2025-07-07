@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 
 
 const PaymentModal = ({ bill, balance, onClose, fetchPayBill}) => {
@@ -8,9 +8,6 @@ const PaymentModal = ({ bill, balance, onClose, fetchPayBill}) => {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 max-w-md w-full">
         <div className="flex items-center mb-4">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
           <h2 className="text-xl font-bold">{bill?.billName}</h2>
         </div>
         
